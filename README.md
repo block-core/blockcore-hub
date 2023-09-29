@@ -6,7 +6,7 @@ Free City Hub is your portal into all apps and services that is available on the
 
 The Hub integrates many different apps and services, collecting and aggregating a view of all your data that belongs to you and your decentralized identity (DID).
 
-![](/assets/free-city-hub-screenshot.png)
+![](/assets/blockcore-hub-screenshot.png)
 
 ## Get Started
 

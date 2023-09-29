@@ -10,6 +10,6 @@ try {
   console.error(e);
 }
 
-let db = conn.db("free-city-hub");
+let db = conn.db("blockcore-hub");
 
 export default db;

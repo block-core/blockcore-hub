@@ -1,9 +1,9 @@
 {
-  "name": "free-city-hub",
+  "name": "blockcore-hub",
   "version": "0.0.1",
   "scripts": {
     "version": "node -p \"require('./package.json').version\""
   },
-  "author": "Free City Platform",
+  "author": "Blockcore",
   "license": "MIT"
 }

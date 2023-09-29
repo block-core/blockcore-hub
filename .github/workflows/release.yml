@@ -33,7 +33,7 @@ jobs:
     - name: Extract asset and copy
       run: |
         mkdir ./src/
-        tar -C ./src/ -xzvf ./artifacts/free-city-hub-${{ github.event.release.tag_name }}.tgz --strip-components=1
+        tar -C ./src/ -xzvf ./artifacts/blockcore-hub-${{ github.event.release.tag_name }}.tgz --strip-components=1
         ls -R
 
     - name: Install and Build
@@ -43,9 +43,9 @@ jobs:
         npm run build
 
     - name: Build the Docker container image
-      run: docker build server/. -t blockcore/free-city-hub:latest -t blockcore/free-city-hub:${{ github.event.release.tag_name }}
+      run: docker build server/. -t blockcore/blockcore-hub:latest -t blockcore/blockcore-hub:${{ github.event.release.tag_name }}
 
     - name: Login and Push to Docker Registry
       run: |
         docker login -u "sondreb" -p "${{secrets.DOCKER_KEY}}"
-        docker push --all-tags blockcore/free-city-hub
+        docker push --all-tags blockcore/blockcore-hub
