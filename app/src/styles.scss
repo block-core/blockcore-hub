@@ -1,0 +1,131 @@
+@import "@angular/material/theming";
+
+@include mat-core();
+
+@import "./theme.scss";
+
+@import "./custom-component-themes.scss";
+
+@include angular-material-theme($theming-material-components-theme);
+@include custom-components-theme($theming-material-components-theme);
+
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css"; // default "bold".
+
+@import "@fontsource/material-icons-round";
+
+@import "~leaflet/dist/leaflet.css";
+
+.dark-theme {
+  @include angular-material-color($dark-theme);
+  @include custom-components-theme($dark-theme);
+}
+
+:root {
+  --accent: #fac400;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #303030;
+  color: white;
+  overscroll-behavior-y: contain;
+}
+
+a {
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+
+.mat-icon {
+  font-family: "Material Icons Round", sans-serif;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+p {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
+}
+
+.collection-card {
+  max-width: 400px;
+  margin-bottom: 1em;
+}
+
+.example-header-image {
+  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
+  background-size: cover;
+}
+
+.page {
+  height: 100%;
+  box-sizing: content-box;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.remark {
+  text-align: center;
+  padding: 1em;
+  color: silver;
+}
+
+// ::-webkit-scrollbar {
+//   width: 10px;
+//   height: 10px;
+// }
+
+// ::-webkit-scrollbar-track {
+//   background-color: transparent;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//   background-color: #2c633a;
+//   border-radius: 20px;
+//   border-left: 0px solid transparent;
+//   background-clip: content-box;
+// }
+
+// ::-webkit-scrollbar-thumb:hover {
+//   background-color: #a8bbbfc5;
+// }
+
+/*       ScrollBar 1        */
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: #e7e7e7;
+  border: 1px solid #424242;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  background-color: var(--accent);
+}

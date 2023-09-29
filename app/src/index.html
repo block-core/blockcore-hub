@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Free City Hub</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- For all browsers -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16x16.png">
+
+    <!-- For Google and Android -->
+    <link rel="icon" type="image/png" sizes="48x48" href="assets/icons/icon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+
+    <!-- For iPad -->
+    <link rel="apple-touch-icon" type="image/png" sizes="167x167" href="assets/icons/icon-167x167.png">
+    <!-- For iPhone -->
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="assets/icons/icon-180x180.png">
+
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <meta name="theme-color" content="#fac400" />
+    <style>
+      #waitScreen {
+        width: 100%;
+        height: 100%;
+        background-color: #fac400;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 10000;
+        text-align: center;
+        box-sizing: border-box;
+        padding-top: 2em;
+      }
+    </style>
+  </head>
+  <body class="mat-typography dark-theme">
+    <app-root></app-root>
+    <div id="waitScreen">Free City Hub...</div>
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
+  </body>
+</html>

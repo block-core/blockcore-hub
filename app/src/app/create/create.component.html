@@ -1,0 +1,102 @@
+<div class="page" *ngIf="!preview">
+  <h1>Create new ad</h1>
+
+  <form [formGroup]="adForm" (ngSubmit)="onSubmit()">
+    <label id="example-radio-group-label">I want to</label>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+      formControlName="reason"
+    >
+      <mat-radio-button
+        class="example-radio-button"
+        *ngFor="let season of seasons"
+        [value]="season"
+      >
+        {{ season }}
+      </mat-radio-button>
+    </mat-radio-group>
+    <!-- <div>Your favorite season is: {{ favoriteSeason }}</div> -->
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput rows="4" formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Price</mat-label>
+      <input matInput formControlName="price" />
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Location</mat-label>
+      <input matInput formControlName="location" />
+    </mat-form-field>
+
+    <!-- <div formArrayName="aliases">
+      <h2>Aliases</h2>
+      <button type="button" (click)="addAlias()">+ Add another alias</button>
+  
+      <div *ngFor="let alias of aliases.controls; let i=index">
+        <label for="alias-{{ i }}">Alias:</label>
+        <input id="alias-{{ i }}" type="text" [formControlName]="i">
+      </div>
+    </div> -->
+
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      class="example-full-width"
+      [disabled]="!adForm.valid"
+    >
+      Preview
+    </button>
+  </form>
+</div>
+
+<div class="page" *ngIf="preview">
+  <h1>Preview your new ad</h1>
+
+  <mat-card class="collection-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title><strong>{{ data.reason }}:</strong> {{ data.title }}</mat-card-title>
+      <mat-card-subtitle>{{ data.location }}</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-content>
+      <p>
+        {{ data.description }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button>OPEN OFFER</button>&nbsp;
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    class="example-full-width"
+    (click)="edit()"
+  >
+    Edit
+  </button>
+
+  <p>
+    To publish this ad you make a small payment. Scan the QR code or click the
+    payment button.
+  </p>
+</div>
