@@ -1,0 +1,9 @@
+{
+  "name": "free-city-hub",
+  "version": "0.0.1",
+  "scripts": {
+    "version": "node -p \"require('./package.json').version\""
+  },
+  "author": "Free City Platform",
+  "license": "MIT"
+}
