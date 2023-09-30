@@ -310,3 +310,16 @@
   font-size: 0.85em;
   margin-bottom: 1.4em;
 }
+
+.bitcoin-icon {
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 400px) {
+  .bitcoin-icon {
+    height: 64px;
+    width: 64px;
+  }
+}
