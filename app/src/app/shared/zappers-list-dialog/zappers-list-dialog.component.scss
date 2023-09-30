@@ -7,7 +7,7 @@
     justify-content: flex-end;
 }
 .zap-button {
-    background-color: #9c27b0;
+    background-color: #fac400;
     color: white;
 }
 
@@ -66,7 +66,7 @@
   // .thumb-up-btn:hover,
   // .applause-btn:hover
   .emoji-button:hover {
-    background-color: #9c27b0;
+    background-color: #fac400;
   }
   
   .mat-mdc-icon-button.mat-primary:hover {
@@ -104,11 +104,11 @@
 
   .zap-amount {
     display: inline-block;
-    border: 2px solid #9c27b0; /* blue border */
+    border: 2px solid #fac400; /* blue border */
     border-radius: 10px; /* rounded corners */
     padding: 10px 15px; /* add some padding */
     font-weight: bold; /* make font bold */
     color: #fff; /* white text color */
-    background-color: #9c27b0; /* blue background color */
+    background-color: #fac400; /* blue background color */
     box-shadow: 2px 2px 5px rgba(0,0,0,0.3); /* add a subtle box shadow */
   }

@@ -1,10 +1,23 @@
 <div class="connect-container">
   <div class="connect-menu mat-app-background">
-    <img class="connect-logo" width="128" height="128" src="assets/icons/icon-256x256.webp" />
-    <div class="logo-text"><span class="hide-tiny">Blockcore</span> Notes</div>
+    <img
+      class="connect-logo"
+      width="128"
+      height="128"
+      src="assets/icons/icon-192x192.png"
+    />
+    <div class="logo-text">
+      Free City <span class="hide-tiny">Platform</span>
+    </div>
     <div class="connect-spacer"></div>
-    <button (click)="theme.darkMode = !theme.darkMode" mat-icon-button class="theme-toggle">
-      <mat-icon aria-label="Menu" class="material-icons">{{ theme.darkMode ? "dark_mode" : "light_mode" }}</mat-icon>
+    <button
+      (click)="theme.darkMode = !theme.darkMode"
+      mat-icon-button
+      class="theme-toggle"
+    >
+      <mat-icon aria-label="Menu" class="material-icons"
+        >{{ theme.darkMode ? "dark_mode" : "light_mode" }}</mat-icon
+      >
     </button>
     <div class="connect-button" *ngIf="searchingForExtension">
       <button class="start-button" mat-flat-button color="accent">
@@ -12,25 +25,70 @@
       </button>
     </div>
     <div class="connect-button" *ngIf="showInstallLink">
-      <a class="start-button" (click)="connect()" mat-flat-button color="accent" href="https://chrome.google.com/webstore/detail/blockcore-wallet/peigonhbenoefaeplkpalmafieegnapj" target="_blank"
+      <a
+        class="start-button"
+        (click)="connect()"
+        mat-flat-button
+        color="accent"
+        href="https://chrome.google.com/webstore/detail/blockcore-wallet/peigonhbenoefaeplkpalmafieegnapj"
+        target="_blank"
         >Install <span class="hide-tiny">extension</span></a
       >
     </div>
     <div class="connect-button" *ngIf="extensionDiscovered">
-      <button class="start-button" *ngIf="consent" (click)="connect()" mat-flat-button color="accent">Connect <span class="hide-tiny">using extension</span></button>
-      <button class="start-button" *ngIf="!consent" (click)="giveConsent()" mat-flat-button color="accent">Give consent</button>
+      <button
+        class="start-button"
+        *ngIf="consent"
+        (click)="connect()"
+        mat-flat-button
+        color="accent"
+      >
+        Connect <span class="hide-tiny">using extension</span>
+      </button>
+      <button
+        class="start-button"
+        *ngIf="!consent"
+        (click)="giveConsent()"
+        mat-flat-button
+        color="accent"
+      >
+        Give consent
+      </button>
     </div>
   </div>
   <div class="connect-content">
     <mat-card class="card first-card">
       <mat-card-content>
-        <h1 class="centered">New ways to connect with humanity</h1>
+        <h1 class="centered">
+          Free City Hub is your portal into the Free City Platform
+        </h1>
         <p class="centered" *ngIf="consent">
-          <button class="start-button" color="accent" routerLink="/connect/create" mat-flat-button>Create new profile</button><br /><br />
-          <button class="start-button" color="accent" routerLink="/connect/login" mat-flat-button>Log in</button><br /><br />
+          <button
+            class="start-button"
+            color="accent"
+            routerLink="/connect/create"
+            mat-flat-button
+          >
+            Create new profile</button
+          ><br /><br />
+          <button
+            class="start-button"
+            color="accent"
+            routerLink="/connect/login"
+            mat-flat-button
+          >
+            Log in</button
+          ><br /><br />
         </p>
         <p class="centered" *ngIf="!consent">
-          <button class="start-button" (click)="giveConsent()" mat-flat-button color="accent">Give consent</button>
+          <button
+            class="start-button"
+            (click)="giveConsent()"
+            mat-flat-button
+            color="accent"
+          >
+            Give consent
+          </button>
         </p>
       </mat-card-content>
     </mat-card>
@@ -75,26 +133,38 @@
     </mat-card> -->
 
     <mat-card class="card card-image">
-      <img loading="lazy" width="1079" height="776" src="/assets/blockcore-notes-screenshot.png" />
+      <img
+        loading="lazy"
+        width="1079"
+        height="776"
+        src="/assets/blockcore-notes-screenshot.png"
+      />
     </mat-card>
 
     <mat-card class="card">
       <mat-card-content>
-        <h1>Freedom of expression</h1>
+        <h1>Free City Platform</h1>
         <p>
-          Share your thoughts and interact with others in a fully transparent and open manner that is not restricted by any boundaries. Experience the world of <strong>Nostr</strong>. Nostr is a uncensorable protocol for communication with
-          your friends and the world.
+          Free City Platform is a collection of free and open source software
+          that can be used to run a free city. It consists of many separate
+          pieces of software that can be used together or separately. The Free
+          City Hub is a portal into the platform, allowing you to connect to the
+          various pieces of software and services.
         </p>
-        <p class="notice"><strong>PROTOTYPE:</strong> This app is currently under development and should be considered prototype-quality.</p>
+        <p class="notice">
+          <strong>PROTOTYPE:</strong> This app is currently under development
+          and should be considered prototype-quality.
+        </p>
       </mat-card-content>
     </mat-card>
 
     <mat-card class="card">
       <mat-card-content>
-        <h1>Follow your favorite creators</h1>
+        <h1>Free and Unrestricted</h1>
         <p>
-          No matter if they are photographers, film makers, bloggers, journalists or anyone else who likes to share and engage in communities and chats, Blockcore Notes have you covered with dynamic content layouts and organization of
-          people.
+          The Free City Platform is a software built to help develop and run a
+          free city. It has software for identity, communication, economy, and
+          more.
         </p>
       </mat-card-content>
     </mat-card>
@@ -102,11 +172,17 @@
     <mat-card class="card">
       <mat-card-content>
         <h1>Be humble and kind</h1>
-        <p>Being uncensorable and uncancellable means more responsibility is on you, you are in control and you are responsible.</p>
+        <p>
+          The free cities depends on the participation of its citizens and the
+          positive contributions they make to the community. Make sure your
+          contributions help the community and are not harmful to others.
+        </p>
         <p>💛🖤</p>
         <p class="centered" *ngIf="consent">
           <br />
-          <button mat-stroked-button (click)="consent=false; persist()">Withdraw consent</button>
+          <button mat-stroked-button (click)="consent=false; persist()">
+            Withdraw consent
+          </button>
         </p>
       </mat-card-content>
     </mat-card>
