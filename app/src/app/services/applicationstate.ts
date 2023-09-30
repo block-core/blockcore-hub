@@ -12,16 +12,26 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class ApplicationState {
-  constructor(public translate: TranslateService, private breakpointObserver: BreakpointObserver, private authService: AuthenticationService, private location: Location, private titleService: Title) {
-    this.isSmallScreen$ = this.breakpointObserver.observe('(max-width: 599px)').pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+  constructor(
+    public translate: TranslateService,
+    private breakpointObserver: BreakpointObserver,
+    private authService: AuthenticationService,
+    private location: Location,
+    private titleService: Title
+  ) {
+    this.isSmallScreen$ = this.breakpointObserver
+      .observe('(max-width: 599px)')
+      .pipe(
+        map((result) => result.matches),
+        shareReplay()
+      );
 
-    this.displayLabels$ = this.breakpointObserver.observe('(max-width: 720px)').pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+    this.displayLabels$ = this.breakpointObserver
+      .observe('(max-width: 720px)')
+      .pipe(
+        map((result) => result.matches),
+        shareReplay()
+      );
 
     this.connected$ = this.connectedChanged.asObservable();
 
@@ -30,6 +40,23 @@ export class ApplicationState {
     this.title$ = this.titleChanged.asObservable();
 
     this.initialized$ = this.initializedChanged.asObservable();
+  }
+
+  identity: any;
+
+  short: any;
+
+  authenticated: boolean = false;
+
+  approved: boolean = false;
+
+  admin = false;
+
+  reset() {
+    this.identity = null;
+    this.authenticated = false;
+    this.admin = false;
+    this.approved = false;
   }
 
   getPublicKey(): string {
@@ -48,7 +75,9 @@ export class ApplicationState {
 
   title$: Observable<string>;
 
-  titleChanged: BehaviorSubject<string> = new BehaviorSubject<string>(this.title);
+  titleChanged: BehaviorSubject<string> = new BehaviorSubject<string>(
+    this.title
+  );
 
   updateTitle(title: string) {
     this.title = title;
@@ -85,9 +114,13 @@ export class ApplicationState {
 
   connected = false;
 
-  connectedChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.connected);
+  connectedChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    this.connected
+  );
 
-  initializedChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  initializedChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
   /** This will check if status has changed and trigger. If status is the same, the observable is not triggered. */
   updateConnectionStatus(status: boolean) {
@@ -99,7 +132,9 @@ export class ApplicationState {
 
   visibility$: Observable<boolean>;
 
-  visibilityChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  visibilityChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
   visibility(status: boolean) {
     this.visibilityChanged.next(status);

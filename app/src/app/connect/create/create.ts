@@ -76,7 +76,7 @@ export class CreateProfileComponent {
 
       if (this.privateKeyHex == decrypted) {
         localStorage.setItem('blockcore:notes:nostr:prvkey', encrypted);
-        localStorage.setItem('blockcore:notes:nostr:pubkey', this.publicKeyHex);
+        localStorage.setItem('blockcore:hub:pubkey', this.publicKeyHex);
 
         this.profile.npub = this.publicKey;
         this.profile.pubkey = this.publicKeyHex;

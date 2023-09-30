@@ -39,7 +39,7 @@ export class OptionsService {
   values: Options = { mediaService: UploadService.defaultService, language: 'en', dir: 'ltr', enableReactions: true, enableZapping: true, showLines: true, peopleDisplayType: 1, peopleDisplayView: 0, peopleDisplaySort: 'name-asc' };
 
   load() {
-    let options = localStorage.getItem('blockcore:notes:nostr:options');
+    let options = localStorage.getItem('blockcore:hub:options');
     if (options) {
       this.values = JSON.parse(options);
     }
@@ -70,6 +70,6 @@ export class OptionsService {
   }
 
   save() {
-    localStorage.setItem('blockcore:notes:nostr:options', JSON.stringify(this.values));
+    localStorage.setItem('blockcore:hub:options', JSON.stringify(this.values));
   }
 }
