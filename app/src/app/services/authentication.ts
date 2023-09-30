@@ -138,7 +138,6 @@ export class AuthenticationService {
     user.publicKeyHex = publicKey;
     // user.publicKey = this.utilities.getNostrIdentifier(publicKey);
     user.short = publicKey.substring(0, 12) + '...' + publicKey.slice(-5); // TODO: Figure out a good way to minimize the public key, "5...5"?
-    debugger;
     return user;
   }
 
