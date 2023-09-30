@@ -35,7 +35,7 @@ export class ConnectComponent {
   ) {}
 
   persist() {
-    localStorage.setItem('blockcore:notes:nostr:consent', this.consent.toString());
+    localStorage.setItem('blockcore:hub:consent', this.consent.toString());
   }
 
   giveConsent() {
@@ -98,7 +98,7 @@ export class ConnectComponent {
   }
 
   ngOnInit() {
-    this.consent = localStorage.getItem('blockcore:notes:nostr:consent') === 'true';
+    this.consent = localStorage.getItem('blockcore:hub:consent') === 'true';
     this.checkForExtension();
   }
 
