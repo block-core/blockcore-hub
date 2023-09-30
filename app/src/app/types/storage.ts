@@ -71,8 +71,8 @@ export class Storage {
     this.db = await openDB<NotesDB>(this.name, 2, {
       upgrade(db, oldVersion, newVersion, transaction, event) {
         debugger;
-
         switch (oldVersion) {
+          // @ts-ignore
           case 0:
             upgradeV0toV1();
           /* FALLTHROUGH */

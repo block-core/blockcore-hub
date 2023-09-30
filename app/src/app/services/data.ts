@@ -1,12 +1,50 @@
 import { Injectable } from '@angular/core';
-import { NostrEvent, NostrEventDocument, NostrProfileDocument, NostrRelay, NostrSubscription, QueryJob } from './interfaces';
+import {
+  NostrEvent,
+  NostrEventDocument,
+  NostrProfileDocument,
+  NostrRelay,
+  NostrSubscription,
+  QueryJob,
+} from './interfaces';
 import { ProfileService } from './profile';
 import { EventService } from './event';
 import { RelayService } from './relay';
-import { Filter, Relay, Event, getEventHash, validateEvent, verifySignature, Kind, UnsignedEvent } from 'nostr-tools';
+import {
+  Filter,
+  Relay,
+  Event,
+  getEventHash,
+  validateEvent,
+  verifySignature,
+  Kind,
+  UnsignedEvent,
+} from 'nostr-tools';
 import { DataValidation } from './data-validation';
 import { ApplicationState } from './applicationstate';
-import { timeout, map, merge, Observable, delay, Observer, race, take, switchMap, mergeMap, tap, finalize, concatMap, mergeAll, exhaustMap, catchError, of, combineAll, combineLatestAll, filter, from } from 'rxjs';
+import {
+  timeout,
+  map,
+  merge,
+  Observable,
+  delay,
+  Observer,
+  race,
+  take,
+  switchMap,
+  mergeMap,
+  tap,
+  finalize,
+  concatMap,
+  mergeAll,
+  exhaustMap,
+  catchError,
+  of,
+  combineAll,
+  combineLatestAll,
+  filter,
+  from,
+} from 'rxjs';
 import { Utilities } from './utilities';
 import { StorageService } from './storage';
 import { QueueService } from './queue.service';
@@ -123,7 +161,9 @@ export class DataService {
 
     // We force validation upon user so we make sure they don't create content that we won't be able to parse back later.
     // We must do this before we run nostr-tools validate and signature validation.
-    const event = this.eventService.processEvent(signedEvent as NostrEventDocument);
+    const event = this.eventService.processEvent(
+      signedEvent as NostrEventDocument
+    );
 
     if (!event) {
       throw new Error('The event is not valid. Cannot publish.');
@@ -138,7 +178,9 @@ export class DataService {
     let veryOk = await verifySignature(event as any); // Required .id and .sig, which we know has been added at this stage.
 
     if (!veryOk) {
-      throw new Error('The event signature not valid. Maybe you choose a different account than the one specified?');
+      throw new Error(
+        'The event signature not valid. Maybe you choose a different account than the one specified?'
+      );
     }
 
     return event;
@@ -146,7 +188,9 @@ export class DataService {
 
   /** Get's all following and all public relays. */
   async getContactsAndRelays() {
-    const contacts = await this.storage.storage.getContacts(this.appState.getPublicKey());
+    const contacts = await this.storage.storage.getContacts(
+      this.appState.getPublicKey()
+    );
     return contacts;
 
     // const nonPublicCircles = this.circleService.circles.filter((c) => !c.public).map((c) => c.id);
@@ -177,8 +221,12 @@ export class DataService {
 
   /** Get's all following and all public relays. */
   async publishContactsAndRelays() {
-    const nonPublicCircles = this.circleService.circles.filter((c) => !c.public).map((c) => c.id);
-    const publicFollowing = this.profileService.following.filter((p) => nonPublicCircles.indexOf(p.circle) == -1).map((p) => p.pubkey);
+    const nonPublicCircles = this.circleService.circles
+      .filter((c) => !c.public)
+      .map((c) => c.id);
+    const publicFollowing = this.profileService.following
+      .filter((p) => nonPublicCircles.indexOf(p.circle) == -1)
+      .map((p) => p.pubkey);
     const mappedContacts = publicFollowing.map((c) => {
       return ['p', c];
     });
@@ -205,7 +253,15 @@ export class DataService {
 
   async initialDataLoad() {
     // Listen to profile and contacts of the logged on user.
-    this.relayService.subscribe([{ authors: [this.appState.getPublicKey()], kinds: [Kind.Metadata, Kind.Contacts] }], 'self');
+    this.relayService.subscribe(
+      [
+        {
+          authors: [this.appState.getPublicKey()],
+          kinds: [Kind.Metadata, Kind.Contacts],
+        },
+      ],
+      'self'
+    );
 
     // Download the profile of the user.
     // this.enque({
@@ -238,7 +294,16 @@ export class DataService {
     // Notifications is a hard-coded subscription identifier.
     // Previously there was no filter on kind, then "started following you" events was shown due to kind 3, but downloading kind 3 for everyone is
     // fairly heavy operation so disabled for now.
-    this.relayService.subscribe([{ ['#p']: [this.appState.getPublicKey()], limit: 100, kinds: [Kind.Text, Kind.Reaction, 6] }], 'notifications');
+    this.relayService.subscribe(
+      [
+        {
+          ['#p']: [this.appState.getPublicKey()],
+          limit: 100,
+          kinds: [Kind.Text, Kind.Reaction, 6],
+        },
+      ],
+      'notifications'
+    );
 
     // Load the 10 latest notifications to be displayed on home page.
     const notifications = await this.storage.storage.getNotifications(10);
@@ -400,8 +465,16 @@ export class DataService {
   }
 
   /** Creates an observable that will attempt to get newest profile entry across all relays and perform multiple callbacks if newer is found. */
-  downloadNewestProfiles(pubkeys: string[], requestTimeout = 10000, expectedCount = -1) {
-    return this.downloadNewestProfileEvents(pubkeys, requestTimeout, expectedCount).pipe(
+  downloadNewestProfiles(
+    pubkeys: string[],
+    requestTimeout = 10000,
+    expectedCount = -1
+  ) {
+    return this.downloadNewestProfileEvents(
+      pubkeys,
+      requestTimeout,
+      expectedCount
+    ).pipe(
       map((event: any) => {
         if (!event) {
           return;
@@ -414,16 +487,33 @@ export class DataService {
   }
 
   /** Creates an observable that will attempt to get newest profile events across all relays and perform multiple callbacks if newer is found. */
-  downloadNewestProfileEvents(pubkeys: string[], requestTimeout = 10000, expectedCount = -1) {
-    return this.downloadNewestProfileEventByQuery([{ kinds: [0], authors: pubkeys }], requestTimeout, expectedCount);
+  downloadNewestProfileEvents(
+    pubkeys: string[],
+    requestTimeout = 10000,
+    expectedCount = -1
+  ) {
+    return this.downloadNewestProfileEventByQuery(
+      [{ kinds: [0], authors: pubkeys }],
+      requestTimeout,
+      expectedCount
+    );
   }
 
   // downloadNewestContactsEvents(pubkeys: string[], requestTimeout = 10000, expectedEventCount = -1) {
   //   return this.downloadNewestEvents(pubkeys, [3], requestTimeout, expectedEventCount);
   // }
 
-  downloadNewestEvents(pubkeys: string[], kinds: number[], requestTimeout = 10000, expectedEventCount = -1) {
-    return this.downloadNewestEventsByQuery([{ kinds: kinds, authors: pubkeys }], requestTimeout, expectedEventCount);
+  downloadNewestEvents(
+    pubkeys: string[],
+    kinds: number[],
+    requestTimeout = 10000,
+    expectedEventCount = -1
+  ) {
+    return this.downloadNewestEventsByQuery(
+      [{ kinds: kinds, authors: pubkeys }],
+      requestTimeout,
+      expectedEventCount
+    );
   }
 
   downloadEventsByTags(query: any[], requestTimeout = 10000) {
@@ -440,7 +530,11 @@ export class DataService {
 
     return this.connected$
       .pipe(mergeMap(() => this.relayService.connectedRelays())) // TODO: Time this, it appears to take a lot of time??
-      .pipe(mergeMap((relay) => this.downloadFromRelay(query, relay, requestTimeout)))
+      .pipe(
+        mergeMap((relay) =>
+          this.downloadFromRelay(query, relay, requestTimeout)
+        )
+      )
       .pipe(
         filter((data) => {
           // Only trigger the reply once.
@@ -462,11 +556,17 @@ export class DataService {
   }
 
   /** Creates an observable that will attempt to get newest events across all relays and perform multiple callbacks if newer is found. */
-  downloadNewestEventsByQuery(query: any, requestTimeout = 10000, expectedEventCount = -1) {
+  downloadNewestEventsByQuery(
+    query: any,
+    requestTimeout = 10000,
+    expectedEventCount = -1
+  ) {
     // TODO: Tune the timeout. There is no point waiting for too long if the relay is overwhelmed with requests as we will simply build up massive backpressure in the client.
     const totalEvents: NostrEventDocument[] = [];
     // TODO: Figure out if we end up having memory leak with this totalEvents array.
-    const observables = this.relayService.connectedRelays().map((relay) => this.downloadFromRelay(query, relay));
+    const observables = this.relayService
+      .connectedRelays()
+      .map((relay) => this.downloadFromRelay(query, relay));
 
     return merge(...observables)
       .pipe(
@@ -474,7 +574,9 @@ export class DataService {
           let result = false;
 
           // This logic is to ensure we don't care about receiving the same data more than once.
-          const existingEventIndex = totalEvents.findIndex((e) => e.id === data.id);
+          const existingEventIndex = totalEvents.findIndex(
+            (e) => e.id === data.id
+          );
           if (existingEventIndex > -1) {
             result = false;
           } else {
@@ -499,11 +601,17 @@ export class DataService {
   }
 
   /** Creates an observable that will attempt to get newest events across all relays and perform multiple callbacks if newer is found. */
-  downloadNewestProfileEventByQuery(query: any, requestTimeout = 10000, expectedEventCount = -1) {
+  downloadNewestProfileEventByQuery(
+    query: any,
+    requestTimeout = 10000,
+    expectedEventCount = -1
+  ) {
     // TODO: Tune the timeout. There is no point waiting for too long if the relay is overwhelmed with requests as we will simply build up massive backpressure in the client.
     // const totalEvents: NostrEventDocument[] = [];
     // TODO: Figure out if we end up having memory leak with this totalEvents array.
-    const observables = this.relayService.connectedRelays().map((relay) => this.downloadFromRelay(query, relay));
+    const observables = this.relayService
+      .connectedRelays()
+      .map((relay) => this.downloadFromRelay(query, relay));
 
     return merge(...observables).pipe(
       timeout(requestTimeout),
@@ -579,31 +687,37 @@ export class DataService {
     await this.publishEvent(signedEvent);
   }
 
-  downloadFromRelay(filters: Filter[], relay: NostrRelay, requestTimeout = 10000): Observable<NostrEventDocument> {
-    return new Observable<NostrEventDocument>((observer: Observer<NostrEventDocument>) => {
-      const sub = relay.sub([...filters], {}) as NostrSubscription;
-      // relay.subscriptions.push(sub);
+  downloadFromRelay(
+    filters: Filter[],
+    relay: NostrRelay,
+    requestTimeout = 10000
+  ): Observable<NostrEventDocument> {
+    return new Observable<NostrEventDocument>(
+      (observer: Observer<NostrEventDocument>) => {
+        const sub = relay.sub([...filters], {}) as NostrSubscription;
+        // relay.subscriptions.push(sub);
 
-      sub.on('event', (originalEvent: any) => {
-        const event = this.eventService.processEvent(originalEvent);
+        sub.on('event', (originalEvent: any) => {
+          const event = this.eventService.processEvent(originalEvent);
 
-        if (!event) {
-          return;
-        }
+          if (!event) {
+            return;
+          }
 
-        observer.next(event);
-      });
+          observer.next(event);
+        });
 
-      sub.on('eose', () => {
-        observer.complete();
-      });
+        sub.on('eose', () => {
+          observer.complete();
+        });
 
-      return () => {
-        // console.log('downloadFromRelay:finished:unsub');
-        // When the observable is finished, this return function is called.
-        sub.unsub();
-      };
-    }).pipe(
+        return () => {
+          // console.log('downloadFromRelay:finished:unsub');
+          // When the observable is finished, this return function is called.
+          sub.unsub();
+        };
+      }
+    ).pipe(
       timeout(requestTimeout),
       catchError((error) => {
         console.warn('The observable was timed out.');
@@ -640,8 +754,12 @@ export class DataService {
       }
 
       try {
-        const jsonParsed = JSON.parse(prossedEvent.content) as NostrProfileDocument;
-        const profile = this.validator.sanitizeProfile(jsonParsed) as NostrProfileDocument;
+        const jsonParsed = JSON.parse(
+          prossedEvent.content
+        ) as NostrProfileDocument;
+        const profile = this.validator.sanitizeProfile(
+          jsonParsed
+        ) as NostrProfileDocument;
 
         // Keep a copy of the created_at value.
         profile.created_at = prossedEvent.created_at;
@@ -679,7 +797,10 @@ export class DataService {
         //   // profile.verified = false;
         // }
       } catch (err) {
-        console.warn('This profile event was not parsed due to errors:', prossedEvent);
+        console.warn(
+          'This profile event was not parsed due to errors:',
+          prossedEvent
+        );
       }
     });
 
@@ -713,10 +834,18 @@ export class DataService {
 
   /** Creates an event ready for modification, signing and publish. */
   createEvent(kind: Kind | number, content: any): UnsignedEvent {
-    return this.createEventWithPubkey(kind, content, this.appState.getPublicKey());
+    return this.createEventWithPubkey(
+      kind,
+      content,
+      this.appState.getPublicKey()
+    );
   }
 
-  createEventWithPubkey(kind: Kind | number, content: any, pubkey: string): UnsignedEvent {
+  createEventWithPubkey(
+    kind: Kind | number,
+    content: any,
+    pubkey: string
+  ): UnsignedEvent {
     let event: UnsignedEvent = {
       kind: kind,
       created_at: Math.floor(Date.now() / 1000),
@@ -737,7 +866,9 @@ export class DataService {
 
     // We force validation upon user so we make sure they don't create content that we won't be able to parse back later.
     // We must do this before we run nostr-tools validate and signature validation.
-    const verifiedEvent = this.eventService.processEvent(signedEvent as NostrEventDocument);
+    const verifiedEvent = this.eventService.processEvent(
+      signedEvent as NostrEventDocument
+    );
 
     if (!verifiedEvent) {
       throw new Error('The event is not valid. Cannot publish.');
@@ -752,7 +883,9 @@ export class DataService {
     let veryOk = await verifySignature(signedEvent as any); // Required .id and .sig, which we know has been added at this stage.
 
     if (!veryOk) {
-      throw new Error('The event signature not valid. Maybe you choose a different account than the one specified?');
+      throw new Error(
+        'The event signature not valid. Maybe you choose a different account than the one specified?'
+      );
     }
 
     return signedEvent;
@@ -820,7 +953,9 @@ export class DataService {
 
     // We force validation upon user so we make sure they don't create content that we won't be able to parse back later.
     // We must do this before we run nostr-tools validate and signature validation.
-    const event = this.eventService.processEvent(signedEvent as NostrEventDocument);
+    const event = this.eventService.processEvent(
+      signedEvent as NostrEventDocument
+    );
 
     let ok = validateEvent(signedEvent);
 
@@ -831,7 +966,9 @@ export class DataService {
     let veryOk = await verifySignature(signedEvent as any); // Required .id and .sig, which we know has been added at this stage.
 
     if (!veryOk) {
-      throw new Error('The event signature not valid. Maybe you choose a different account than the one specified?');
+      throw new Error(
+        'The event signature not valid. Maybe you choose a different account than the one specified?'
+      );
     }
 
     if (!event) {
@@ -846,16 +983,13 @@ export class DataService {
     for (let i = 0; i < this.relayService.relays.length; i++) {
       const relay = this.relayService.relays[i];
 
-      let pub = relay.publish(event);
-      pub.on('ok', () => {
+      try {
+        let pub = await relay.publish(event);
         console.log(`${relay.url} has accepted our event`);
-      });
-      // pub.on('seen', () => {
-      //   console.log(`we saw the event on ${relay.url}`);
-      // });
-      pub.on('failed', (reason: any) => {
-        console.log(`failed to publish to ${relay.url}: ${reason}`);
-      });
+      } catch (err) {
+        console.warn(`failed to publish to ${relay.url}`);
+        console.error(err);
+      }
     }
   }
 }
