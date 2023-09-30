@@ -8,7 +8,13 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
-@import "@fontsource/material-icons";
+// @import "@fontsource/material-icons";
+@import "@fontsource/material-icons-round";
+
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css"; // default "bold".
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -86,6 +92,10 @@ a {
   color: mat.get-color-from-palette($blockcore-light-primary);
 }
 
+:root {
+  --accent: #4c895b;
+}
+
 html,
 body {
   background-color: #212121;
@@ -102,6 +112,11 @@ body {
   overflow-x: hidden;
   overflow-y: overlay !important;
   // overflow: scroll !important;
+}
+
+.mat-icon {
+  font-family: "Material Icons Round", sans-serif;
+  font-size: 18px;
 }
 
 .rightToLeft > * {

@@ -7,7 +7,7 @@
 
 <div class="app-container" *ngIf="authenticated" [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }" [dir]="appState.documentDirection">
   <div id="title-bar" class="title-bar">
-    <img class="logo-icon-title-bar" height="24" width="24" src="assets/icons/icon-128x128.webp" />
+    <img class="logo-icon-title-bar" height="24" width="24" src="assets/icons/icon-128x128.png" />
     <app-media-player *ngIf="options.values.showMediaPlayer" [miniplayer]="true"></app-media-player>
   </div>
 
@@ -17,7 +17,7 @@
     </button>
     <span></span>
 
-    <img class="logo-icon" *ngIf="appState.showLogo && !appState.showSearch && (isHandset$ | async) === false" height="38" width="38" src="assets/icons/icon-128x128.webp" />
+    <img class="logo-icon" *ngIf="appState.showLogo && !appState.showSearch && (isHandset$ | async) === false" height="38" width="38" src="assets/icons/icon-128x128.png" />
 
     <button *ngIf="!appState.showSearch && appState.showBackButton" mat-icon-button (click)="goBack()">
       <mat-icon class="arrow-back">arrow_back</mat-icon>

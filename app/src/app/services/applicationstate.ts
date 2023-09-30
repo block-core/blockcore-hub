@@ -44,7 +44,7 @@ export class ApplicationState {
     this.location.back();
   }
 
-  title = 'Blockcore Notes';
+  title = 'Free City Hub';
 
   title$: Observable<string>;
 
@@ -52,7 +52,7 @@ export class ApplicationState {
 
   updateTitle(title: string) {
     this.title = title;
-    this.titleService.setTitle(title + ' - Blockcore Notes');
+    this.titleService.setTitle(title + ' - Free City Hub');
     this.titleChanged.next(this.title);
   }
 

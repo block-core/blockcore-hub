@@ -73,6 +73,13 @@ export class AppComponent {
     private eventService: EventService,
     private optionService: OptionsService
   ) {
+    // Minor hack to avoid the flickering of the icons.
+    document.fonts.ready.then((fontFaceSet) => {
+      setTimeout(() => {
+        document.getElementById('waitScreen')!.style.display = 'none';
+      }, 0);
+    });
+
     if (!this.visibilityHandler) {
       this.visibilityHandler = addEventListener('visibilitychange', (event) => {
         this.appState.visibility(document.visibilityState === 'visible');
