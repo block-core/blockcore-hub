@@ -564,8 +564,9 @@ export class ProfileService {
 
   emptyProfile(pubkey: string): NostrProfileDocument {
     return {
-      npub: this.utilities.getNostrIdentifier(pubkey),
-      name: this.utilities.getShortenedIdentifier(pubkey),
+      // npub: this.utilities.getNostrIdentifier(pubkey),
+      npub: '',
+      name: this.utilities.getShortenedDidIdentifier(pubkey),
       about: '',
       picture: '/assets/profile.png',
       nip05: '',

@@ -76,16 +76,18 @@ export class AuthenticationService {
   }
 
   async logout() {
+    localStorage.removeItem('blockcore:hub:pubkey');
     const response = await fetch(`${environment.apiUrl}/authenticate/logout`);
 
     // if (response.status >= 400) {
     //   throw new Error('Unable to receive authentication challenge.');
     // }
 
-    localStorage.removeItem('blockcore:hub:pubkey');
-
     const result = await response.json();
     console.log('LOGOUT RESULT:', result);
+
+    this.authInfo$.next(AuthenticationService.UNKNOWN_USER);
+
     return result;
   }
 
@@ -135,7 +137,8 @@ export class AuthenticationService {
     const user = new UserInfo();
     user.publicKeyHex = publicKey;
     // user.publicKey = this.utilities.getNostrIdentifier(publicKey);
-    user.short = publicKey.substring(0, 10) + '...'; // TODO: Figure out a good way to minimize the public key, "5...5"?
+    user.short = publicKey.substring(0, 12) + '...' + publicKey.slice(-5); // TODO: Figure out a good way to minimize the public key, "5...5"?
+    debugger;
     return user;
   }
 

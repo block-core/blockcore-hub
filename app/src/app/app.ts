@@ -1,4 +1,9 @@
-import { Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ApplicationState } from './services/applicationstate';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router, TitleStrategy } from '@angular/router';
@@ -7,7 +12,14 @@ import { AppUpdateService } from './services/app-update';
 import { CheckForUpdateService } from './services/check-for-update';
 import { MatDialog } from '@angular/material/dialog';
 import { NoteDialog } from './shared/create-note-dialog/create-note-dialog';
-import { Observable, map, shareReplay, startWith, debounceTime, tap } from 'rxjs';
+import {
+  Observable,
+  map,
+  shareReplay,
+  startWith,
+  debounceTime,
+  tap,
+} from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { JsonPipe, Location } from '@angular/common';
 import { RelayService } from './services/relay';
@@ -110,7 +122,6 @@ export class AppComponent {
     this.authService.authInfo$.subscribe(async (auth) => {
       this.state.pubkey = auth.publicKeyHex;
 
-
       this.authenticated = auth.authenticated();
 
       if (this.authenticated) {
@@ -167,10 +178,12 @@ export class AppComponent {
     }
   }
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 599px)').pipe(
-    map((result) => result.matches),
-    shareReplay()
-  );
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe('(max-width: 599px)')
+    .pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
 
   goBack() {
     if (this.appState.backUrl) {
@@ -205,7 +218,7 @@ export class AppComponent {
     console.log('INITIALIZE IS RUNNING....');
 
     // this.translate.addLangs(['ar', 'el', 'en', 'fa', 'fr', 'he', 'no', 'ru']);
-    // availible language translations 
+    // availible language translations
     this.translate.addLangs(['en', 'no', 'ru']);
     this.translate.setDefaultLang('en');
 
@@ -246,12 +259,16 @@ export class AppComponent {
     await this.labelService.initialize();
 
     this.appState.connected$.subscribe(() => {
-      console.log('Connected to relay.. this can sometimes be triggered multiple times.');
+      console.log(
+        'Connected to relay.. this can sometimes be triggered multiple times.'
+      );
 
       if (this.profileService.newProfileEvent) {
         // Wait for more relays to be connected.
         setTimeout(async () => {
-          const profile = JSON.parse(this.profileService.newProfileEvent!.content);
+          const profile = JSON.parse(
+            this.profileService.newProfileEvent!.content
+          );
           profile.id = this.profileService.newProfileEvent?.id;
           profile.pubkey = this.profileService.newProfileEvent?.pubkey;
 
@@ -259,7 +276,9 @@ export class AppComponent {
           // as follow (on self).
           await this.profileService.updateProfile(profile.pubkey, profile);
 
-          await this.dataService.publishEvent(this.profileService.newProfileEvent!);
+          await this.dataService.publishEvent(
+            this.profileService.newProfileEvent!
+          );
 
           this.profileService.newProfileEvent = undefined;
         }, 1000);
@@ -284,15 +303,34 @@ export class AppComponent {
 
   discoveredProfileDate = 0;
   sharedWorker?: SharedWorker;
+  loading = true;
 
   async ngOnInit() {
     this.theme.init();
 
-    this.sharedWorker = new SharedWorker('/assets/shared.worker.js');
-    this.sharedWorker.port.onmessage = (ev: any) => {
-      console.log(ev.data);
-    };
-    this.sharedWorker.port.start();
+    // Verify if the user is already authenticated.
+    if (!this.appState.authenticated) {
+      const authenticated = await this.authService.authenticated();
+
+      if (authenticated && !authenticated.error) {
+        this.appState.authenticated = true;
+        this.appState.identity = authenticated.user.did;
+        this.appState.admin = authenticated.user.admin;
+        this.appState.approved = authenticated.user.approved;
+      } else {
+        this.appState.reset();
+      }
+    }
+
+    this.loading = false;
+
+    // this.sharedWorker = new SharedWorker('/assets/shared.worker.js');
+
+    // this.sharedWorker.port.onmessage = (ev: any) => {
+    //   console.log(ev.data);
+    // };
+
+    // this.sharedWorker.port.start();
 
     this.searchControl.valueChanges.subscribe(async (value) => {
       this.appState.searchText = value;

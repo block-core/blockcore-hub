@@ -11,15 +11,29 @@ import { UIService } from '../services/ui';
   templateUrl: './logout.html',
 })
 export class LogoutComponent {
-  constructor(private relayService: RelayService, private ui: UIService, private appState: ApplicationState, private db: StorageService, private authService: AuthenticationService, private router: Router) {}
+  constructor(
+    private relayService: RelayService,
+    private ui: UIService,
+    private appState: ApplicationState,
+    private db: StorageService,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // Make sure we terminate all the relays (and Web Workers).
     this.relayService.terminateAll();
 
     this.ui.clearAll();
 
     this.db.close();
-    this.authService.logout();
+    
+    await this.authService.logout();
+
+    this.appState.authenticated = false;
+    this.appState.admin = false;
+    this.appState.identity = null;
+
+    this.router.navigateByUrl('/connect');
   }
 }

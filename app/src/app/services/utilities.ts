@@ -6,7 +6,13 @@ import { bech32 } from '@scure/base';
 import { Subscription } from 'rxjs';
 import { copyToClipboard } from '../shared/utilities';
 import { DataValidation } from './data-validation';
-import { NostrProfileDocument, NostrProfile, NostrEvent, NostrEventDocument, NostrBadgeDefinition } from './interfaces';
+import {
+  NostrProfileDocument,
+  NostrProfile,
+  NostrEvent,
+  NostrEventDocument,
+  NostrBadgeDefinition,
+} from './interfaces';
 
 export function sleep(durationInMillisecond: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, durationInMillisecond));
@@ -20,7 +26,11 @@ export function now() {
   providedIn: 'root',
 })
 export class Utilities {
-  constructor(private snackBar: MatSnackBar, private validator: DataValidation, private sanitizer: DomSanitizer) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private validator: DataValidation,
+    private sanitizer: DomSanitizer
+  ) {}
 
   unsubscribe(subscriptions: Subscription[]) {
     if (!subscriptions) {
@@ -101,7 +111,9 @@ export class Utilities {
 
     try {
       const jsonParsed = JSON.parse(event.content) as NostrProfileDocument;
-      const profile = this.validator.sanitizeProfile(jsonParsed) as NostrProfileDocument;
+      const profile = this.validator.sanitizeProfile(
+        jsonParsed
+      ) as NostrProfileDocument;
       profile.pubkey = event.pubkey;
       profile.created_at = event.created_at;
       return profile;
@@ -162,8 +174,15 @@ export class Utilities {
   }
 
   getShortenedIdentifier(pubkey: string) {
-    const fullId = this.getNostrIdentifier(pubkey);
-    return `${fullId.substring(5, 13)}:${fullId.substring(fullId.length - 8)}`;
+    return `${pubkey.substring(0, 12)}...${pubkey.slice(-5)}`;
+    // const fullId = this.getNostrIdentifier(pubkey);
+    // return `${fullId.substring(5, 13)}:${fullId.substring(fullId.length - 8)}`;
+  }
+
+  getShortenedDidIdentifier(pubkey: string) {
+    // const fullId = pubkey;
+    //return `${fullId.substring(0, 13)}:${fullId.substring(fullId.length - 8)}`;
+    return `${pubkey.substring(0, 12)}...${pubkey.slice(-5)}`;
   }
 
   private convertToBech32(key: Uint8Array, prefix: string) {
@@ -259,7 +278,13 @@ export class Utilities {
     let urlLower = url.toLowerCase();
     urlLower = urlLower.split('?')[0]; // Remove the query part.
 
-    if (urlLower.endsWith('jpg') || urlLower.endsWith('jpeg') || urlLower.endsWith('png') || urlLower.endsWith('webp') || urlLower.endsWith('gif')) {
+    if (
+      urlLower.endsWith('jpg') ||
+      urlLower.endsWith('jpeg') ||
+      urlLower.endsWith('png') ||
+      urlLower.endsWith('webp') ||
+      urlLower.endsWith('gif')
+    ) {
       return url;
     }
 

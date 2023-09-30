@@ -66,7 +66,7 @@ export class RelayService {
     // Whenever the visibility becomes visible, run connect to ensure we're connected to the relays.
     this.appState.visibility$.subscribe((visible) => {
       if (visible) {
-        this.createRelayWorkers();
+        // this.createRelayWorkers();
       }
     });
 
@@ -933,6 +933,6 @@ export class RelayService {
       await this.appendRelays(relays);
     }
 
-    this.createRelayWorkers();
+    // this.createRelayWorkers();
   }
 }

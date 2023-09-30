@@ -112,8 +112,6 @@ export class ConnectComponent {
         // const publicKey = await gt.nostr.getPublicKey();
         const userInfo = this.authService.createDidUser(verify.user.did);
 
-        debugger;
-
         localStorage.setItem('blockcore:hub:pubkey', verify.user.did);
 
         this.authService.authInfo$.next(userInfo);
