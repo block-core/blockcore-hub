@@ -128,27 +128,30 @@ export class ProfileComponent {
   }
 
   async updateMetadata() {
-    if (this.profile?.picture != this.originalProfile?.picture) {
-      console.log('Upload profile image...');
 
-      const uploadResult = await this.upload.upload(this.selectedProfileFile);
-      console.log(uploadResult);
+    
 
-      if (uploadResult.url) {
-        this.profile!.picture = uploadResult.url;
-      }
-    }
+    // if (this.profile?.picture != this.originalProfile?.picture) {
+    //   console.log('Upload profile image...');
 
-    if (this.profile?.banner != this.originalProfile?.banner) {
-      console.log('Upload banner image...');
+    //   const uploadResult = await this.upload.upload(this.selectedProfileFile);
+    //   console.log(uploadResult);
 
-      const uploadResult = await this.upload.upload(this.selectedBannerFile);
-      console.log(uploadResult);
+    //   if (uploadResult.url) {
+    //     this.profile!.picture = uploadResult.url;
+    //   }
+    // }
 
-      if (uploadResult.url) {
-        this.profile!.banner = uploadResult.url;
-      }
-    }
+    // if (this.profile?.banner != this.originalProfile?.banner) {
+    //   console.log('Upload banner image...');
+
+    //   const uploadResult = await this.upload.upload(this.selectedBannerFile);
+    //   console.log(uploadResult);
+
+    //   if (uploadResult.url) {
+    //     this.profile!.banner = uploadResult.url;
+    //   }
+    // }
 
     console.log(this.profile);
 

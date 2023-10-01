@@ -51,6 +51,7 @@ import { QueueService } from './queue.service';
 import { UIService } from './ui';
 import { CircleService } from './circle';
 import { NostrService } from './nostr';
+import { ApiService } from '../legacy/services/api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +77,8 @@ export class DataService {
     private utilities: Utilities,
     private validator: DataValidation,
     private eventService: EventService,
-    private relayService: RelayService
+    private relayService: RelayService,
+    private apiService: ApiService
   ) {
     // We use a global observable for the connected state to avoid having many subscriptions and we'll skip processing until this is true.
     this.appState.connected$.subscribe((connected) => {
@@ -673,18 +675,19 @@ export class DataService {
   async updateMetadata(profile: NostrProfileDocument) {
     const profileContent = this.utilities.reduceProfile(profile!);
 
-    let event = this.createEvent(Kind.Metadata, JSON.stringify(profileContent));
+    await this.apiService.updateUser(profile.pubkey, profileContent);
 
-    const signedEvent = await this.signEvent(event);
+    // let event = this.createEvent(Kind.Metadata, JSON.stringify(profileContent));
+    // const signedEvent = await this.signEvent(event);
 
     // await this.feedService.publish(event, false); // Don't persist this locally.
-    profile!.created_at = event.created_at;
+    // profile!.created_at = event.created_at;
 
     // Use the whole document for this update as we don't want to loose additional metadata we have, such
     // as follow (on self).
-    await this.profileService.updateProfile(profile!.pubkey, profile!);
+    // await this.profileService.updateProfile(profile!.pubkey, profile!);
 
-    await this.publishEvent(signedEvent);
+    // await this.publishEvent(signedEvent);
   }
 
   downloadFromRelay(

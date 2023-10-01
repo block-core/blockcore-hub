@@ -80,30 +80,57 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  const user = verifyAdmin(req, res);
 
   try {
     let collection = await db.collection(collectionName);
 
-    let query = { _id: MUUID.from(req.params.id) };
+    let query = { did: req.params.id };
+    //let query = { _id: MUUID.from(req.params.id) };
     let result = await collection.findOne(query);
 
     console.log("Searching for: ", req.params.id);
 
-    if (!result) res.status(404).send("Not found");
+    // if (!result) res.status(404).send("Not found");
 
     let updateDocument = req.body;
+
+    // Ensure we read the DID from the cookie.
+    updateDocument.did = user.did;
+
+    // Users are only allowed to edit themselves.
+    // Ensure that users can't provide different ID in URL and within payload:
+    if (req.params.id != user.did) {
+      res
+        .status(401)
+        .send({
+          status: "error",
+          error: "Unauthorized",
+        })
+        .end();
+      return;
+    }
+
+    console.log("REQUEST BODY:");
+    console.log(updateDocument);
 
     // Ensure we don't have an id field. If we do, remove it.
     delete updateDocument.id;
 
-    // Ensure that users can't provide different ID in URL and within payload:
-    updateDocument._id = MUUID.from(req.params.id);
+    let updateResult = null;
 
-    updateDocument.date = new Date();
+    if (!result) {
+      updateDocument._id = MUUID.v4();
+      updateDocument.date = new Date();
 
-    const updateResult = await collection.updateOne(query, { $set: updateDocument });
-    console.log("Updated documents =>", updateResult);
+      updateResult = await collection.insertOne(updateDocument);
+    } else {
+      updateDocument._id = result._id; // MUUID.from(req.params.id);
+      updateDocument.date = new Date();
+
+      updateResult = await collection.updateOne(query, { $set: updateDocument });
+      console.log("Updated documents =>", updateResult);
+    }
 
     res.send({
       result: updateResult,

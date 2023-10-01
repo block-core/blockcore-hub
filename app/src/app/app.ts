@@ -319,6 +319,7 @@ export class AppComponent {
         this.appState.approved = authenticated.user.approved;
       } else {
         this.appState.reset();
+        this.router.navigateByUrl('/connect');
       }
     }
 

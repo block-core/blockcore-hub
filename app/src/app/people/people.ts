@@ -5,19 +5,33 @@ import { Utilities } from '../services/utilities';
 import { nip05, relayInit } from 'nostr-tools';
 import * as moment from 'moment';
 import { DataValidation } from '../services/data-validation';
-import { Circle, NostrEvent, NostrProfile, NostrEventDocument, NostrProfileDocument, ProfileStatus } from '../services/interfaces';
+import {
+  Circle,
+  NostrEvent,
+  NostrProfile,
+  NostrEventDocument,
+  NostrProfileDocument,
+  ProfileStatus,
+} from '../services/interfaces';
 import { ProfileService } from '../services/profile';
 import { map, Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CircleDialog } from '../shared/create-circle-dialog/create-circle-dialog';
-import { FollowDialog, FollowDialogData } from '../shared/create-follow-dialog/create-follow-dialog';
+import {
+  FollowDialog,
+  FollowDialogData,
+} from '../shared/create-follow-dialog/create-follow-dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NavigationService } from '../services/navigation';
-import { ImportFollowDialog, ImportFollowDialogData } from './import-follow-dialog/import-follow-dialog';
+import {
+  ImportFollowDialog,
+  ImportFollowDialogData,
+} from './import-follow-dialog/import-follow-dialog';
 import { DataService } from '../services/data';
 import { CircleService } from '../services/circle';
 import { OptionsService } from '../services/options';
 import { MetricService } from '../services/metric-service';
+import { ApiService } from '../legacy/services/api.service';
 
 @Component({
   selector: 'app-people',
@@ -75,7 +89,8 @@ export class PeopleComponent {
     private router: Router,
     private snackBar: MatSnackBar,
     public optionsService: OptionsService,
-    private metricService: MetricService
+    private metricService: MetricService,
+    private apiService: ApiService
   ) {}
 
   // async clearBlocked() {
@@ -114,11 +129,17 @@ export class PeopleComponent {
       });
     } else if (sorting === 'interesting-asc') {
       this.sortedItems = this.items.sort((a, b) => {
-        return this.metricService.get(a.pubkey) < this.metricService.get(b.pubkey) ? 1 : -1;
+        return this.metricService.get(a.pubkey) <
+          this.metricService.get(b.pubkey)
+          ? 1
+          : -1;
       });
     } else if (sorting === 'interesting-desc') {
       this.sortedItems = this.items.sort((a, b) => {
-        return this.metricService.get(a.pubkey) > this.metricService.get(b.pubkey) ? 1 : -1;
+        return this.metricService.get(a.pubkey) >
+          this.metricService.get(b.pubkey)
+          ? 1
+          : -1;
       });
     }
   }
@@ -147,16 +168,24 @@ export class PeopleComponent {
     this.utilities.unsubscribe(this.subscriptions);
   }
 
+  users: any[] = [];
+
   async load() {
     this.loading = true;
 
     if (this.optionsService.values.peopleDisplayType == 1) {
       this.items = this.profileService.following;
     } else {
-      this.items = await this.profileService.getProfilesByStatus(this.optionsService.values.peopleDisplayType);
+      this.items = await this.profileService.getProfilesByStatus(
+        this.optionsService.values.peopleDisplayType
+      );
     }
 
     this.updateSorting();
+
+    this.users = await this.apiService.users();
+    console.log('USERS:', this.users);
+
     this.loading = false;
   }
 
@@ -237,10 +266,14 @@ export class PeopleComponent {
 
   async addFollow(pubkey: string) {
     if (pubkey.startsWith('nsec')) {
-      let sb = this.snackBar.open('This is a private key, not a public key.', 'Hide', {
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      let sb = this.snackBar.open(
+        'This is a private key, not a public key.',
+        'Hide',
+        {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        }
+      );
       return;
     }
 
@@ -263,7 +296,10 @@ export class PeopleComponent {
 
       let pubkey = data.pubkey;
 
-      pubkey = pubkey.replaceAll('[', '').replaceAll(']', '').replaceAll('"', '');
+      pubkey = pubkey
+        .replaceAll('[', '')
+        .replaceAll(']', '')
+        .replaceAll('"', '');
       const pubkeys = pubkey.split(',');
 
       for (let i = 0; i < pubkeys.length; i++) {
@@ -306,11 +342,15 @@ export class PeopleComponent {
 
     await this.dataService.publishContacts(publicPublicKeys);
 
-    this.snackBar.open(`A total of ${publicPublicKeys.length} was added to your public following list`, 'Hide', {
-      duration: 2000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
+    this.snackBar.open(
+      `A total of ${publicPublicKeys.length} was added to your public following list`,
+      'Hide',
+      {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      }
+    );
   }
 
   async downloadFollowing() {
@@ -331,93 +371,97 @@ export class PeopleComponent {
       panelClass: 'full-width-dialog',
     });
 
-    dialogRef.afterClosed().subscribe(async (result: ImportFollowDialogData) => {
-      if (!result) {
-        return;
-      }
-
-      this.snackBar.open('Importing followers process has started', 'Hide', {
-        duration: 2000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
-
-      if (result.import) {
-        const profile = (await this.profileService.getProfile(this.appState.getPublicKey())) as NostrProfileDocument;
-
-        if (!profile || !profile.following) {
+    dialogRef
+      .afterClosed()
+      .subscribe(async (result: ImportFollowDialogData) => {
+        if (!result) {
           return;
         }
 
-        for (let index = 0; index < profile.following.length; index++) {
-          const followKey = profile.following[index];
-          await this.profileService.follow(followKey);
+        this.snackBar.open('Importing followers process has started', 'Hide', {
+          duration: 2000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+
+        if (result.import) {
+          const profile = (await this.profileService.getProfile(
+            this.appState.getPublicKey()
+          )) as NostrProfileDocument;
+
+          if (!profile || !profile.following) {
+            return;
+          }
+
+          for (let index = 0; index < profile.following.length; index++) {
+            const followKey = profile.following[index];
+            await this.profileService.follow(followKey);
+          }
+        } else {
+          for (let index = 0; index < result.pubkeys.length; index++) {
+            const followKey = result.pubkeys[index];
+            await this.profileService.follow(followKey);
+          }
         }
-      } else {
-        for (let index = 0; index < result.pubkeys.length; index++) {
-          const followKey = result.pubkeys[index];
-          await this.profileService.follow(followKey);
-        }
-      }
 
-      // let pubkey = this.utilities.ensureHexIdentifier(result.pubkey);
+        // let pubkey = this.utilities.ensureHexIdentifier(result.pubkey);
 
-      // Queue download for import.
-      // this.dataService.enque({ type: 'Contacts', identifier: pubkey });
+        // Queue download for import.
+        // this.dataService.enque({ type: 'Contacts', identifier: pubkey });
 
-      // this.dataService.downloadNewestContactsEvents([pubkey]).subscribe((event) => {
-      //   debugger;
-      //   const nostrEvent = event as NostrEventDocument;
-      //   const publicKeys = nostrEvent.tags.map((t) => t[1]);
+        // this.dataService.downloadNewestContactsEvents([pubkey]).subscribe((event) => {
+        //   debugger;
+        //   const nostrEvent = event as NostrEventDocument;
+        //   const publicKeys = nostrEvent.tags.map((t) => t[1]);
 
-      //   for (let i = 0; i < publicKeys.length; i++) {
-      //     const publicKey = publicKeys[i];
+        //   for (let i = 0; i < publicKeys.length; i++) {
+        //     const publicKey = publicKeys[i];
 
-      //     this.profileService.follow(publicKey);
+        //     this.profileService.follow(publicKey);
 
-      //     // const profile = await this.profile.getProfile(publicKey);
+        //     // const profile = await this.profile.getProfile(publicKey);
 
-      //     // // If the user already exists in our database of profiles, make sure we keep their previous circle (if unfollowed before).
-      //     // if (profile) {
-      //     //   await this.profile.follow(publicKeys[i], profile.circle);
-      //     // } else {
-      //     //   await this.profile.follow(publicKeys[i]);
-      //     // }
-      //   }
+        //     // // If the user already exists in our database of profiles, make sure we keep their previous circle (if unfollowed before).
+        //     // if (profile) {
+        //     //   await this.profile.follow(publicKeys[i], profile.circle);
+        //     // } else {
+        //     //   await this.profile.follow(publicKeys[i]);
+        //     // }
+        //   }
 
-      //   // await this.load();
+        //   // await this.load();
 
-      //   // this.ngZone.run(() => {
-      //   //   this.cd.detectChanges();
-      //   // });
-      // });
+        //   // this.ngZone.run(() => {
+        //   //   this.cd.detectChanges();
+        //   // });
+        // });
 
-      // TODO: Add ability to slowly query one after one relay, we don't want to receive multiple
-      // follow lists and having to process everything multiple times. Just query one by one until
-      // we find the list. Until then, we simply grab the first relay only.
-      // this.subscriptions.push(
-      //   this.feedService.downloadContacts(pubkey).subscribe(async (contacts) => {
-      //     const publicKeys = contacts.tags.map((t) => t[1]);
+        // TODO: Add ability to slowly query one after one relay, we don't want to receive multiple
+        // follow lists and having to process everything multiple times. Just query one by one until
+        // we find the list. Until then, we simply grab the first relay only.
+        // this.subscriptions.push(
+        //   this.feedService.downloadContacts(pubkey).subscribe(async (contacts) => {
+        //     const publicKeys = contacts.tags.map((t) => t[1]);
 
-      //     for (let i = 0; i < publicKeys.length; i++) {
-      //       const publicKey = publicKeys[i];
-      //       const profile = await this.profile.getProfile(publicKey);
+        //     for (let i = 0; i < publicKeys.length; i++) {
+        //       const publicKey = publicKeys[i];
+        //       const profile = await this.profile.getProfile(publicKey);
 
-      //       // If the user already exists in our database of profiles, make sure we keep their previous circle (if unfollowed before).
-      //       if (profile) {
-      //         await this.profile.follow(publicKeys[i], profile.circle);
-      //       } else {
-      //         await this.profile.follow(publicKeys[i]);
-      //       }
-      //     }
+        //       // If the user already exists in our database of profiles, make sure we keep their previous circle (if unfollowed before).
+        //       if (profile) {
+        //         await this.profile.follow(publicKeys[i], profile.circle);
+        //       } else {
+        //         await this.profile.follow(publicKeys[i]);
+        //       }
+        //     }
 
-      //     await this.load();
+        //     await this.load();
 
-      //     this.ngZone.run(() => {
-      //       this.cd.detectChanges();
-      //     });
-      //   })
-      // );
-    });
+        //     this.ngZone.run(() => {
+        //       this.cd.detectChanges();
+        //     });
+        //   })
+        // );
+      });
   }
 }

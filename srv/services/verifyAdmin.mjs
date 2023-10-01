@@ -41,6 +41,8 @@ export function verifyAdmin(req, res) {
               error: "Unauthorized",
             })
             .end();
+        } else {
+          return decoded;
         }
       } catch (err) {
         console.log(err);

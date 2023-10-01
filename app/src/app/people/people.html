@@ -23,38 +23,83 @@
 
         <mat-form-field class="options-field">
           <mat-label>{{ 'People.Show' | translate }}</mat-label>
-          <mat-select (selectionChange)="showChanged()" [(value)]="optionsService.values.peopleDisplayType">
-            <mat-option [value]="1">{{ 'People.Following' | translate }}</mat-option>
-            <mat-option [value]="2">{{ 'People.Muted' | translate }}</mat-option>
-            <mat-option [value]="3">{{ 'People.Blocked' | translate }}</mat-option>
-            <mat-option [value]="0">{{ 'People.Cached' | translate }}</mat-option>
+          <mat-select
+            (selectionChange)="showChanged()"
+            [(value)]="optionsService.values.peopleDisplayType"
+          >
+            <mat-option [value]="1"
+              >{{ 'People.Following' | translate }}</mat-option
+            >
+            <mat-option [value]="2"
+              >{{ 'People.Muted' | translate }}</mat-option
+            >
+            <mat-option [value]="3"
+              >{{ 'People.Blocked' | translate }}</mat-option
+            >
+            <mat-option [value]="0"
+              >{{ 'People.Cached' | translate }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
 
         <mat-form-field class="options-field">
           <mat-label>{{ 'People.Sorting' | translate }}</mat-label>
-          <mat-select (selectionChange)="updateSorting()" [(value)]="optionsService.values.peopleDisplaySort">
-            <mat-option value="name-asc">{{ 'People.NameAZ' | translate }}</mat-option>
-            <mat-option value="name-desc">{{ 'People.NameZA' | translate }}</mat-option>
-            <mat-option value="followed-asc">{{ 'People.FollowedNewest' | translate }}</mat-option>
-            <mat-option value="followed-desc">{{ 'People.FollowedOldest' | translate }}</mat-option>
-            <mat-option value="created-asc">{{ 'People.UpdatedNewest' | translate }}</mat-option>
-            <mat-option value="created-desc">{{ 'People.UpdatedOldest' | translate }}</mat-option>
-            <mat-option value="interesting-asc">{{ 'People.MostInteresting' | translate }}</mat-option>
-            <mat-option value="interesting-desc">{{ 'People.LessInteresting' | translate }}</mat-option>
+          <mat-select
+            (selectionChange)="updateSorting()"
+            [(value)]="optionsService.values.peopleDisplaySort"
+          >
+            <mat-option value="name-asc"
+              >{{ 'People.NameAZ' | translate }}</mat-option
+            >
+            <mat-option value="name-desc"
+              >{{ 'People.NameZA' | translate }}</mat-option
+            >
+            <mat-option value="followed-asc"
+              >{{ 'People.FollowedNewest' | translate }}</mat-option
+            >
+            <mat-option value="followed-desc"
+              >{{ 'People.FollowedOldest' | translate }}</mat-option
+            >
+            <mat-option value="created-asc"
+              >{{ 'People.UpdatedNewest' | translate }}</mat-option
+            >
+            <mat-option value="created-desc"
+              >{{ 'People.UpdatedOldest' | translate }}</mat-option
+            >
+            <mat-option value="interesting-asc"
+              >{{ 'People.MostInteresting' | translate }}</mat-option
+            >
+            <mat-option value="interesting-desc"
+              >{{ 'People.LessInteresting' | translate }}</mat-option
+            >
           </mat-select>
         </mat-form-field>
 
         <mat-form-field class="options-field">
           <mat-label>{{ 'People.View' | translate }}</mat-label>
-          <mat-select (selectionChange)="showChanged()" [(value)]="optionsService.values.peopleDisplayView">
-            <mat-option [value]="6">{{ 'People.LargeIcons' | translate }}</mat-option>
-            <mat-option [value]="5">{{ 'People.MediumIcons' | translate }}</mat-option>
-            <mat-option [value]="4">{{ 'People.SmallIcons' | translate }} </mat-option>
+          <mat-select
+            (selectionChange)="showChanged()"
+            [(value)]="optionsService.values.peopleDisplayView"
+          >
+            <mat-option [value]="6"
+              >{{ 'People.LargeIcons' | translate }}</mat-option
+            >
+            <mat-option [value]="5"
+              >{{ 'People.MediumIcons' | translate }}</mat-option
+            >
+            <mat-option [value]="4"
+              >{{ 'People.SmallIcons' | translate }}
+            </mat-option>
             <!-- <mat-option [value]="3">List</mat-option> -->
-            <mat-option [value]="2">{{ 'People.Details' | translate }} </mat-option>
-            <mat-option [value]="0">{{ 'People.Tiles' | translate }}</mat-option>
-            <mat-option [value]="1">{{ 'People.Content' | translate }} </mat-option>
+            <mat-option [value]="2"
+              >{{ 'People.Details' | translate }}
+            </mat-option>
+            <mat-option [value]="0"
+              >{{ 'People.Tiles' | translate }}</mat-option
+            >
+            <mat-option [value]="1"
+              >{{ 'People.Content' | translate }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
 
@@ -63,23 +108,54 @@
 
         <p class="people-actions">
           <!-- <button mat-stroked-button (click)="importFollowList()">Import Following List</button> -->
-          <button mat-stroked-button (click)="dataService.publishContactsAndRelays()">{{ 'People.PublishFollowList' | translate }} </button>
-          <button mat-stroked-button (click)="downloadFollowing()">{{ 'People.SavePublicFollowing' | translate }} </button>
+          <button
+            mat-stroked-button
+            (click)="dataService.publishContactsAndRelays()"
+          >
+            {{ 'People.PublishFollowList' | translate }}
+          </button>
+          <button mat-stroked-button (click)="downloadFollowing()">
+            {{ 'People.SavePublicFollowing' | translate }}
+          </button>
           <!-- <button mat-stroked-button (click)="dataService.save()">Save People List (backup)</button> -->
         </p>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
 
-  <div class="people-list" [ngClass]="['people-list-' + optionsService.values.peopleDisplayView]">
+  <div *ngFor="let user of users">
+    DID: {{ user.did }}<br />
+    Display Name: {{ user.display_name }}<br />
+    Name: {{ user.name }}<br />
+    Updated: {{ user.date }}<br />
+  </div>
+
+  <div
+    class="people-list"
+    [ngClass]="['people-list-' + optionsService.values.peopleDisplayView]"
+  >
     <ng-template [ngIf]="!loading">
-      <ng-template [ngIf]="optionsService.values.peopleDisplayView == 0 || optionsService.values.peopleDisplayView == null">
-        <mat-card class="people-card people clickable" (click)="navigation.openProfile($event, profile)" *ngFor="let profile of sortedItems; trackBy: trackByFn">
+      <ng-template
+        [ngIf]="optionsService.values.peopleDisplayView == 0 || optionsService.values.peopleDisplayView == null"
+      >
+        <mat-card
+          class="people-card people clickable"
+          (click)="navigation.openProfile($event, profile)"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+        >
           <!-- ; trackBy: trackByFn track by won't update when changing circle. -->
           <div class="events-header">
             <!-- <div [style.background-image]="utilities.getBannerBackgroundStyle(profile.banner)" class="profile-banner"></div> -->
             <app-event-header [profile]="profile">
-              <small> <span class="clickable" *ngIf="profile.created">{{ 'People.Followed' | translate }} {{ profile.created | ago }}</span> <app-directory-icon [pubkey]="profile.pubkey"></app-directory-icon> </small>
+              <small>
+                <span class="clickable" *ngIf="profile.created"
+                  >{{ 'People.Followed' | translate }} {{ profile.created | ago
+                  }}</span
+                >
+                <app-directory-icon
+                  [pubkey]="profile.pubkey"
+                ></app-directory-icon>
+              </small>
             </app-event-header>
             <app-profile-actions [profile]="profile"></app-profile-actions>
           </div>
@@ -88,29 +164,72 @@
       </ng-template>
 
       <ng-template [ngIf]="optionsService.values.peopleDisplayView == 1">
-        <app-event-header [listType]="'content'" [iconSize]="'small'" [displayName]="true" [displayContent]="true" *ngFor="let profile of sortedItems; trackBy: trackByFn" [profile]="profile"></app-event-header>
+        <app-event-header
+          [listType]="'content'"
+          [iconSize]="'small'"
+          [displayName]="true"
+          [displayContent]="true"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+          [profile]="profile"
+        ></app-event-header>
       </ng-template>
 
       <ng-template [ngIf]="optionsService.values.peopleDisplayView == 2">
-        <app-event-header [listType]="'details'" [iconSize]="'small'" [displayName]="true" [displayContent]="true" *ngFor="let profile of sortedItems; trackBy: trackByFn" [profile]="profile"></app-event-header>
+        <app-event-header
+          [listType]="'details'"
+          [iconSize]="'small'"
+          [displayName]="true"
+          [displayContent]="true"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+          [profile]="profile"
+        ></app-event-header>
       </ng-template>
 
       <ng-template [ngIf]="optionsService.values.peopleDisplayView == 3">
-        <app-event-header [iconSize]="'small'" [displayName]="false" [displayContent]="false" *ngFor="let profile of sortedItems; trackBy: trackByFn" [profile]="profile"></app-event-header>
+        <app-event-header
+          [iconSize]="'small'"
+          [displayName]="false"
+          [displayContent]="false"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+          [profile]="profile"
+        ></app-event-header>
       </ng-template>
 
       <ng-template [ngIf]="optionsService.values.peopleDisplayView == 4">
-        <app-event-header [listType]="'icon'" [iconSize]="'small'" [displayName]="false" [displayContent]="false" *ngFor="let profile of sortedItems; trackBy: trackByFn" [profile]="profile"></app-event-header>
+        <app-event-header
+          [listType]="'icon'"
+          [iconSize]="'small'"
+          [displayName]="false"
+          [displayContent]="false"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+          [profile]="profile"
+        ></app-event-header>
       </ng-template>
       <ng-template [ngIf]="optionsService.values.peopleDisplayView == 5">
-        <app-event-header [listType]="'icon'" [iconSize]="'medium'" [displayName]="false" [displayContent]="false" *ngFor="let profile of sortedItems; trackBy: trackByFn" [profile]="profile"></app-event-header>
+        <app-event-header
+          [listType]="'icon'"
+          [iconSize]="'medium'"
+          [displayName]="false"
+          [displayContent]="false"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+          [profile]="profile"
+        ></app-event-header>
       </ng-template>
       <ng-template [ngIf]="optionsService.values.peopleDisplayView == 6">
-        <app-event-header [listType]="'icon'" [iconSize]="'large'" [displayName]="false" [displayContent]="false" *ngFor="let profile of sortedItems; trackBy: trackByFn" [profile]="profile"></app-event-header>
+        <app-event-header
+          [listType]="'icon'"
+          [iconSize]="'large'"
+          [displayName]="false"
+          [displayContent]="false"
+          *ngFor="let profile of sortedItems; trackBy: trackByFn"
+          [profile]="profile"
+        ></app-event-header>
       </ng-template>
     </ng-template>
 
-    <ng-template [ngIf]="loading"><mat-spinner class="loading"></mat-spinner></ng-template>
+    <ng-template [ngIf]="loading"
+      ><mat-spinner class="loading"></mat-spinner
+    ></ng-template>
   </div>
 
   <p class="centered">Count: {{sortedItems.length}}</p>
