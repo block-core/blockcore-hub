@@ -12,9 +12,18 @@ const mUUID = MUUID.mode("relaxed"); // use relaxed mode
 const ADMINS = process.env["ADMIN"]?.split(",").filter((i) => i.trim());
 const PRODUCTION = process.env["NODE_ENV"] === "production";
 const KEY = process.env["JWT_KEY"];
+const APIKEY = process.env["API_KEY"];
 const router = express.Router();
 
 export function verifyAdmin(req, res) {
+  if (APIKEY && req.query.apikey) {
+    if (APIKEY === req.query.apikey) {
+      return {
+        admin: true,
+      };
+    }
+  }
+
   try {
     const { cookies } = req;
     const token = cookies.token;

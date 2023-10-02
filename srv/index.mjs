@@ -9,6 +9,8 @@ import category from "./routes/category.mjs";
 import authenticate from "./routes/authenticate.mjs";
 import user from "./routes/user.mjs";
 import profile from "./routes/profile.mjs";
+import permission from "./routes/permission.mjs";
+import project from "./routes/project.mjs";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookie from 'cookie-parser';
@@ -39,6 +41,8 @@ app.use(
 app.disable('x-powered-by');
 
 app.use("/api/authenticate", authenticate);
+app.use("/api/permission", permission);
+app.use("/api/project", project);
 app.use("/api/posts", posts);
 app.use("/api/collection", collection);
 app.use("/api/category", category);

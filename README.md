@@ -25,3 +25,16 @@ PORT=5050
 ## Authentication on `localhost`
 
 If you want to use the authentication mechanism with cookies on localhost, you need to run production build of the UI and access the web app through the singular port that hosts both UI and API on same ports (5050).
+
+
+## Access Control
+
+The server admins are controlled manually with DIDs specified in the environment (.env) variables. These are super-admins that can add communities 
+and assign individual rights within different communities (projects).
+
+There are three levels of access:
+
+- Super Admin
+- Admin
+- Member
+
