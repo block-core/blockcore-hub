@@ -47,7 +47,10 @@ router.get("/:id", async (req, res) => {
 
 // Add a new document to the collection
 router.post("/", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
+
   try {
     let collection = await db.collection(collectionName);
     let newDocument = req.body;
@@ -71,7 +74,10 @@ router.post("/", async (req, res) => {
 
 // Add a new document to the collection
 router.put("/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
+
   try {
     let collection = await db.collection(collectionName);
 
@@ -106,7 +112,10 @@ router.put("/:id", async (req, res) => {
 
 // Update the post with a new comment
 router.patch("/item/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
+
   const query = { _id: MUUID.from(req.params.id) };
   //   const query = { _id: ObjectId(req.params.id) };
 
@@ -122,7 +131,10 @@ router.patch("/item/:id", async (req, res) => {
 
 // Delete an entry
 router.delete("/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
+
   try {
     if (req.params.id.length > 32) {
       const query = { _id: MUUID.from(req.params.id) };

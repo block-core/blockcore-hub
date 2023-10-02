@@ -10,7 +10,9 @@ const router = express.Router();
 const collectionName = "user";
 
 router.get("/", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   try {
     let collection = await db.collection(collectionName);
@@ -24,7 +26,9 @@ router.get("/", async (req, res) => {
 
 // Fetches the root categories
 router.get("/root", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   let collection = await db.collection(collectionName);
   let results = await collection.aggregate([{ $project: { name: 1, icon: 1, slug: 1, parent: 1, sort: 1 } }, { $sort: { sort: 1 } }, { $limit: 50 }]).toArray();
@@ -33,7 +37,9 @@ router.get("/root", async (req, res) => {
 
 // Fetches the latest posts
 router.get("/latest", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   let collection = await db.collection(collectionName);
   let results = await collection.aggregate([{ $project: { author: 1, title: 1, tags: 1, date: 1 } }, { $sort: { date: -1 } }, { $limit: 3 }]).toArray();
@@ -42,7 +48,9 @@ router.get("/latest", async (req, res) => {
 
 // Get a single post
 router.get("/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   let collection = await db.collection(collectionName);
 
@@ -56,7 +64,9 @@ router.get("/:id", async (req, res) => {
 
 // Add a new document to the collection
 router.post("/", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   try {
     let collection = await db.collection(collectionName);
@@ -81,6 +91,10 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const user = verifyAdmin(req, res);
+
+  if (!user) {
+    return;
+  }
 
   try {
     let collection = await db.collection(collectionName);
@@ -143,7 +157,9 @@ router.put("/:id", async (req, res) => {
 
 // Update the post with a new comment
 router.patch("/item/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   const query = { _id: MUUID.from(req.params.id) };
   //   const query = { _id: ObjectId(req.params.id) };
@@ -160,7 +176,9 @@ router.patch("/item/:id", async (req, res) => {
 
 // Delete an entry
 router.delete("/:id", async (req, res) => {
-  verifyAdmin(req, res);
+  if (!verifyAdmin(req, res)) {
+    return;
+  }
 
   try {
     if (req.params.id.length > 32) {
