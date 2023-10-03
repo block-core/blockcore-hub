@@ -12,6 +12,7 @@ export class AuthGuardService implements CanActivate {
     }
 
     return this.authService.getAuthInfo().then((authInfo: UserInfo) => {
+      debugger;
       if (authInfo.authenticated()) {
         return true;
       } else {

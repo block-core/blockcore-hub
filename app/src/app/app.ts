@@ -312,6 +312,8 @@ export class AppComponent {
     if (!this.appState.authenticated) {
       const authenticated = await this.authService.authenticated();
 
+      debugger;
+
       if (authenticated && !authenticated.error) {
         this.appState.authenticated = true;
         this.appState.identity = authenticated.user.did;
