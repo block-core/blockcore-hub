@@ -1,33 +1,73 @@
 <!-- <div *ngIf="!authenticated">
 </div> -->
 
-<div *ngIf="!authenticated" [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }" [dir]="appState.documentDirection">
+<div
+  *ngIf="!authenticated"
+  [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }"
+  [dir]="appState.documentDirection"
+>
   <router-outlet></router-outlet>
 </div>
 
-<div class="app-container" *ngIf="authenticated" [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }" [dir]="appState.documentDirection">
+<div
+  class="app-container"
+  *ngIf="authenticated"
+  [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }"
+  [dir]="appState.documentDirection"
+>
   <div id="title-bar" class="title-bar">
-    <img class="logo-icon-title-bar" height="24" width="24" src="assets/icons/icon-128x128.png" />
-    <app-media-player *ngIf="options.values.showMediaPlayer" [miniplayer]="true"></app-media-player>
+    <img
+      class="logo-icon-title-bar"
+      height="24"
+      width="24"
+      src="assets/icons/icon-128x128.png"
+    />
+    <app-media-player
+      *ngIf="options.values.showMediaPlayer"
+      [miniplayer]="true"
+    ></app-media-player>
   </div>
 
   <mat-toolbar class="app-toolbar">
-    <button *ngIf="!appState.showSearch && (isHandset$ | async) === true" type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+    <button
+      *ngIf="!appState.showSearch && (isHandset$ | async) === true"
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+    >
       <mat-icon>menu</mat-icon>
     </button>
     <span></span>
 
-    <img class="logo-icon" *ngIf="appState.showLogo && !appState.showSearch && (isHandset$ | async) === false" height="38" width="38" src="assets/icons/icon-128x128.png" />
+    <img
+      class="logo-icon"
+      *ngIf="appState.showLogo && !appState.showSearch && (isHandset$ | async) === false"
+      height="38"
+      width="38"
+      src="assets/icons/icon-128x128.png"
+    />
 
-    <button *ngIf="!appState.showSearch && appState.showBackButton" mat-icon-button (click)="goBack()">
+    <button
+      *ngIf="!appState.showSearch && appState.showBackButton"
+      mat-icon-button
+      (click)="goBack()"
+    >
       <mat-icon class="arrow-back">arrow_back</mat-icon>
     </button>
 
-    <div *ngIf="!appState.showSearch" class="top-spacer">{{ appState.title$ | async }}</div>
+    <div *ngIf="!appState.showSearch" class="top-spacer">
+      {{ appState.title$ | async }}
+    </div>
 
     <!-- <app-language-selector></app-language-selector> -->
     <span *ngIf="!appState.showSearch">
-      <button *ngFor="let action of appState.actions" (click)="action.click()" mat-icon-button [matTooltip]="action.tooltip">
+      <button
+        *ngFor="let action of appState.actions"
+        (click)="action.click()"
+        mat-icon-button
+        [matTooltip]="action.tooltip"
+      >
         <mat-icon>{{ action.icon }}</mat-icon>
       </button>
     </span>
@@ -35,10 +75,26 @@
     <form class="search-box" *ngIf="appState.showSearch">
       <mat-form-field class="search-box-input">
         <mat-label>{{ 'App.Search' | translate }}</mat-label>
-        <input matInput #searchInput aria-label="Search" [formControl]="searchControl" [matAutocomplete]="auto" />
+        <input
+          matInput
+          #searchInput
+          aria-label="Search"
+          [formControl]="searchControl"
+          [matAutocomplete]="auto"
+        />
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option class="search-result-option" (onSelectionChange)="searchService.open(state)" *ngFor="let state of searchService.results$ | async" [value]="state.id">
-            <span><img class="search-result-image" [src]="state.picture" height="32" /></span>
+          <mat-option
+            class="search-result-option"
+            (onSelectionChange)="searchService.open(state)"
+            *ngFor="let state of searchService.results$ | async"
+            [value]="state.id"
+          >
+            <span
+              ><img
+                class="search-result-image"
+                [src]="state.picture"
+                height="32"
+            /></span>
             <span *ngIf="state.display_name">{{ state.display_name }}</span>
             <span *ngIf="!state.display_name">{{ state.name }}</span>
             <span *ngIf="state.nip05">({{ state.nip05 }})</span>
@@ -47,17 +103,39 @@
       </mat-form-field>
     </form>
 
-    <button *ngIf="appState.showSearch" mat-icon-button (click)="searchVisibility(false)">
+    <button
+      *ngIf="appState.showSearch"
+      mat-icon-button
+      (click)="searchVisibility(false)"
+    >
       <mat-icon>close</mat-icon>
     </button>
 
-    <button *ngIf="!appState.showSearch" mat-icon-button (click)="searchVisibility(true)">
+    <button
+      *ngIf="!appState.showSearch"
+      mat-icon-button
+      (click)="searchVisibility(true)"
+    >
       <mat-icon>search</mat-icon>
     </button>
 
-    <button *ngIf="!appState.connected" [mtBasicSpinner]="true" mat-icon-button></button>
+    <button
+      *ngIf="!appState.connected"
+      [mtBasicSpinner]="true"
+      mat-icon-button
+    ></button>
 
-    <img *ngIf="!appState.showSearch" width="38" height="38" mat-icon-button (click)="draweraccount.toggle()" [src]="profile?.picture" onerror="this.src='/assets/profile.png'" alt="avatar" class="topavatar" />
+    <img
+      *ngIf="!appState.showSearch"
+      width="38"
+      height="38"
+      mat-icon-button
+      (click)="draweraccount.toggle()"
+      [src]="profile?.picture"
+      onerror="this.src='/assets/profile.png'"
+      alt="avatar"
+      class="topavatar"
+    />
   </mat-toolbar>
 
   <mat-sidenav-container autosize="true">
@@ -75,17 +153,41 @@
       </mat-toolbar> -->
 
       <mat-nav-list>
-        <a [routerLink]="['/']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>home</mat-icon>
           <span *ngIf="displayLabels">{{'App.Home' | translate }}</span>
         </a>
-        <a [routerLink]="['/feed']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/feed']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>notes</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Feed' | translate }}</span>
         </a>
-        <a [routerLink]="['/notifications']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
-          <mat-icon [matBadgeHidden]="(ui.unreadNotifications$ | async) == 0" [matBadge]="ui.unreadNotifications$ | async">notifications</mat-icon>
-          <span *ngIf="displayLabels">{{ 'App.Notifications' | translate }}</span>
+        <a
+          [routerLink]="['/notifications']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
+          <mat-icon
+            [matBadgeHidden]="(ui.unreadNotifications$ | async) == 0"
+            [matBadge]="ui.unreadNotifications$ | async"
+            >notifications</mat-icon
+          >
+          <span *ngIf="displayLabels"
+            >{{ 'App.Notifications' | translate }}</span
+          >
         </a>
         <!-- <a [routerLink]="['/chat']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <mat-icon>chat</mat-icon>
@@ -95,19 +197,43 @@
             <mat-icon matBadge="2">mail</mat-icon>
           <span *ngIf="displayLabels">Messages</span>
         </a> -->
-        <a [routerLink]="['/people']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/people']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>people</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.People' | translate }}</span>
         </a>
-        <a [routerLink]="['/circles']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/circles']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>animation</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Circles' | translate }}</span>
         </a>
-        <a [routerLink]="['/projects']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/projects']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>location_city</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Projects' | translate }}</span>
         </a>
-        <a [routerLink]="['/notes']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/notes']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>bookmarks</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Bookmarks' | translate }}</span>
         </a>
@@ -119,7 +245,13 @@
           <mat-icon>construction</mat-icon>
           <span *ngIf="displayLabels">Example</span>
         </a> -->
-        <a [routerLink]="['/relays']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/relays']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>dns</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Relays' | translate }}</span>
         </a>
@@ -130,22 +262,112 @@
       </mat-nav-list>
 
       <div class="new-post" [ngClass]="{ 'new-post-small': !displayLabels  }">
-        <img tabindex="10" width="92" height="92" (click)="navigationService.createNote()" src="/assets/post.svg" class="new-post-button" />
+        <!-- <img tabindex="10" width="92" height="92" (click)="navigationService.createNote()" src="/assets/post.svg" class="new-post-button" /> -->
+        <img
+          tabindex="10"
+          width="92"
+          height="92"
+          [matMenuTriggerFor]="action"
+          src="/assets/post.svg"
+          class="new-post-button"
+        />
+
+        <div>
+          <mat-menu
+            class="action-menu"
+            #action="matMenu"
+            hasBackdrop="true"
+            backdropClass="menu-mode-backdrop"
+            overlapTrigger="false"
+          >
+            <a mat-menu-item target="_blank" href="https://id.blockcore.net/">
+              <mat-icon>add_business</mat-icon>
+              <span>Market</span>
+            </a>
+            <a mat-menu-item target="_blank" href="https://did.is/"
+              ><mat-icon>currency_bitcoin</mat-icon>
+              <span>Swap</span></a
+            >
+            <a
+              mat-menu-item
+              target="_blank"
+              href="https://identity.city-chain.org/"
+              ><mat-icon>animation</mat-icon>
+              <span>Circle</span></a
+            >
+            <a
+              mat-menu-item
+              target="_blank"
+              href="https://registry.city-chain.org/"
+              ><mat-icon>calendar_month</mat-icon>
+              <span>Event</span></a
+            >
+            <a
+              mat-menu-item
+              target="_blank"
+              href="https://registry.city-chain.org/"
+              ><mat-icon>person_add</mat-icon>
+              <span>Event</span></a
+            >
+            <a
+              mat-menu-item
+              target="_blank"
+              href="https://registry.city-chain.org/"
+              ><mat-icon>chat</mat-icon>
+              <span>Chat</span></a
+            >
+            <button mat-menu-item [matMenuTriggerFor]="accounts">Vaults</button>
+          </mat-menu>
+
+          <mat-menu #accounts="matMenu">
+            <button mat-menu-item>Personal</button>
+            <button mat-menu-item>Business</button>
+          </mat-menu>
+        </div>
       </div>
     </mat-sidenav>
 
-    <mat-sidenav #draweraccount class="sidenav-right print-hidden" fixedInViewport [attr.role]="'navigation'" [mode]="'over'" position="end">
+    <mat-sidenav
+      #draweraccount
+      class="sidenav-right print-hidden"
+      fixedInViewport
+      [attr.role]="'navigation'"
+      [mode]="'over'"
+      position="end"
+    >
       <div class="container">
-        <button class="close-sidenav-icon" mat-icon-button (click)="draweraccount.toggle()">
+        <button
+          class="close-sidenav-icon"
+          mat-icon-button
+          (click)="draweraccount.toggle()"
+        >
           <mat-icon>close</mat-icon>
         </button>
-        <button (click)="theme.darkMode = !theme.darkMode" mat-icon-button class="mat-icon-button theme-sidenav-icon">
-          <mat-icon aria-label="Menu" class="material-icons">{{ theme.darkMode ? "dark_mode" : "light_mode" }}</mat-icon>
+        <button
+          (click)="theme.darkMode = !theme.darkMode"
+          mat-icon-button
+          class="mat-icon-button theme-sidenav-icon"
+        >
+          <mat-icon aria-label="Menu" class="material-icons"
+            >{{ theme.darkMode ? "dark_mode" : "light_mode" }}</mat-icon
+          >
         </button>
         <header>
           <div class="bio" (click)="openProfile()">
-            <img loading="lazy" *ngIf="profile?.banner" [src]="profile?.banner" alt="background" class="bg" />
-            <img loading="lazy" *ngIf="!profile?.banner" [src]="bgimagePath" alt="background" class="bg" />
+            <img
+              loading="lazy"
+              *ngIf="profile?.banner"
+              [src]="profile?.banner"
+              alt="background"
+              class="bg"
+            />
+            <img
+              loading="lazy"
+              *ngIf="!profile?.banner"
+              [src]="bgimagePath"
+              alt="background"
+              class="bg"
+            />
 
             <div class="desc">
               <h3><span *ngIf="profile?.name">@</span>{{ profile?.name }}</h3>
@@ -154,7 +376,14 @@
           </div>
           <a [routerLink]="['/profile']" (click)="toggleProfileMenu()">
             <div class="avatarcontainer">
-              <img [src]="profile?.picture" width="96" height="96" onerror="this.src='/assets/profile.png'" alt="avatar" class="avatar" />
+              <img
+                [src]="profile?.picture"
+                width="96"
+                height="96"
+                onerror="this.src='/assets/profile.png'"
+                alt="avatar"
+                class="avatar"
+              />
             </div>
           </a>
         </header>
@@ -163,7 +392,14 @@
             <ul>
               <li>0 <span>{{ 'App.Followers' | translate }}</span></li>
               <li>
-                <a class="opposite-link" [routerLink]="['/following', appState.getPublicKey()]" (click)="toggleProfileMenu()"> {{ profileService.following.length }} <span>{{ 'App.Following' | translate }}</span></a>
+                <a
+                  class="opposite-link"
+                  [routerLink]="['/following', appState.getPublicKey()]"
+                  (click)="toggleProfileMenu()"
+                >
+                  {{ profileService.following.length }}
+                  <span>{{ 'App.Following' | translate }}</span></a
+                >
               </li>
             </ul>
           </div>
@@ -171,36 +407,83 @@
       </div>
       <mat-divider></mat-divider>
       <mat-nav-list>
-        <a [routerLink]="['/p', appState.getPublicKey()]" mat-menu-item (click)="toggleProfileMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/p', appState.getPublicKey()]"
+          mat-menu-item
+          (click)="toggleProfileMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>person</mat-icon>
           <span>{{ 'App.ViewProfile' | translate }}</span>
         </a>
-        <a [routerLink]="['/profile']" mat-menu-item (click)="toggleProfileMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/profile']"
+          mat-menu-item
+          (click)="toggleProfileMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>edit</mat-icon>
           <span>{{ 'App.EditProfile' | translate }}</span>
         </a>
-        <a [routerLink]="['/badges', appState.getPublicKey()]" mat-menu-item (click)="toggleProfileMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/badges', appState.getPublicKey()]"
+          mat-menu-item
+          (click)="toggleProfileMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>badge</mat-icon>
           <span>{{ 'App.Badges' | translate }}</span>
         </a>
-        <a mat-menu-item (click)="toggleProfileMenu(); openMediaPlayer()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          mat-menu-item
+          (click)="toggleProfileMenu(); openMediaPlayer()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>play_circle</mat-icon>
           <span>{{ 'App.MediaPlayer' | translate }}</span>
         </a>
-        <a [routerLink]="['/settings']" mat-menu-item (click)="toggleProfileMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/settings']"
+          mat-menu-item
+          (click)="toggleProfileMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>settings</mat-icon>
           <span>{{ 'App.Settings' | translate }}</span>
         </a>
-        <a [routerLink]="['/about']" mat-menu-item (click)="toggleProfileMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/about']"
+          mat-menu-item
+          (click)="toggleProfileMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>help_outline</mat-icon>
           <span>{{ 'App.About' | translate }}</span>
         </a>
-        <a [routerLink]="['/logout']" mat-menu-item (click)="toggleProfileMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+        <a
+          [routerLink]="['/logout']"
+          mat-menu-item
+          (click)="toggleProfileMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+        >
           <mat-icon>logout</mat-icon>
           <span>{{ 'App.Logout' | translate }}</span>
         </a>
       </mat-nav-list>
-      <mat-menu #accounts="matMenu" hasBackdrop="true" backdropClass="menu-mode-backdrop" overlapTrigger="false"> </mat-menu>
+      <mat-menu
+        #accounts="matMenu"
+        hasBackdrop="true"
+        backdropClass="menu-mode-backdrop"
+        overlapTrigger="false"
+      >
+      </mat-menu>
     </mat-sidenav>
 
     <mat-sidenav-content>
@@ -208,7 +491,10 @@
         <div class="app-outlet">
           <router-outlet></router-outlet>
         </div>
-        <app-media-player class="app-mediaplayer" *ngIf="options.values.showMediaPlayer"></app-media-player>
+        <app-media-player
+          class="app-mediaplayer"
+          *ngIf="options.values.showMediaPlayer"
+        ></app-media-player>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

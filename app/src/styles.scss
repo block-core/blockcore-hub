@@ -140,9 +140,9 @@ $light-app-theme: mat.define-light-theme(
   @include theme-colors($light-app-theme);
 }
 
-a {
-  color: --var(--app-primary-color);
-}
+// a {
+//   color: --var(--app-primary-color);
+// }
 
 // .dark a {
 //   color: mat.get-color-from-palette($blockcore-light-primary);
@@ -264,6 +264,12 @@ h3 {
   margin-block-start: 2em;
 }
 
+.menu-mode-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  transition: all 0.6s;
+}
+
 .page {
   padding: 2em;
 }
@@ -354,17 +360,17 @@ h3 {
   }
 }
 
-a {
-  // color: rgb(206, 206, 206);
-  color: #fac400 !important;
-  text-decoration: none;
-}
+// a {
+//   // color: rgb(206, 206, 206);
+//   color: #fac400 !important;
+//   text-decoration: none;
+// }
 
-a:hover {
-  color: #ffe585 !important;
-  transition: text-decoration 250ms ease;
-  transition: color 250ms ease;
-}
+// a:hover {
+//   color: #ffe585 !important;
+//   transition: text-decoration 250ms ease;
+//   transition: color 250ms ease;
+// }
 
 app-profile-actions {
   display: inline;
