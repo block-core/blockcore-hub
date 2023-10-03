@@ -255,7 +255,7 @@
           <mat-icon>dns</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Relays' | translate }}</span>
         </a>
-        <a mat-menu-item (click)="toggleMenuSize()">
+        <a class="expand-menu-button" mat-menu-item (click)="toggleMenuSize()">
           <mat-icon *ngIf="displayLabels">chevron_left</mat-icon>
           <mat-icon *ngIf="!displayLabels">chevron_right</mat-icon>
         </a>

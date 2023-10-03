@@ -262,3 +262,7 @@ header {
   flex-shrink: 1;
   box-sizing: border-box;
 }
+
+.expand-menu-button {
+  margin-bottom: 140px;
+}
