@@ -376,6 +376,12 @@ app-profile-actions {
   display: inline;
 }
 
+.active-nav-link {
+  // background-color: red !important;
+  background-color: rgba(0, 0, 0, 0.15) !important;
+  border-right: 3px solid var(--app-primary-color) !important;
+}
+
 /** Triggers scrolling if the vertical height is larger then horizontal for profile image popups and window size. */
 .mdc-dialog {
   max-height: 100vh !important;

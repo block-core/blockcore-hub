@@ -49,10 +49,6 @@
   text-overflow: ellipsis;
 }
 
-.mdc-list-item.active {
-  background: rgba(156, 39, 176, 0.15);
-}
-
 header {
   display: block;
   overflow: hidden;

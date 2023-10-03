@@ -158,7 +158,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>home</mat-icon>
           <span *ngIf="displayLabels">{{'App.Home' | translate }}</span>
@@ -168,7 +168,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>notes</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Feed' | translate }}</span>
@@ -178,7 +178,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon
             [matBadgeHidden]="(ui.unreadNotifications$ | async) == 0"
@@ -202,7 +202,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>people</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.People' | translate }}</span>
@@ -212,7 +212,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>animation</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Circles' | translate }}</span>
@@ -222,7 +222,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>location_city</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Projects' | translate }}</span>
@@ -232,7 +232,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>bookmarks</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Bookmarks' | translate }}</span>
@@ -250,7 +250,7 @@
           mat-menu-item
           (click)="toggleMenu()"
           [routerLinkActiveOptions]="{ exact: true }"
-          routerLinkActive="active"
+          routerLinkActive="active-nav-link"
         >
           <mat-icon>dns</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Relays' | translate }}</span>
