@@ -6,9 +6,7 @@
       height="128"
       src="assets/icons/icon-192x192.png"
     />
-    <div class="logo-text">
-      Free City <span class="hide-tiny">Hub</span>
-    </div>
+    <div class="logo-text">Free City <span class="hide-tiny">Hub</span></div>
     <div class="connect-spacer"></div>
     <button
       (click)="theme.darkMode = !theme.darkMode"
@@ -21,7 +19,11 @@
     </button>
     <div class="connect-button" *ngIf="searchingForExtension">
       <button class="start-button" mat-flat-button color="accent">
-        <mat-spinner class="spinner" color="accent" diameter="30"></mat-spinner>
+        <mat-spinner
+          class="spinner"
+          color="primary"
+          diameter="30"
+        ></mat-spinner>
       </button>
     </div>
     <div class="connect-button" *ngIf="showInstallLink">
@@ -29,7 +31,7 @@
         class="start-button"
         (click)="connect()"
         mat-flat-button
-        color="accent"
+        color="primary"
         href="https://chrome.google.com/webstore/detail/blockcore-wallet/peigonhbenoefaeplkpalmafieegnapj"
         target="_blank"
         >Install <span class="hide-tiny">extension</span></a
@@ -41,7 +43,7 @@
         *ngIf="consent"
         (click)="connect()"
         mat-flat-button
-        color="accent"
+        color="primary"
       >
         Connect <span class="hide-tiny">using extension</span>
       </button>
@@ -50,7 +52,7 @@
         *ngIf="!consent"
         (click)="giveConsent()"
         mat-flat-button
-        color="accent"
+        color="primary"
       >
         Give consent
       </button>
@@ -65,7 +67,7 @@
         <p class="centered" *ngIf="consent">
           <button
             class="start-button"
-            color="accent"
+            color="primary"
             routerLink="/connect/create"
             mat-flat-button
           >
@@ -73,7 +75,7 @@
           ><br /><br />
           <button
             class="start-button"
-            color="accent"
+            color="primary"
             routerLink="/connect/login"
             mat-flat-button
           >
@@ -85,7 +87,7 @@
             class="start-button"
             (click)="giveConsent()"
             mat-flat-button
-            color="accent"
+            color="primary"
           >
             Give consent
           </button>
@@ -161,7 +163,13 @@
     <mat-card class="card">
       <mat-card-content>
         <h1>Free and Unrestricted</h1>
-        <p><img src="assets/Bitcoin.svg" width="128" height="128" class="bitcoin-icon" />
+        <p>
+          <img
+            src="assets/Bitcoin.svg"
+            width="128"
+            height="128"
+            class="bitcoin-icon"
+          />
           The Free City Platform is a software built to help develop and run a
           free city. It has software for identity, communication, economy, and
           more.

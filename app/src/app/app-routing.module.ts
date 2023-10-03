@@ -34,6 +34,7 @@ import { CreateProfileComponent } from './connect/create/create';
 import { EditorBadgesComponent } from './editor-badges/editor';
 import { BadgeComponent } from './badge/badge';
 import { ExampleComponent } from './example/example';
+import { ProjectsComponent } from './projects/projects.component';
 
 const routes: Routes = [
   {
@@ -87,6 +88,14 @@ const routes: Routes = [
   {
     path: 'circles',
     component: CirclesComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      data: LoadingResolverService,
+    },
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent,
     canActivate: [AuthGuard],
     resolve: {
       data: LoadingResolverService,

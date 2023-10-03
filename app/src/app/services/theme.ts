@@ -1,21 +1,21 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  public renderer: Renderer2;
-
-  constructor(private _renderer: RendererFactory2) {
-    this.renderer = _renderer.createRenderer(null, null);
-  }
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   get darkMode(): boolean {
-    if (localStorage.getItem('theme')) {
-      if (localStorage.getItem('theme') === 'dark') {
+    if (localStorage.getItem('blockcore:hub:theme')) {
+      if (localStorage.getItem('blockcore:hub:theme') === 'dark') {
         return true;
       }
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    } else if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
       return true;
     }
 
@@ -24,25 +24,41 @@ export class ThemeService {
 
   set darkMode(value: boolean) {
     if (value) {
-      localStorage.setItem('theme', 'dark');
+      localStorage.setItem('blockcore:hub:theme', 'dark');
     } else {
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('blockcore:hub:theme', 'light');
     }
 
-    this.updateMode();
+    this.update();
   }
 
   public init() {
-    this.updateMode();
+    // Just get the darkMode will trigger a read.
+    this.update();
+
+    // Listen for changes to the prefers-color-scheme media query
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', (event) => {
+        const newColorScheme = event.matches ? 'dark' : 'light';
+
+        if (newColorScheme == 'light') {
+          this.darkMode = false;
+        } else {
+          this.darkMode = true;
+        }
+      });
   }
 
-  private updateMode() {
+  update() {
     if (this.darkMode) {
-      this.renderer.addClass(document.body, 'dark');
-      //   document.documentElement.classList.add('dark');
+      if (this.document.documentElement.classList.contains('light')) {
+        this.document.documentElement.classList.remove('light');
+      }
     } else {
-      this.renderer.removeClass(document.body, 'dark');
-      // document.documentElement.classList.remove('dark');
+      if (!this.document.documentElement.classList.contains('light')) {
+        this.document.documentElement.classList.add('light');
+      }
     }
   }
 }

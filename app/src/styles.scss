@@ -1,99 +1,165 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use "@angular/material" as mat;
-// Plus imports for other components in your app.
+@use "sass:map";
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// @import "@fontsource/material-icons";
-@import "@fontsource/material-icons-round";
-
-@import "@fontsource/roboto/300.css";
-@import "@fontsource/roboto/400.css";
-@import "@fontsource/roboto/500.css";
-@import "@fontsource/roboto/700.css"; // default "bold".
-
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$blockcore-light-primary: mat.define-palette(mat.$purple-palette);
-$blockcore-light-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$blockcore-light-warn: mat.define-palette(mat.$red-palette);
-
-$blockcore-dark-primary: mat.define-palette(mat.$purple-palette);
-$blockcore-dark-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-$blockcore-dark-warn: mat.define-palette(mat.$red-palette);
-
-$blockcore-notes-typography: mat.define-typography-config(
-  $font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
+$primary-palette: (
+  50: #fef7df,
+  100: #fdeaae,
+  200: #fcdc7a,
+  300: #fbd041,
+  400: #fac400,
+  500: #f9ba00,
+  600: #faac00,
+  700: #fb9800,
+  800: #fb8700,
+  900: #fc6500,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  ),
 );
 
-$blockcore-notes-level: mat.define-typography-level(
-  $font-family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
-  $font-weight: 400,
-  $font-size: "18px",
-  $line-height: 1,
-  $letter-spacing: normal,
+$accent-palette: (
+  50: #ededed,
+  100: #d1d1d1,
+  200: #b7b1b2,
+  300: #9f9093,
+  400: #8e767b,
+  500: #7c5e64,
+  600: #6f555a,
+  700: #5e494e,
+  800: #4e3d42,
+  900: #3d3035,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: white,
+  ),
 );
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$blockcore-light-theme: mat.define-light-theme(
+$warn-palette: (
+  50: #fde6ec,
+  100: #fac0d1,
+  200: #f898b2,
+  300: #f57094,
+  400: #f1557d,
+  500: #ee4267,
+  600: #dd3d64,
+  700: #c6385f,
+  800: #b1335b,
+  900: #8c2b52,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+$app-primary: mat.define-palette($primary-palette, 400, 100, 600);
+$app-accent: mat.define-palette($accent-palette, 200, 800, 900);
+$app-warn: mat.define-palette($warn-palette, 500);
+
+$app-light-primary: mat.define-palette($primary-palette, 700, 200, 700);
+$app-light-accent: mat.define-palette($accent-palette, 500, 800, 900);
+$app-light-warn: mat.define-palette($warn-palette, 500);
+
+$dark-app-theme: mat.define-dark-theme(
   (
     color: (
-      primary: $blockcore-light-primary,
-      accent: $blockcore-light-accent,
-      warn: $blockcore-light-warn,
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
     ),
-    typography: $blockcore-notes-typography,
-    level: $blockcore-notes-level,
+    typography: mat.define-typography-config(),
+    density: 0,
   )
 );
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($blockcore-light-theme);
-
-// $blockcore-notes-level: mat.define-typography-level(
-//   $font-family: Roboto,
-//   $font-weight: 400,
-//   $font-size: 1rem,
-//   $line-height: 1,
-//   $letter-spacing: normal,
-// );
-
-/* You can add global styles to this file, and also import other style files */
-
-$blockcore-dark-theme: mat.define-dark-theme(
+$light-app-theme: mat.define-light-theme(
   (
     color: (
-      primary: $blockcore-dark-primary,
-      accent: $blockcore-dark-accent,
-      warn: $blockcore-dark-warn,
+      primary: $app-light-primary,
+      accent: $app-light-accent,
+      warn: $app-light-warn,
     ),
-    typography: $blockcore-notes-typography,
-    level: $blockcore-notes-level,
   )
 );
 
-.dark {
-  @include mat.all-component-colors($blockcore-dark-theme);
-}
+// In this source, the dark and light colors are the same, but this mixin
+// allows generation of different colors for dark and light themes.
+@mixin theme-colors($theme) {
+  $color-config: mat.get-color-config($theme);
+  $primary-palette: map.get($color-config, "primary");
+  $accent-palette: map.get($color-config, "accent");
+  $warn-palette: map.get($color-config, "warn");
+  $is-dark-theme: map.get($color-config, "is-dark");
 
-a {
-  color: mat.get-color-from-palette($blockcore-dark-primary);
-}
-
-.dark a {
-  color: mat.get-color-from-palette($blockcore-light-primary);
+  --app-primary-color: #{mat.get-color-from-palette($primary-palette)};
+  --app-accent-color: #{mat.get-color-from-palette($accent-palette)};
+  --app-warn-color: #{mat.get-color-from-palette($warn-palette)};
 }
 
 :root {
-  --accent: #4c895b;
+  @include mat.all-component-themes($dark-app-theme);
+  @include theme-colors($dark-app-theme);
+}
+
+.light {
+  @include mat.all-component-colors($light-app-theme);
+  @include theme-colors($light-app-theme);
+}
+
+a {
+  color: --var(--app-primary-color);
+}
+
+// .dark a {
+//   color: mat.get-color-from-palette($blockcore-light-primary);
+// }
+
+// :root {
+//   --accent: #4c895b;
+// }
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 html,
@@ -105,18 +171,14 @@ body {
   scroll-behavior: smooth;
 }
 body {
-  font-size: 18px;
-  // background-color: mat.$background-color;
-  // overflow: hidden;
   overscroll-behavior-y: contain;
   overflow-x: hidden;
   overflow-y: overlay !important;
-  // overflow: scroll !important;
 }
 
-.mat-icon {
-  font-family: "Material Icons Round", sans-serif;
-  font-size: 18px;
+.mdc-button {
+  /* Makes the Material buttons more rounded and similar to M3 */
+  border-radius: 40px !important;
 }
 
 .rightToLeft > * {
@@ -130,7 +192,8 @@ body {
   h3,
   h4,
   h5 {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   }
 
   .mat-list-base .mat-subheader,
@@ -138,7 +201,8 @@ body {
   .mat-typography,
   .mat-card,
   .mat-caption {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   }
 }
 
@@ -155,7 +219,8 @@ body {
 // }
 
 * {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 .app-container {

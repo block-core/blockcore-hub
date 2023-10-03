@@ -26,7 +26,8 @@
     "Settings": "Settings",
     "About": "About",
     "Logout": "Logout",
-    "MediaPlayer": "Media Player"
+    "MediaPlayer": "Media Player",
+    "Projects": "Projects"
   },
   "Badge": {
     "CreatedBy": "Created by",

@@ -134,7 +134,7 @@ router.delete("/:id", async (req, res) => {
   if (!verifyAdmin(req, res)) {
     return;
   }
-  
+
   try {
     if (req.params.id.length > 32) {
       const query = { _id: MUUID.from(req.params.id) };

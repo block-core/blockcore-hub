@@ -103,6 +103,10 @@
           <mat-icon>animation</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Circles' | translate }}</span>
         </a>
+        <a [routerLink]="['/projects']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
+          <mat-icon>location_city</mat-icon>
+          <span *ngIf="displayLabels">{{ 'App.Projects' | translate }}</span>
+        </a>
         <a [routerLink]="['/notes']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <mat-icon>bookmarks</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Bookmarks' | translate }}</span>

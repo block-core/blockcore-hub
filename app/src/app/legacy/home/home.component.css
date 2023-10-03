@@ -10,7 +10,7 @@
 }
 
 .category:hover {
-  color: var(--accent);
+  color: var(--app-primary-color);
   text-decoration: underline;
 }
 

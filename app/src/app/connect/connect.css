@@ -77,13 +77,10 @@
 }
 
 .start-button {
-  border-radius: 40px;
   min-width: 140px;
-  font-size: 0.9em;
   padding-top: 1.4em;
   padding-bottom: 1.4em;
   margin-bottom: 0.2em;
-  background-color: #fac400 !important;
 }
 
 .start-button-consent {
