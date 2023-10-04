@@ -119,16 +119,30 @@
       <mat-icon>search</mat-icon>
     </button>
 
-    <button
+    <button mat-icon-button [routerLink]="['/notifications']">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <!-- <a
+    [routerLink]="['/notifications']"
+    mat-icon-button
+  >
+    <mat-icon
+      >notifications</mat-icon
+    >
+    <span *ngIf="displayLabels"
+      >{{ 'App.Notifications' | translate }}</span
+    >
+  </a> -->
+
+    <!-- <button
       *ngIf="!appState.connected"
       [mtBasicSpinner]="true"
       mat-icon-button
-    ></button>
+    ></button> -->
 
     <img
       *ngIf="!appState.showSearch"
-      width="38"
-      height="38"
       mat-icon-button
       (click)="draweraccount.toggle()"
       [src]="profile?.picture"
@@ -173,7 +187,7 @@
           <mat-icon>notes</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Feed' | translate }}</span>
         </a>
-        <a
+        <!-- <a
           [routerLink]="['/notifications']"
           mat-menu-item
           (click)="toggleMenu()"
@@ -188,7 +202,7 @@
           <span *ngIf="displayLabels"
             >{{ 'App.Notifications' | translate }}</span
           >
-        </a>
+        </a> -->
         <!-- <a [routerLink]="['/chat']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <mat-icon>chat</mat-icon>
           <span *ngIf="displayLabels">Channels</span>
@@ -285,36 +299,31 @@
               <span>Market</span>
             </a>
             <a mat-menu-item target="_blank" href="https://did.is/"
-              ><mat-icon>currency_bitcoin</mat-icon>
-              <span>Swap</span></a
+              ><mat-icon>currency_bitcoin</mat-icon> <span>Swap</span></a
             >
             <a
               mat-menu-item
               target="_blank"
               href="https://identity.city-chain.org/"
-              ><mat-icon>animation</mat-icon>
-              <span>Circle</span></a
+              ><mat-icon>animation</mat-icon> <span>Circle</span></a
             >
             <a
               mat-menu-item
               target="_blank"
               href="https://registry.city-chain.org/"
-              ><mat-icon>calendar_month</mat-icon>
-              <span>Event</span></a
+              ><mat-icon>calendar_month</mat-icon> <span>Event</span></a
             >
             <a
               mat-menu-item
               target="_blank"
               href="https://registry.city-chain.org/"
-              ><mat-icon>person_add</mat-icon>
-              <span>Event</span></a
+              ><mat-icon>person_add</mat-icon> <span>Event</span></a
             >
             <a
               mat-menu-item
               target="_blank"
               href="https://registry.city-chain.org/"
-              ><mat-icon>chat</mat-icon>
-              <span>Chat</span></a
+              ><mat-icon>chat</mat-icon> <span>Chat</span></a
             >
             <button mat-menu-item [matMenuTriggerFor]="accounts">Vaults</button>
           </mat-menu>

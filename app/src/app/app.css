@@ -102,8 +102,8 @@ header {
 
 .topavatar {
   border-radius: 50%;
-  overflow: hidden;
-  position: relative;
+  /* overflow: hidden;
+  position: relative; */
   width: 38px;
   height: 38px;
   margin-left: 0.2em;
