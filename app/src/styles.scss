@@ -133,11 +133,17 @@ $light-app-theme: mat.define-light-theme(
 :root {
   @include mat.all-component-themes($dark-app-theme);
   @include theme-colors($dark-app-theme);
+
+  --app-foreground-color: white;
+  --app-foreground-color-hover: rgba(white, 0.87);
 }
 
 .light {
   @include mat.all-component-colors($light-app-theme);
   @include theme-colors($light-app-theme);
+
+  --app-foreground-color: rgba(black, 0.87);
+  --app-foreground-color-hover: rgba(black, 0.6);
 }
 
 // a {
@@ -151,6 +157,14 @@ $light-app-theme: mat.define-light-theme(
 // :root {
 //   --accent: #4c895b;
 // }
+
+a {
+  color: var(--app-accent-color);
+}
+
+a:hover {
+  color: var(--app-foreground-color);
+}
 
 html,
 body {
