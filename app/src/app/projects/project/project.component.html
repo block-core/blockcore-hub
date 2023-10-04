@@ -1,0 +1,24 @@
+<div class="page">
+  <mat-card class="example-card" *ngIf="project">
+    <mat-card-header>
+      <img mat-card-avatar [src]="project.logo" class="project-logo" />
+      <mat-card-title>{{ project.name }}</mat-card-title>
+      <mat-card-subtitle>{{ project.slogan }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{ project.about }}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <a
+        *ngFor="let link of project.links"
+        mat-button
+        [href]="[link.url]"
+        target="_blank"
+      >
+        {{ link.type }}
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</div>

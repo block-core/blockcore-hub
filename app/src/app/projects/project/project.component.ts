@@ -1,27 +1,27 @@
 import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApplicationState } from '../services/applicationstate';
-import { Utilities } from '../services/utilities';
-import { DataValidation } from '../services/data-validation';
-import { Circle, NostrProfileDocument } from '../services/interfaces';
-import { ProfileService } from '../services/profile';
-import { CircleService } from '../services/circle';
-import { CircleDialog } from '../shared/create-circle-dialog/create-circle-dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApplicationState } from '../../services/applicationstate';
+import { Utilities } from '../../services/utilities';
+import { DataValidation } from '../../services/data-validation';
+import { Circle, NostrProfileDocument } from '../../services/interfaces';
+import { ProfileService } from '../../services/profile';
+import { CircleService } from '../../services/circle';
+import { CircleDialog } from '../../shared/create-circle-dialog/create-circle-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthenticationService } from '../services/authentication';
-import { copyToClipboard } from '../shared/utilities';
+import { AuthenticationService } from '../../services/authentication';
+import { copyToClipboard } from '../../shared/utilities';
 import { Subscription, tap } from 'rxjs';
-import { DataService } from '../services/data';
-import { NavigationService } from '../services/navigation';
-import { ApiService } from '../legacy/services/api.service';
+import { DataService } from '../../services/data';
+import { NavigationService } from '../../services/navigation';
+import { ApiService } from '../../legacy/services/api.service';
 
 @Component({
-  selector: 'app-projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css'],
+  selector: 'app-project',
+  templateUrl: './project.component.html',
+  styleUrls: ['./project.component.css'],
 })
-export class ProjectsComponent {
+export class ProjectComponent {
   publicKey?: string | null;
   loading = false;
   searchTerm: any;
@@ -40,7 +40,8 @@ export class ProjectsComponent {
     private snackBar: MatSnackBar,
     private cd: ChangeDetectorRef,
     private ngZone: NgZone,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnDestroy() {
@@ -75,7 +76,9 @@ export class ProjectsComponent {
 
   getFollowingInCircle(id?: number) {
     if (id == null) {
-      return this.profileService.following.filter((f) => f.circle == null || f.circle == 0);
+      return this.profileService.following.filter(
+        (f) => f.circle == null || f.circle == 0
+      );
     } else {
       return this.profileService.following.filter((f) => f.circle == id);
     }
@@ -137,15 +140,26 @@ export class ProjectsComponent {
     });
   }
 
-  projects: any[] = [];
+  project: any;
 
   async ngOnInit() {
     this.appState.updateTitle('Projects');
-    this.appState.showBackButton = false;
+    this.appState.showBackButton = true;
     this.appState.actions = [];
 
-    this.projects = await this.apiService.projects();
+    this.subscriptions.push(
+      this.activatedRoute.paramMap.subscribe(async (params) => {
+        const id: any = params.get('id');
+        debugger;
 
+        if (!id) {
+          this.router.navigateByUrl('/projects');
+          return;
+        }
+
+        this.project = await this.apiService.project(id);
+      })
+    );
 
     // this.subscriptions.push(this.profileService.items$.subscribe((profiles) => (this.following = profiles)) as Subscription);
   }

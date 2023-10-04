@@ -3,14 +3,14 @@
 <div class="feed-page">
   <!-- <p>Circles is how you organize people you follow. Different circles can have different rules applied and circles is an important way to make the experience more enjoyable.</p> -->
 
-  <mat-card class="circle circle-container clickable" (click)="navigation.openFeed($event, circle)" *ngFor="let circle of projects">
+  <mat-card class="circle circle-container clickable" [routerLink]="['/projects', project._id]" *ngFor="let project of projects">
     <div class="circle-item">
       <!-- <mat-icon matListItemIcon [style.color]="circle.color">trip_origin</mat-icon> -->
-      <img [src]="circle.logo" class="project-logo">
+      <img [src]="project.logo" class="project-logo">
     </div>
     <div class="circle-item clickable">
-      {{ circle.name }}<br />
-      <span class="dimmed clickable"><span>{{ 'Circles.Count' | translate }}: {{ countMembers(circle) }}</span></span
+      {{ project.name }}<br />
+      <span class="dimmed clickable"><span>{{ 'Circles.Count' | translate }}: {{ countMembers(project) }}</span></span
       ><br />
       <!-- <span class="dimmed clickable"><span *ngIf="circle.public">{{ 'Circles.Public' | translate }}</span> <span *ngIf="!circle.public">{{ 'Circles.Private' | translate }}</span> - {{ circle.style | circlestyle }} - {{ 'Circles.Created' | translate }}: {{ circle.created | ago }}</span> -->
     </div>
@@ -24,18 +24,18 @@
           <mat-icon>copy_all</mat-icon>
           <span>{{ 'Circles.Copy' | translate }}</span>
         </button>
-        <button *ngIf="circle.id" mat-menu-item (click)="deleteCircle(circle.id)">
+        <button *ngIf="project.id" mat-menu-item (click)="deleteCircle(project.id)">
           <mat-icon>delete</mat-icon>
           <span>{{ 'Circles.DeleteCircle' | translate }}</span>
         </button>
       </mat-menu>
 
       <mat-menu #copyMenu="matMenu">
-        <button mat-menu-item (click)="copyPubKeys(circle)">
+        <button mat-menu-item (click)="copyPubKeys(project)">
           <mat-icon>content_copy</mat-icon>
           <span>{{ 'Circles.PublicKeysNpub' | translate }}</span>
         </button>
-        <button mat-menu-item (click)="copyPubKeysHex(circle)">
+        <button mat-menu-item (click)="copyPubKeysHex(project)">
           <mat-icon>content_copy</mat-icon>
           <span>{{ 'Circles.PublicKeysHex' | translate }}</span>
         </button>

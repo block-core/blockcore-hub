@@ -895,12 +895,7 @@ select {
 
 .dimmed {
   font-size: 0.9em;
-  color: rgba(0, 0, 0, 0.65);
-}
-
-.dark .dimmed {
-  font-size: 0.9em;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--mat-card-subtitle-text-color);
 }
 
 small {

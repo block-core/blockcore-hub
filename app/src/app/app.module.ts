@@ -156,6 +156,7 @@ import { ZappersListDialogComponent } from './shared/zappers-list-dialog/zappers
 import { ExampleComponent } from './example/example';
 import { ProjectsComponent } from './projects/projects.component';
 import { FilesComponent } from './files/files';
+import { ProjectComponent } from './projects/project/project.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -249,7 +250,8 @@ import { FilesComponent } from './files/files';
     ZappersListDialogComponent,
     ExampleComponent,
     ProjectsComponent,
-    FilesComponent
+    FilesComponent,
+    ProjectComponent
   ],
   imports: [
     HttpClientModule,

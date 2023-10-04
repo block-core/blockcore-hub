@@ -42,6 +42,17 @@ export class ApiService {
     return result;
   }
 
+  async project(id: string) {
+    const response = await fetch(`${environment.apiUrl}/project/${id}`);
+
+    if (response.status >= 400) {
+      throw new Error(response.statusText);
+    }
+
+    const result = await response.json();
+    return result;
+  }
+
   async users() {
     const response = await fetch(`${environment.apiUrl}/user`);
 
