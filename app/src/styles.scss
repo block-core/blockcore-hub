@@ -393,7 +393,14 @@ app-profile-actions {
 .active-nav-link {
   // background-color: red !important;
   background-color: rgba(0, 0, 0, 0.15) !important;
-  border-right: 3px solid var(--app-primary-color) !important;
+  border-left: 3px solid var(--app-primary-color) !important;
+}
+
+.highlighted-menu-items .mat-mdc-menu-item {
+  border-left: 3px solid transparent;
+
+  padding-left: 13px;
+  padding-right: 13px;
 }
 
 /** Triggers scrolling if the vertical height is larger then horizontal for profile image popups and window size. */
