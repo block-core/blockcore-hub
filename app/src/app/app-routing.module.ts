@@ -35,6 +35,7 @@ import { EditorBadgesComponent } from './editor-badges/editor';
 import { BadgeComponent } from './badge/badge';
 import { ExampleComponent } from './example/example';
 import { ProjectsComponent } from './projects/projects.component';
+import { FilesComponent } from './files/files';
 
 const routes: Routes = [
   {
@@ -80,6 +81,14 @@ const routes: Routes = [
   {
     path: 'notes',
     component: NotesComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      data: LoadingResolverService,
+    },
+  },
+  {
+    path: 'files',
+    component: FilesComponent,
     canActivate: [AuthGuard],
     resolve: {
       data: LoadingResolverService,

@@ -234,6 +234,16 @@
           <span *ngIf="displayLabels">{{ 'App.Circles' | translate }}</span>
         </a>
         <a
+        [routerLink]="['/files']"
+        mat-menu-item
+        (click)="toggleMenu()"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="active-nav-link"
+      >
+        <mat-icon>folder</mat-icon>
+        <span *ngIf="displayLabels">{{ 'App.Files' | translate }}</span>
+      </a>
+        <a
           [routerLink]="['/projects']"
           mat-menu-item
           (click)="toggleMenu()"

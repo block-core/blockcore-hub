@@ -155,6 +155,7 @@ import { DragScrollModule } from 'ngx-drag-scroll';
 import { ZappersListDialogComponent } from './shared/zappers-list-dialog/zappers-list-dialog.component';
 import { ExampleComponent } from './example/example';
 import { ProjectsComponent } from './projects/projects.component';
+import { FilesComponent } from './files/files';
 @NgModule({
   declarations: [
     AppComponent,
@@ -247,7 +248,8 @@ import { ProjectsComponent } from './projects/projects.component';
     BadgeComponent,
     ZappersListDialogComponent,
     ExampleComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    FilesComponent
   ],
   imports: [
     HttpClientModule,
