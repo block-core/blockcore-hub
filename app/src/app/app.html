@@ -19,8 +19,7 @@
     <img
       class="logo-icon-title-bar"
       height="24"
-      width="24"
-      src="assets/icons/icon-128x128.png"
+      src="assets/freecityplatform.png"
     />
     <app-media-player
       *ngIf="options.values.showMediaPlayer"
@@ -44,8 +43,7 @@
       class="logo-icon"
       *ngIf="appState.showLogo && !appState.showSearch && (isHandset$ | async) === false"
       height="38"
-      width="38"
-      src="assets/icons/icon-128x128.png"
+      src="assets/freecityplatform.png"
     />
 
     <button
@@ -119,8 +117,12 @@
       <mat-icon>search</mat-icon>
     </button>
 
-    <button mat-icon-button [routerLink]="['/notifications']">
+    <button *ngIf="!appState.showSearch" mat-icon-button [routerLink]="['/notifications']">
       <mat-icon>notifications</mat-icon>
+    </button>
+    
+    <button *ngIf="!appState.showSearch" mat-icon-button [routerLink]="['/settings']">
+      <mat-icon>settings</mat-icon>
     </button>
 
     <!-- <a
@@ -383,6 +385,9 @@
               <p>{{ profile?.about }}</p>
             </div>
           </div>
+
+          
+
           <a [routerLink]="['/profile']" (click)="toggleProfileMenu()">
             <div class="avatarcontainer">
               <img
@@ -455,7 +460,7 @@
           <mat-icon>play_circle</mat-icon>
           <span>{{ 'App.MediaPlayer' | translate }}</span>
         </a>
-        <a
+        <!-- <a
           [routerLink]="['/settings']"
           mat-menu-item
           (click)="toggleProfileMenu()"
@@ -464,7 +469,7 @@
         >
           <mat-icon>settings</mat-icon>
           <span>{{ 'App.Settings' | translate }}</span>
-        </a>
+        </a> -->
         <a
           [routerLink]="['/about']"
           mat-menu-item
