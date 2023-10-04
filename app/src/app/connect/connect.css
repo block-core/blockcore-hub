@@ -127,6 +127,7 @@
 .connect-content {
   flex-grow: 2;
   margin-top: 80px;
+  /* background: transparent url("/assets/bg.jpg") no-repeat right center; */
   background: transparent url("/assets/bg.jpg") no-repeat right center;
   background-size: cover;
   background-attachment: fixed;
@@ -319,4 +320,9 @@
     height: 64px;
     width: 64px;
   }
+}
+
+
+.connect-footer {
+  height: 1000px;
 }
