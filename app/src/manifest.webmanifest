@@ -5,7 +5,7 @@
   "description": "Free City Hub is your portal into all apps and services that is available on the Free City Platform",
   "orientation": "any",
   "short_name": "FreeCity",
-  "theme_color": "#fac400",
+  "theme_color": "#303030",
   "background_color": "#303030",
   "display": "standalone",
   "scope": "./",

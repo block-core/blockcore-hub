@@ -244,8 +244,21 @@ body {
 }
 
 .app-toolbar {
+  background-color: var(--mat-sidenav-content-background-color) !important;
   flex: 0 0 64px;
 }
+
+.mat-sidenav {
+  background-color: var(--mat-sidenav-content-background-color) !important;
+  border-right: 0px !important;
+}
+
+// .mat-drawer-side {
+//   box-shadow: none;
+//   border-right-color: var(--mat-sidenav-container-divider-color);
+//   border-right-width: 1px;
+//   border-right-style: solid;
+// }
 
 @media only screen and (max-width: 599px) {
   .app-toolbar {
@@ -261,6 +274,8 @@ body {
 
 .full-page {
   height: 100%;
+  border-radius: 10px;
+  background-color: var(--mat-sidenav-container-background-color);
 }
 
 .full-page-flex {
