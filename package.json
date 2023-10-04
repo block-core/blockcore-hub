@@ -1,6 +1,6 @@
 {
   "name": "blockcore-hub",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scripts": {
     "version": "node -p \"require('./package.json').version\""
   },
