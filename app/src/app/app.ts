@@ -317,7 +317,9 @@ export class AppComponent {
         this.appState.approved = authenticated.user.approved;
         this.appState.setInitialized();
       } else {
-        debugger;
+        // Use this to set a debug admin user during development.
+        // this.appState.debugUser();
+
         this.appState.reset();
         this.appState.setInitialized();
         this.router.navigateByUrl('/connect');

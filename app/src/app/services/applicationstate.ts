@@ -78,6 +78,14 @@ export class ApplicationState {
     this.approved = false;
   }
 
+  debugUser() {
+    this.identity =
+      'did:is:b0204d42c4d14ce5135ecb198ae97e8c296149daaed0bdebcd3a79553d3d386a';
+    this.authenticated = true;
+    this.admin = true;
+    this.approved = true;
+  }
+
   getPublicKey(): string {
     return this.authService.authInfo$.getValue().publicKeyHex!;
   }

@@ -150,7 +150,6 @@ export class ProjectComponent {
     this.subscriptions.push(
       this.activatedRoute.paramMap.subscribe(async (params) => {
         const id: any = params.get('id');
-        debugger;
 
         if (!id) {
           this.router.navigateByUrl('/projects');
