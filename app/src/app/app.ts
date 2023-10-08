@@ -51,7 +51,6 @@ export class AppComponent {
   @ViewChild('drawer') drawer!: MatSidenav;
   @ViewChild('draweraccount') draweraccount!: MatSidenav;
   @ViewChild('searchInput') searchInput!: ElementRef;
-  authenticated = false;
   bgimagePath = '/assets/profile-bg.png';
   profile: NostrProfileDocument | undefined;
   visibilityHandler: any;
@@ -108,6 +107,12 @@ export class AppComponent {
       const param = Object.fromEntries(new URLSearchParams(queryParam)) as any;
       this.appState.params = param;
 
+      // Payload is a JSON-object that is returned from the login process from the Wallet web app.
+      if (this.appState.params.payload) {
+        const payload = JSON.parse(this.appState.params.payload);
+        this.appState.payload = payload;
+      }
+
       if (this.appState.params.nostr) {
         const protocolRequest = new NostrProtocolRequest();
         const protocolData = protocolRequest.decode(this.appState.params.nostr);
@@ -119,15 +124,15 @@ export class AppComponent {
       }
     }
 
-    this.authService.authInfo$.subscribe(async (auth) => {
-      this.state.pubkey = auth.publicKeyHex;
+    // this.authService.authInfo$.subscribe(async (auth) => {
+    //   this.state.pubkey = auth.publicKeyHex;
 
-      this.authenticated = auth.authenticated();
+    //   this.authenticated = auth.authenticated();
 
-      if (this.authenticated) {
-        await this.initialize();
-      }
-    });
+    //   if (this.authenticated) {
+    //     await this.initialize();
+    //   }
+    // });
 
     this.profileService.profile$.subscribe((profile) => {
       this.profile = profile;
@@ -306,6 +311,7 @@ export class AppComponent {
   loading = true;
 
   async ngOnInit() {
+    debugger;
     this.theme.init();
 
     // Verify if the user is already authenticated.
@@ -320,6 +326,7 @@ export class AppComponent {
         this.appState.admin = authenticated.user.admin;
         this.appState.approved = authenticated.user.approved;
       } else {
+        debugger;
         this.appState.reset();
         this.router.navigateByUrl('/connect');
       }

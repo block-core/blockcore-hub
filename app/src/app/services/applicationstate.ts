@@ -40,17 +40,36 @@ export class ApplicationState {
     this.title$ = this.titleChanged.asObservable();
 
     this.initialized$ = this.initializedChanged.asObservable();
+
+    this.authenticated$ = this.authenticatedChanged.asObservable();
   }
 
   identity: any;
 
   short: any;
 
-  authenticated: boolean = false;
+  #authenticated: boolean = false;
+
+  get authenticated() {
+    return this.#authenticated;
+  }
+
+  set authenticated(value: boolean) {
+    this.#authenticated = value;
+    this.authenticatedChanged.next(value);
+  }
+
+  authenticated$: Observable<boolean>;
+
+  authenticatedChanged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
   approved: boolean = false;
 
   admin = false;
+
+  payload: any;
 
   reset() {
     this.identity = null;

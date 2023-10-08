@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Inject, NgZone } from '@angular/core';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { ConsentDialog } from './consent-dialog/consent-dialog';
 import { SpacesService } from '../services/spaces';
 import { WebProvider } from '@blockcore/provider';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-connect',
@@ -23,8 +24,13 @@ export class ConnectComponent {
   consent: boolean = false;
   readOnlyLogin = false;
   provider?: WebProvider;
+  apple = false;
+
+  deviceType = 'desktop';
+  loginAction = 'action';
 
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     public spacesService: SpacesService,
     public theme: ThemeService,
     private appState: ApplicationState,
@@ -36,7 +42,22 @@ export class ConnectComponent {
     private snackBar: MatSnackBar,
     private ngZone: NgZone,
     public dialog: MatDialog
-  ) {}
+  ) {
+    // if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    //   console.log('This is an iOS device.');
+    //   this.apple = true;
+    // } else {
+    //   console.log('This is not an iOS device!');
+    // }
+
+    const ua = navigator.userAgent;
+
+    if (/android/i.test(ua)) {
+      this.deviceType = 'android';
+    } else if (/iPad|iPhone|iPod/.test(ua)) {
+      this.deviceType = 'apple';
+    }
+  }
 
   persist() {
     localStorage.setItem('blockcore:hub:consent', this.consent.toString());
@@ -75,18 +96,35 @@ export class ConnectComponent {
     return result;
   }
 
+  async login() {
+    const challengeResult = await this.authService.challenge();
+    const challenge = challengeResult.challenge;
+
+    // this.document.location.href = `https://wallet.blockcore.net/index.html?challenge=${challenge}&methods=did%3Ais&action=login&content={}&params={}&app=Free City Hub`;
+
+    const params = JSON.stringify([
+      {
+        callback: 'https://hub.freeplatform.city/index.html?payload=%s',
+        // callback: 'http://localhost:5050/index.html?payload=%s',
+        reason: 'Website login',
+        methods: 'did:is',
+        challenge: challenge,
+      },
+    ]);
+    // const content = JSON.stringify({ content: challenge });
+    const content = challenge;
+
+    this.document.location.href = `https://wallet.freeplatform.city/index.html?action=did.request&content=${content}&params=${params}&app=Free City Hub`;
+  }
+
   async connect() {
     if (!this.provider) {
       this.provider = await WebProvider.Create();
     }
 
     try {
-      // console.log('authenticateUrl:', this.authenticateUrl);
-
       const challengeResult = await this.authService.challenge();
       const challenge = challengeResult.challenge;
-
-      console.log('challengeResult:', challengeResult);
 
       // Request a JWS from the Web5 wallet.
       const result = await this.request('did.request', [
@@ -97,74 +135,34 @@ export class ConnectComponent {
         },
       ]);
 
-      const verify = await this.authService.verify(result.response);
-      console.log('VERIFY:', verify);
-
-      if (verify.error) {
-        this.appState.reset();
-        this.snackBar.open(verify.error, 'OK', { duration: 3000 });
-      } else {
-        this.appState.authenticated = true;
-        this.appState.identity = verify.user.did;
-        this.appState.admin = verify.user.admin;
-        this.appState.approved = verify.user.approved;
-
-        // const publicKey = await gt.nostr.getPublicKey();
-        const userInfo = this.authService.createDidUser(verify.user.did);
-
-        localStorage.setItem('blockcore:hub:pubkey', verify.user.did);
-
-        this.authService.authInfo$.next(userInfo);
-
-        if (userInfo.authenticated()) {
-          this.router.navigateByUrl('/');
-        }
-      }
-
-      //   // const identity = new BlockcoreIdentity(null);
-      //   // this.appState.identity = content.user.did;
-      //   // this.appState.short = identity.shorten(content.user.did);
-      //   // console.log(this.appState);
-
-      //   // this.appState.authenticated = true;
-      //   // this.router.navigateByUrl('/');
-
-      //   // const postResponse2 = await fetch(this.authenticateUrl + '/protected', {
-      //   //   method: 'GET',
-      //   //   headers: {
-      //   //     Accept: 'application/json',
-      //   //     'Content-Type': 'application/json',
-      //   //   },
-      //   // });
-
-      //   // if (postResponse2.status == 200) {
-      //   //   console.log('PROTECTED WORKS!!!!');
-      //   //   // const content2 = await postResponse2.json();
-      //   //   // console.log(content2);
-
-      //   //   // // Make sure we keep the URL which is used by the setup account page.
-      //   //   // // this.appState.vaultUrl = this.vault.url;
-      //   //   // this.appState.authenticated = true;
-      //   //   // this.router.navigateByUrl('/');
-
-      //   //   // Make the current vault available in the app state.
-      //   //   // this.appState.vault = result;
-      //   //   // this.appState.authenticated = true;
-      //   //   // this.router.navigateByUrl('/');
-      //   // } else {
-      //   //   console.log('PROTECTED NO!');
-      //   //   // this.error = postResponse.statusText;
-      //   // }
-      // } else {
-      //   // this.error = postResponse.statusText;
-      //   console.log(
-      //     'Failed to authenticate. Status: ',
-      //     postResponse.statusText
-      //   );
-      // }
+      this.parseConnectResult(result.response);
     } catch (err) {
-      // this.error = err.toString();
       console.error('Failed to authenticate.', err);
+    }
+  }
+
+  async parseConnectResult(response: any) {
+    const verify = await this.authService.verify(response);
+
+    if (verify.error) {
+      this.appState.reset();
+      this.snackBar.open(verify.error, 'OK', { duration: 3000 });
+    } else {
+      this.appState.authenticated = true;
+      this.appState.identity = verify.user.did;
+      this.appState.admin = verify.user.admin;
+      this.appState.approved = verify.user.approved;
+
+      // const publicKey = await gt.nostr.getPublicKey();
+      const userInfo = this.authService.createDidUser(verify.user.did);
+
+      localStorage.setItem('blockcore:hub:pubkey', verify.user.did);
+
+      this.authService.authInfo$.next(userInfo);
+
+      if (userInfo.authenticated()) {
+        this.router.navigateByUrl('/');
+      }
     }
   }
 
@@ -208,9 +206,22 @@ export class ConnectComponent {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.consent = localStorage.getItem('blockcore:hub:consent') === 'true';
     this.checkForExtension();
+
+    debugger;
+    if (this.appState.payload) {
+      let copyOfPayload = this.appState.payload;
+      this.appState.payload = null;
+      await this.parseConnectResult(copyOfPayload);
+
+      // debugger;
+
+      // if (!this.appState.approved) {
+      //   this.router.navigateByUrl('/create');
+      // }
+    }
   }
 
   ngOnDestroy() {
@@ -230,7 +241,7 @@ export class ConnectComponent {
     this.checkedTimes++;
     const gt = globalThis as any;
 
-    if (gt.nostr) {
+    if (gt.blockcore) {
       this.searchingForExtension = false;
       this.extensionDiscovered = true;
       return;

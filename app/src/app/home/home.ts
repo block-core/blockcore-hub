@@ -4,9 +4,21 @@ import { ApplicationState } from '../services/applicationstate';
 import { Utilities } from '../services/utilities';
 import { relayInit, Relay, Event } from 'nostr-tools';
 import { DataValidation } from '../services/data-validation';
-import { NostrEvent, NostrEventDocument, NostrNoteDocument, NostrProfileDocument } from '../services/interfaces';
+import {
+  NostrEvent,
+  NostrEventDocument,
+  NostrNoteDocument,
+  NostrProfileDocument,
+} from '../services/interfaces';
 import { ProfileService } from '../services/profile';
-import { map, Observable, shareReplay, Subscription, debounceTime, fromEvent } from 'rxjs';
+import {
+  map,
+  Observable,
+  shareReplay,
+  Subscription,
+  debounceTime,
+  fromEvent,
+} from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { OptionsService } from '../services/options';
@@ -15,7 +27,11 @@ import { NavigationService } from '../services/navigation';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../services/data';
 import { StorageService } from '../services/storage';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { UIService } from '../services/ui';
 
 interface DefaultProfile {
@@ -47,9 +63,27 @@ export class HomeComponent {
   subscriptions: Subscription[] = [];
 
   lists = [
-    { name: 'Nostr', about: 'Influencial nostr developers and community people', pubkey: 'npub15xrwvftyzynahpl5fmpuv9wtkg9q52j8q73saw59u8tmx63ktx8sfclgss', pubkeyhex: 'a186e625641127db87f44ec3c615cbb20a0a2a4707a30eba85e1d7b36a36598f' },
-    { name: 'Bitcoin', about: 'Influencial Bitcoin people', pubkey: 'npub175ag9cus82a0zzpkheaglnudpvsc8q046z82cyz9gmauzlve6r2s4k9fpm', pubkeyhex: 'f53a82e3903abaf10836be7a8fcf8d0b218381f5d08eac104546fbc17d99d0d5' },
-    { name: 'Blockcore', about: 'Follow the Blockcore developers', pubkey: 'npub1zfy0r7x8s3xukajewkmmzxjj3wpfan7apj5y7szz7y740wtf6p5q3tdyy9', pubkeyhex: '1248f1f8c7844dcb765975b7b11a528b829ecfdd0ca84f4042f13d57b969d068' },
+    {
+      name: 'Nostr',
+      about: 'Influencial nostr developers and community people',
+      pubkey: 'npub15xrwvftyzynahpl5fmpuv9wtkg9q52j8q73saw59u8tmx63ktx8sfclgss',
+      pubkeyhex:
+        'a186e625641127db87f44ec3c615cbb20a0a2a4707a30eba85e1d7b36a36598f',
+    },
+    {
+      name: 'Bitcoin',
+      about: 'Influencial Bitcoin people',
+      pubkey: 'npub175ag9cus82a0zzpkheaglnudpvsc8q046z82cyz9gmauzlve6r2s4k9fpm',
+      pubkeyhex:
+        'f53a82e3903abaf10836be7a8fcf8d0b218381f5d08eac104546fbc17d99d0d5',
+    },
+    {
+      name: 'Blockcore',
+      about: 'Follow the Blockcore developers',
+      pubkey: 'npub1zfy0r7x8s3xukajewkmmzxjj3wpfan7apj5y7szz7y740wtf6p5q3tdyy9',
+      pubkeyhex:
+        '1248f1f8c7844dcb765975b7b11a528b829ecfdd0ca84f4042f13d57b969d068',
+    },
   ];
 
   @ViewChild('picker') picker: unknown;
@@ -60,40 +94,54 @@ export class HomeComponent {
 
   defaults: DefaultProfile[] = [
     {
-      pubkeynpub: 'npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6',
-      pubkey: '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
+      pubkeynpub:
+        'npub180cvv07tjdrrgpa0j7j7tmnyl2yr6yr7l8j4s3evf6u64th6gkwsyjh6w6',
+      pubkey:
+        '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
       name: 'fiatjaf',
-      picture: 'https://pbs.twimg.com/profile_images/539211568035004416/sBMjPR9q_normal.jpeg',
+      picture:
+        'https://pbs.twimg.com/profile_images/539211568035004416/sBMjPR9q_normal.jpeg',
       about: 'buy my merch at fiatjaf store',
       checked: false,
     },
     {
-      pubkeynpub: 'npub1sg6plzptd64u62a878hep2kev88swjh3tw00gjsfl8f237lmu63q0uf63m',
-      pubkey: '82341f882b6eabcd2ba7f1ef90aad961cf074af15b9ef44a09f9d2a8fbfbe6a2',
+      pubkeynpub:
+        'npub1sg6plzptd64u62a878hep2kev88swjh3tw00gjsfl8f237lmu63q0uf63m',
+      pubkey:
+        '82341f882b6eabcd2ba7f1ef90aad961cf074af15b9ef44a09f9d2a8fbfbe6a2',
       name: 'jack',
-      picture: 'https://pbs.twimg.com/profile_images/1115644092329758721/AFjOr-K8_normal.jpg',
+      picture:
+        'https://pbs.twimg.com/profile_images/1115644092329758721/AFjOr-K8_normal.jpg',
       about: 'bitcoin...twttr/@jack',
       checked: false,
     },
     {
-      pubkeynpub: 'npub1xtscya34g58tk0z605fvr788k263gsu6cy9x0mhnm87echrgufzsevkk5s',
-      pubkey: '32e1827635450ebb3c5a7d12c1f8e7b2b514439ac10a67eef3d9fd9c5c68e245',
+      pubkeynpub:
+        'npub1xtscya34g58tk0z605fvr788k263gsu6cy9x0mhnm87echrgufzsevkk5s',
+      pubkey:
+        '32e1827635450ebb3c5a7d12c1f8e7b2b514439ac10a67eef3d9fd9c5c68e245',
       name: 'jb55',
-      picture: 'https://pbs.twimg.com/profile_images/1362882895669436423/Jzsp1Ikr_normal.jpg',
+      picture:
+        'https://pbs.twimg.com/profile_images/1362882895669436423/Jzsp1Ikr_normal.jpg',
       about: 'damus.io author. bitcoin and nostr dev',
       checked: false,
     },
     {
-      pubkeynpub: 'npub1v4v57fu60zvc9d2uq23cey4fnwvxlzga9q2vta2n6xalu03rs57s0mxwu8',
-      pubkey: '65594f279a789982b55c02a38c92a99b986f891d2814c5f553d1bbfe3e23853d',
+      pubkeynpub:
+        'npub1v4v57fu60zvc9d2uq23cey4fnwvxlzga9q2vta2n6xalu03rs57s0mxwu8',
+      pubkey:
+        '65594f279a789982b55c02a38c92a99b986f891d2814c5f553d1bbfe3e23853d',
       name: 'hampus',
-      picture: 'https://pbs.twimg.com/profile_images/1517505111991504896/9qixSAMn_normal.jpg',
+      picture:
+        'https://pbs.twimg.com/profile_images/1517505111991504896/9qixSAMn_normal.jpg',
       about: '',
       checked: false,
     },
     {
-      pubkeynpub: 'npub1zl3g38a6qypp6py2z07shggg45cu8qex992xpss7d8zrl28mu52s4cjajh',
-      pubkey: '17e2889fba01021d048a13fd0ba108ad31c38326295460c21e69c43fa8fbe515',
+      pubkeynpub:
+        'npub1zl3g38a6qypp6py2z07shggg45cu8qex992xpss7d8zrl28mu52s4cjajh',
+      pubkey:
+        '17e2889fba01021d048a13fd0ba108ad31c38326295460c21e69c43fa8fbe515',
       name: 'sondreb',
       picture: 'https://sondreb.com/favicon.png',
       about: 'Developer 🦸‍♂️ of Blockcore Notes and Blockcore Wallet',
@@ -227,6 +275,8 @@ export class HomeComponent {
   ];
 
   async ngOnInit() {
+    console.log('ININT ON HOME!!!');
+
     this.options.values.privateFeed = true;
 
     this.formGroup = this.formBuilder.group({
