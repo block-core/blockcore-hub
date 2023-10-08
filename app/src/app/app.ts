@@ -241,7 +241,10 @@ export class AppComponent {
         this.options.values.dir = 'ltr';
       }
     }
+  }
 
+  /** Run initialize whenever user has been authenticated. */
+  async initializeStorage() {
     // await this.storage.open();
     // await this.storage.initialize();
     await this.db.initialize('blockcore-' + this.appState.getPublicKey());
@@ -290,19 +293,6 @@ export class AppComponent {
       }
     });
 
-    // this.relayService.
-
-    // .subscribe(async (profile) => {
-    //   // TODO: Figure out why we get promises from this observable.
-    //   const p = await profile;
-
-    //   if (!p) {
-    //     return;
-    //   }
-
-    //   await this.profileService.updateProfile(p.pubkey, p);
-    // });
-
     this.appState.setInitialized();
   }
 
@@ -311,23 +301,25 @@ export class AppComponent {
   loading = true;
 
   async ngOnInit() {
-    debugger;
     this.theme.init();
+
+    // Initialize language and culture.
+    await this.initialize();
 
     // Verify if the user is already authenticated.
     if (!this.appState.authenticated) {
       const authenticated = await this.authService.authenticated();
-
-      debugger;
 
       if (authenticated && !authenticated.error) {
         this.appState.authenticated = true;
         this.appState.identity = authenticated.user.did;
         this.appState.admin = authenticated.user.admin;
         this.appState.approved = authenticated.user.approved;
+        this.appState.setInitialized();
       } else {
         debugger;
         this.appState.reset();
+        this.appState.setInitialized();
         this.router.navigateByUrl('/connect');
       }
     }
