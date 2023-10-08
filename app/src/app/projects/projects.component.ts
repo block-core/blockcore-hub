@@ -14,7 +14,7 @@ import { copyToClipboard } from '../shared/utilities';
 import { Subscription, tap } from 'rxjs';
 import { DataService } from '../services/data';
 import { NavigationService } from '../services/navigation';
-import { ApiService } from '../legacy/services/api.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-projects',
@@ -75,7 +75,9 @@ export class ProjectsComponent {
 
   getFollowingInCircle(id?: number) {
     if (id == null) {
-      return this.profileService.following.filter((f) => f.circle == null || f.circle == 0);
+      return this.profileService.following.filter(
+        (f) => f.circle == null || f.circle == 0
+      );
     } else {
       return this.profileService.following.filter((f) => f.circle == id);
     }
@@ -145,7 +147,6 @@ export class ProjectsComponent {
     this.appState.actions = [];
 
     this.projects = await this.apiService.projects();
-
 
     // this.subscriptions.push(this.profileService.items$.subscribe((profiles) => (this.following = profiles)) as Subscription);
   }

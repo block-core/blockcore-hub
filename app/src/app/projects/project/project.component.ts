@@ -14,7 +14,7 @@ import { copyToClipboard } from '../../shared/utilities';
 import { Subscription, tap } from 'rxjs';
 import { DataService } from '../../services/data';
 import { NavigationService } from '../../services/navigation';
-import { ApiService } from '../../legacy/services/api.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-project',
