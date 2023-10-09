@@ -133,6 +133,10 @@
   background-attachment: fixed;
 }
 
+.backdoor {
+  cursor: default;
+}
+
 .card {
   /* background-color: white; */
   border-radius: 10px;
@@ -321,7 +325,6 @@
     width: 64px;
   }
 }
-
 
 .connect-footer {
   height: 1000px;

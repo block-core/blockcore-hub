@@ -48,6 +48,8 @@ export class ApplicationState {
 
   short: any;
 
+  enableDebugUser = false;
+
   #authenticated: boolean = false;
 
   get authenticated() {
