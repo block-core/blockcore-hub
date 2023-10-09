@@ -2,7 +2,7 @@
 </div> -->
 
 <div
-  *ngIf="!authenticated"
+  *ngIf="!appState.authenticated"
   [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }"
   [dir]="appState.documentDirection"
 >
@@ -11,7 +11,7 @@
 
 <div
   class="app-container"
-  *ngIf="authenticated"
+  *ngIf="appState.authenticated"
   [ngClass]="{ rightToLeft: appState.documentDirection === 'rtl' }"
   [dir]="appState.documentDirection"
 >

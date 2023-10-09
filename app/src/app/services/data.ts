@@ -51,7 +51,7 @@ import { QueueService } from './queue.service';
 import { UIService } from './ui';
 import { CircleService } from './circle';
 import { NostrService } from './nostr';
-import { ApiService } from '../legacy/services/api.service';
+import { ApiService } from '../services/api.service';
 
 @Injectable({
   providedIn: 'root',

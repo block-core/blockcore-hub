@@ -51,7 +51,6 @@ export class AppComponent {
   @ViewChild('drawer') drawer!: MatSidenav;
   @ViewChild('draweraccount') draweraccount!: MatSidenav;
   @ViewChild('searchInput') searchInput!: ElementRef;
-  authenticated = false;
   bgimagePath = '/assets/profile-bg.png';
   profile: NostrProfileDocument | undefined;
   visibilityHandler: any;
@@ -108,6 +107,12 @@ export class AppComponent {
       const param = Object.fromEntries(new URLSearchParams(queryParam)) as any;
       this.appState.params = param;
 
+      // Payload is a JSON-object that is returned from the login process from the Wallet web app.
+      if (this.appState.params.payload) {
+        const payload = JSON.parse(this.appState.params.payload);
+        this.appState.payload = payload;
+      }
+
       if (this.appState.params.nostr) {
         const protocolRequest = new NostrProtocolRequest();
         const protocolData = protocolRequest.decode(this.appState.params.nostr);
@@ -119,15 +124,15 @@ export class AppComponent {
       }
     }
 
-    this.authService.authInfo$.subscribe(async (auth) => {
-      this.state.pubkey = auth.publicKeyHex;
+    // this.authService.authInfo$.subscribe(async (auth) => {
+    //   this.state.pubkey = auth.publicKeyHex;
 
-      this.authenticated = auth.authenticated();
+    //   this.authenticated = auth.authenticated();
 
-      if (this.authenticated) {
-        await this.initialize();
-      }
-    });
+    //   if (this.authenticated) {
+    //     await this.initialize();
+    //   }
+    // });
 
     this.profileService.profile$.subscribe((profile) => {
       this.profile = profile;
@@ -236,7 +241,10 @@ export class AppComponent {
         this.options.values.dir = 'ltr';
       }
     }
+  }
 
+  /** Run initialize whenever user has been authenticated. */
+  async initializeStorage() {
     // await this.storage.open();
     // await this.storage.initialize();
     await this.db.initialize('blockcore-' + this.appState.getPublicKey());
@@ -285,19 +293,6 @@ export class AppComponent {
       }
     });
 
-    // this.relayService.
-
-    // .subscribe(async (profile) => {
-    //   // TODO: Figure out why we get promises from this observable.
-    //   const p = await profile;
-
-    //   if (!p) {
-    //     return;
-    //   }
-
-    //   await this.profileService.updateProfile(p.pubkey, p);
-    // });
-
     this.appState.setInitialized();
   }
 
@@ -308,19 +303,25 @@ export class AppComponent {
   async ngOnInit() {
     this.theme.init();
 
+    // Initialize language and culture.
+    await this.initialize();
+
     // Verify if the user is already authenticated.
     if (!this.appState.authenticated) {
       const authenticated = await this.authService.authenticated();
-
-      debugger;
 
       if (authenticated && !authenticated.error) {
         this.appState.authenticated = true;
         this.appState.identity = authenticated.user.did;
         this.appState.admin = authenticated.user.admin;
         this.appState.approved = authenticated.user.approved;
+        this.appState.setInitialized();
       } else {
+        // Use this to set a debug admin user during development.
+        // this.appState.debugUser();
+
         this.appState.reset();
+        this.appState.setInitialized();
         this.router.navigateByUrl('/connect');
       }
     }

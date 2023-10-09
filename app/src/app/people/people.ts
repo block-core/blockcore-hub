@@ -31,7 +31,7 @@ import { DataService } from '../services/data';
 import { CircleService } from '../services/circle';
 import { OptionsService } from '../services/options';
 import { MetricService } from '../services/metric-service';
-import { ApiService } from '../legacy/services/api.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-people',

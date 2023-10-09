@@ -14,7 +14,7 @@ import { copyToClipboard } from '../../shared/utilities';
 import { Subscription, tap } from 'rxjs';
 import { DataService } from '../../services/data';
 import { NavigationService } from '../../services/navigation';
-import { ApiService } from '../../legacy/services/api.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-project',
@@ -150,7 +150,6 @@ export class ProjectComponent {
     this.subscriptions.push(
       this.activatedRoute.paramMap.subscribe(async (params) => {
         const id: any = params.get('id');
-        debugger;
 
         if (!id) {
           this.router.navigateByUrl('/projects');

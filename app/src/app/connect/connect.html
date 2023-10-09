@@ -45,7 +45,7 @@
         mat-flat-button
         color="primary"
       >
-        Connect <span class="hide-tiny">using extension</span>
+        Login <span class="hide-tiny">(extension)</span>
       </button>
       <button
         class="start-button"
@@ -64,7 +64,7 @@
         <h1 class="centered">
           Free City Hub is your portal into your Free City
         </h1>
-        <p class="centered" *ngIf="consent">
+        <!-- <p class="centered" *ngIf="consent">
           <button
             class="start-button"
             color="primary"
@@ -81,7 +81,8 @@
           >
             Log in</button
           ><br /><br />
-        </p>
+        </p> -->
+
         <p class="centered" *ngIf="!consent">
           <button
             class="start-button"
@@ -92,6 +93,69 @@
             Give consent
           </button>
         </p>
+
+        <div *ngIf="consent">
+          <p>
+            To login to Free City Hub, you need a decentralized identity (DID).
+            You can use the Free City Wallet (<a
+              href="https://chrome.google.com/webstore/detail/smart-city-platform/bmmhjnaohafphhlecmkkiaaglcebcapn"
+              target="_blank"
+              >extension</a
+            >
+            or
+            <a href="https://wallet.freeplatform.city/" target="_blank"
+              >web app</a
+            >) to create a new DID.
+          </p>
+
+          <div *ngIf="deviceType == 'apple'">
+            <p>
+              You're using an Apple product. Unfortunately Apple is working hard
+              to destroy the free web and has crippled the support for web based
+              applications (PWA) on their devices.
+            </p>
+            <p>
+              To login using Apple mobile device, you can only use the web app option.
+            </p>
+            <p class="centered">
+              <br />
+              <button (click)="login()" color="primary" mat-fab extended>
+                <mat-icon>login</mat-icon>
+                Login (web app)
+              </button>
+            </p>
+          </div>
+<!-- 
+          <p *ngIf="deviceType == 'android'">
+          </p> -->
+
+          <div *ngIf="deviceType == 'desktop' || deviceType == 'android'">
+            <!-- <p>
+              You're using a desktop browser and can install the Free City
+              Wallet extension for Brave, Chrome and Edge. This extension allows
+              you to login to the Free City Hub using a decentralized identity
+              (DID).
+            </p> -->
+
+            <p class="centered">
+              <button
+              *ngIf="extensionDiscovered"
+              (click)="connect()"
+              mat-fab
+              extended
+              color="primary"
+            >
+            <mat-icon>login</mat-icon>
+              Login (extension)
+            </button>
+              <br /><br />
+              <button (click)="login()" color="primary" mat-fab extended>
+                <mat-icon>login</mat-icon>
+                Login (web app)
+              </button>
+            </p>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
 

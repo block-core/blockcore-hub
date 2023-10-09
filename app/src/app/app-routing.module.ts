@@ -42,10 +42,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      data: LoadingResolverService,
-    },
+    // canActivate: [AuthGuard],
+    // resolve: {
+    //   data: LoadingResolverService,
+    // },
   },
   {
     path: 'connect',
