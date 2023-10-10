@@ -10,7 +10,8 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
-  "categories": ["productivity"],
+  "categories": ["tools"],
+  "edge_side_panel": {},
   "icons": [
     {
       "src": "assets/icons/icon-48x48.png",

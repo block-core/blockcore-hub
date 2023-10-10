@@ -275,7 +275,10 @@ export class HomeComponent {
   ];
 
   async ngOnInit() {
-    console.log('ININT ON HOME!!!');
+    // Verify if the user is already authenticated.
+    if (!this.appState.authenticated && this.appState.enableDebugUser) {
+      this.appState.debugUser();
+    }
 
     this.options.values.privateFeed = true;
 
