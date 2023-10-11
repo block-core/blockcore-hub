@@ -165,6 +165,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { FilesComponent } from './files/files';
 import { ProjectComponent } from './projects/project/project.component';
 import { AdminComponent } from './admin/admin';
+import { MatSortModule } from '@angular/material/sort';
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -310,6 +312,7 @@ import { AdminComponent } from './admin/admin';
     MatProgressSpinnerModule,
     MatChipsModule,
     MatPaginatorModule,
+    MatSortModule,
     MatSlideToggleModule,
     MatAutocompleteModule,
     PickerModule,
@@ -322,6 +325,7 @@ import { AdminComponent } from './admin/admin';
     MatSnackBarModule,
     MatProgressBarModule,
     MatDialogModule,
+    DatePipe,
     MatDatepickerModule,
     MatButtonToggleModule,
     ScrollingModule,

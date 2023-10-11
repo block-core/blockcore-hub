@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { SortDirection } from '@angular/material/sort';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -55,7 +56,20 @@ export class ApiService {
     return result;
   }
 
-  async users() {
+  async users(sort: string, order: SortDirection, page: number) {
+    const response = await this.fetch(
+      `${environment.apiUrl}/user?sort=${sort}&order=${order}&page=${page + 1}`
+    );
+
+    if (response.status >= 400) {
+      throw new Error(response.statusText);
+    }
+
+    const result = await response.json();
+    return result;
+  }
+
+  async usersAll() {
     const response = await this.fetch(`${environment.apiUrl}/user`);
 
     if (response.status >= 400) {

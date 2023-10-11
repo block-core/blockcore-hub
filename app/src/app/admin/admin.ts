@@ -26,6 +26,30 @@ import { SecurityService } from '../services/security';
 import * as QRCode from 'qrcode';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../services/api.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { catchError, map, merge, of, startWith, switchMap } from 'rxjs';
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
+const ELEMENT_DATA: PeriodicElement[] = [
+  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+];
 
 @Component({
   selector: 'app-admin',
@@ -41,7 +65,23 @@ export class AdminComponent {
   open = false;
   users = [];
 
+  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  // @ViewChild(MatSort) sort!: MatSort;
+
+  displayedColumns: string[] = ['created', 'did', 'number', 'name'];
+  // exampleDatabase: ExampleHttpDatabase | null;
+  data: any[] = [];
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+
   constructor(
+    private _liveAnnouncer: LiveAnnouncer,
     public uploadService: UploadService,
     private nostr: NostrService,
     public optionsService: OptionsService,
@@ -57,6 +97,78 @@ export class AdminComponent {
     public translate: TranslateService,
     private apiService: ApiService
   ) {}
+
+  async ngAfterViewInit() {
+    // this.dataSource.sort = this.sort;
+
+    // If the user changes the sort order, reset back to the first page.
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+      console.log('SORT CHANGE!');
+    });
+
+    this.paginator.page.subscribe(() => {
+      console.log('PAGE!!');
+    });
+
+    this.data = await this.apiService.users(
+      this.sort.active,
+      this.sort.direction,
+      this.paginator.pageIndex
+    );
+
+    this.isLoadingResults = false;
+    this.isRateLimitReached = this.data === null;
+
+    if (this.data === null) {
+      this.data = [];
+      this.resultsLength = 0;
+    } else {
+      // this.resultsLength = this.data.total_count;
+    }
+
+    // merge(this.sort.sortChange, this.paginator.page)
+    //   .pipe(
+    //     startWith({}),
+    //     switchMap(() => {
+    //       this.isLoadingResults = true;
+    //       return this.apiService!.users(
+    //         this.sort.active,
+    //         this.sort.direction,
+    //         this.paginator.pageIndex
+    //       ).pipe(catchError(() => of(null)));
+    //     }),
+    //     map((data) => {
+    //       // Flip flag to show that loading has finished.
+    //       this.isLoadingResults = false;
+    //       this.isRateLimitReached = data === null;
+
+    //       if (data === null) {
+    //         return [];
+    //       }
+
+    //       // Only refresh the result length if there is new data. In case of rate
+    //       // limit errors, we do not want to reset the paginator to zero, as that
+    //       // would prevent users from re-triggering requests.
+    //       this.resultsLength = data.total_count;
+    //       return data.items;
+    //     })
+    //   )
+    //   .subscribe((data) => (this.data = data));
+  }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: Sort | any) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
 
   toggle() {
     if (this.open) {
@@ -151,8 +263,6 @@ export class AdminComponent {
 
     this.hasPrivateKey =
       localStorage.getItem('blockcore:notes:nostr:prvkey') != null;
-
-    this.users = await this.apiService.users();
   }
 
   registerHandler(protocol: string, parameter: string) {

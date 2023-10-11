@@ -183,7 +183,7 @@ export class PeopleComponent {
 
     this.updateSorting();
 
-    this.users = await this.apiService.users();
+    this.users = await this.apiService.usersAll();
     console.log('USERS:', this.users);
 
     this.loading = false;
