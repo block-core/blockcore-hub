@@ -29,7 +29,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { AuthGuardService } from './services/auth-guard';
+import { AuthGuardService, AuthGuardAdminService } from './services/auth-guard';
 import { ConnectComponent } from './connect/connect';
 import { LogoutComponent } from './logout/logout';
 import { HomeComponent } from './home/home';
@@ -79,7 +79,11 @@ import { EventThreadComponent } from './shared/event-thread/event-thread';
 import { EventReactionsComponent } from './shared/event-reactions/event-reactions';
 import { NgxLoadingButtonsModule } from 'ngx-loading-buttons';
 import { ContentPhotosComponent } from './shared/content-photos/content-photos';
-import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FollowingComponent } from './following/following';
 import { FollowersComponent } from './followers/followers';
@@ -136,7 +140,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { LoggerModule } from '@blockcore/ngx-logger';
-import { NgxLoggerLevel, TOKEN_LOGGER_WRITER_SERVICE } from '@blockcore/ngx-logger';
+import {
+  NgxLoggerLevel,
+  TOKEN_LOGGER_WRITER_SERVICE,
+} from '@blockcore/ngx-logger';
 import { LogWriterService } from './services/log-writer';
 
 // required for AOT compilation
@@ -157,6 +164,7 @@ import { ExampleComponent } from './example/example';
 import { ProjectsComponent } from './projects/projects.component';
 import { FilesComponent } from './files/files';
 import { ProjectComponent } from './projects/project/project.component';
+import { AdminComponent } from './admin/admin';
 @NgModule({
   declarations: [
     AppComponent,
@@ -251,7 +259,8 @@ import { ProjectComponent } from './projects/project/project.component';
     ExampleComponent,
     ProjectsComponent,
     FilesComponent,
-    ProjectComponent
+    ProjectComponent,
+    AdminComponent,
   ],
   imports: [
     HttpClientModule,
@@ -262,10 +271,13 @@ import { ProjectComponent } from './projects/project/project.component';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
-
     }),
     LoggerModule.forRoot(
-      { level: NgxLoggerLevel.INFO, enableSourceMaps: true, serverLogLevel: NgxLoggerLevel.OFF }, // Don't send logs anywhere!
+      {
+        level: NgxLoggerLevel.INFO,
+        enableSourceMaps: true,
+        serverLogLevel: NgxLoggerLevel.OFF,
+      }, // Don't send logs anywhere!
       {
         writerProvider: {
           provide: TOKEN_LOGGER_WRITER_SERVICE,
@@ -330,7 +342,18 @@ import { ProjectComponent } from './projects/project/project.component';
     }),
   ],
   exports: [],
-  providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }, AuthGuardService, AppUpdateService, CheckForUpdateService, ChatService, UserService],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
+    AuthGuardService,
+    AuthGuardAdminService,
+    AppUpdateService,
+    CheckForUpdateService,
+    ChatService,
+    UserService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

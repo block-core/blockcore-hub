@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { ApplicationState } from './applicationstate';
-import { AuthenticationService, UserInfo } from './authentication';
-import { Observable, map, of, switchMap, take } from 'rxjs';
+import { AuthenticationService } from './authentication';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
@@ -45,5 +44,17 @@ export class AuthGuardService implements CanActivate {
     //     return false;
     //   }
     // });
+  }
+}
+
+@Injectable()
+export class AuthGuardAdminService implements CanActivate {
+  constructor(
+    public appState: ApplicationState,
+    private authService: AuthenticationService,
+    public router: Router
+  ) {}
+  canActivate() {
+    return this.appState.authenticated && this.appState.admin;
   }
 }

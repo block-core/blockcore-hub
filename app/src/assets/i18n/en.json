@@ -28,7 +28,11 @@
     "Logout": "Logout",
     "MediaPlayer": "Media Player",
     "Projects": "Projects",
-    "Files": "Files"
+    "Files": "Files",
+    "Admin": "Admin"
+  },
+  "Admin": {
+    "Users": "Users"
   },
   "Badge": {
     "CreatedBy": "Created by",

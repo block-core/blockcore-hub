@@ -117,11 +117,19 @@
       <mat-icon>search</mat-icon>
     </button>
 
-    <button *ngIf="!appState.showSearch" mat-icon-button [routerLink]="['/notifications']">
+    <button
+      *ngIf="!appState.showSearch"
+      mat-icon-button
+      [routerLink]="['/notifications']"
+    >
       <mat-icon>notifications</mat-icon>
     </button>
-    
-    <button *ngIf="!appState.showSearch" mat-icon-button [routerLink]="['/settings']">
+
+    <button
+      *ngIf="!appState.showSearch"
+      mat-icon-button
+      [routerLink]="['/settings']"
+    >
       <mat-icon>settings</mat-icon>
     </button>
 
@@ -234,15 +242,15 @@
           <span *ngIf="displayLabels">{{ 'App.Circles' | translate }}</span>
         </a>
         <a
-        [routerLink]="['/files']"
-        mat-menu-item
-        (click)="toggleMenu()"
-        [routerLinkActiveOptions]="{ exact: true }"
-        routerLinkActive="active-nav-link"
-      >
-        <mat-icon>folder</mat-icon>
-        <span *ngIf="displayLabels">{{ 'App.Files' | translate }}</span>
-      </a>
+          [routerLink]="['/files']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active-nav-link"
+        >
+          <mat-icon>folder</mat-icon>
+          <span *ngIf="displayLabels">{{ 'App.Files' | translate }}</span>
+        </a>
         <a
           [routerLink]="['/projects']"
           mat-menu-item
@@ -263,6 +271,18 @@
           <mat-icon>bookmarks</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Bookmarks' | translate }}</span>
         </a>
+        <a
+          *ngIf="appState.admin"
+          [routerLink]="['/admin']"
+          mat-menu-item
+          (click)="toggleMenu()"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active-nav-link"
+        >
+          <mat-icon>manage_accounts</mat-icon>
+          <span *ngIf="displayLabels">{{ 'App.Admin' | translate }}</span>
+        </a>
+
         <!-- <a [routerLink]="['/development']" mat-menu-item (click)="toggleMenu()" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active">
           <mat-icon>construction</mat-icon>
           <span *ngIf="displayLabels">Development</span>
@@ -396,8 +416,6 @@
             </div>
           </div>
 
-          
-
           <a [routerLink]="['/profile']" (click)="toggleProfileMenu()">
             <div class="avatarcontainer">
               <img
@@ -513,7 +531,8 @@
     <mat-sidenav-content>
       <div class="app-content">
         <div class="not-approved-warning" *ngIf="!appState.approved">
-          Your identity has not been approved access to the Free City Hub. You can still use it as a read-only user with limited access.
+          Your identity has not been approved access to the Free City Hub. You
+          can still use it as a read-only user with limited access.
         </div>
         <div class="app-outlet">
           <router-outlet></router-outlet>

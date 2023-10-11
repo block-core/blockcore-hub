@@ -6,7 +6,7 @@ import { HomeComponent } from './home/home';
 import { LogoutComponent } from './logout/logout';
 import { NotesComponent } from './notes/notes';
 import { ProfileComponent } from './profile/profile';
-import { AuthGuardService as AuthGuard } from './services/auth-guard';
+import { AuthGuardService as AuthGuard, AuthGuardAdminService as AdminGuard } from './services/auth-guard';
 import { SettingsComponent } from './settings/settings';
 import { UserComponent } from './user/user';
 import { CirclesComponent } from './circles/circles';
@@ -37,6 +37,7 @@ import { ExampleComponent } from './example/example';
 import { ProjectsComponent } from './projects/projects.component';
 import { FilesComponent } from './files/files';
 import { ProjectComponent } from './projects/project/project.component';
+import { AdminComponent } from './admin/admin';
 
 const routes: Routes = [
   {
@@ -163,6 +164,14 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard],
+    resolve: {
+      data: LoadingResolverService,
+    },
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AdminGuard],
     resolve: {
       data: LoadingResolverService,
     },
