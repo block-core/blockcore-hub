@@ -512,6 +512,9 @@
 
     <mat-sidenav-content>
       <div class="app-content">
+        <div class="not-approved-warning" *ngIf="!appState.approved">
+          Your identity has not been approved access to the Free City Hub. You can still use it as a read-only user with limited access.
+        </div>
         <div class="app-outlet">
           <router-outlet></router-outlet>
         </div>

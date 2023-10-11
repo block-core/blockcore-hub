@@ -71,8 +71,23 @@ router.post("/", async (req, res) => {
     let collection = await db.collection("user");
     let query = { did: payload.did };
     let result = await collection.findOne(query);
-    const isApproved = result ? false : true;
 
+    // If the user is not found, we should create a new user and set the approved flag to false.
+    if (!result) {
+      let document = {
+        approved: false,
+        did: payload.did,
+        payload: payload,
+      };
+
+      document._id = MUUID.v4();
+      document.date = new Date();
+      result = await collection.insertOne(document);
+      console.log("New user added:");
+      console.log(document);
+    }
+
+    const isApproved = result.approved;
     const token = jwt.sign(payload, KEY, { expiresIn: "1h" });
 
     let serialized;

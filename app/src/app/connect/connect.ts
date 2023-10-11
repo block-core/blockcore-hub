@@ -210,7 +210,6 @@ export class ConnectComponent {
     this.consent = localStorage.getItem('blockcore:hub:consent') === 'true';
     this.checkForExtension();
 
-    debugger;
     if (this.appState.payload) {
       let copyOfPayload = this.appState.payload;
       this.appState.payload = null;

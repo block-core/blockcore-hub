@@ -280,6 +280,11 @@ export class HomeComponent {
       this.appState.debugUser();
     }
 
+    // If the user is authenticated, but not approved yet, it means they have not created a profile yet or not approved yet.
+    if (!this.appState.approved) {
+      
+    }
+
     this.options.values.privateFeed = true;
 
     this.formGroup = this.formBuilder.group({

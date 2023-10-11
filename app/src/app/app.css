@@ -71,6 +71,14 @@ header {
   opacity: 1;
 }
 
+.not-approved-warning {
+  background-color: var(--app-warn-color);
+  color: white;
+  border-radius: 20px;
+  padding: 2em;
+  margin: 0 2em 1em 2em;
+}
+
 .avatarcontainer {
   position: absolute;
   bottom: 0;
