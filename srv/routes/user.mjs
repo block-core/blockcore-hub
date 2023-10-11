@@ -15,10 +15,38 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    let collection = await db.collection(collectionName);
-    let results = await collection.find({}).limit(50).toArray();
+    let limit = req.query.limit || 50;
+    let offset = req.query.offset || 0;
 
-    res.send(results);
+    if (limit > 51) {
+      limit = 50;
+    }
+
+    limit = Number(limit);
+    offset = Number(offset);
+
+    let collection = await db.collection(collectionName);
+
+    const totalCount = await collection.countDocuments();
+
+    //   Post.count({},function(err,count){
+    //     console.log(count)     // total number of records
+    //     Post.find({}, function(err, posts){
+    //         if (err) res.send(err);
+    //         res.json({total:count,posts:posts});
+    //     }).skip(req.query.offset).limit(req.query.limit);
+    // });
+
+    //   Post.find({}, function(err, posts){
+    //     if (err) res.send(err);
+    //     res.json({total:count,posts:posts});
+    // }).skip(req.query.offset).limit(req.query.limit);
+
+    // let results = await collection.aggregate([{ $project: { author: 1, title: 1, tags: 1, date: 1 } }, { $sort: { date: -1 } }, { $limit: limit }]).toArray();
+    let results = await collection.find({}).skip(offset).limit(limit).toArray();
+
+    res.send({ total: totalCount, items: results });
+    // res.send(results);
   } catch (err) {
     console.log(err);
   }
