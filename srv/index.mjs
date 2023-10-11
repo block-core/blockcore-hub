@@ -14,6 +14,7 @@ import project from "./routes/project.mjs";
 import path from "path";
 import { fileURLToPath } from "url";
 import cookie from "cookie-parser";
+import rateLimit from 'express-rate-limit';
 
 const __filename = fileURLToPath(import.meta.url);
 // console.log(__filename);
@@ -24,7 +25,18 @@ const PORT = process.env.PORT || 5050;
 const ADMINS = process.env["ADMIN"]?.split(",").filter((i) => i.trim());
 const PRODUCTION = process.env["NODE_ENV"] === "production";
 const KEY = process.env["JWT_KEY"];
+const rateLimitMinute = process.env['RATELIMIT'] ? Number(process.env['RATELIMIT']) : 30;
 const app = express();
+
+const limiter = rateLimit({
+	windowMs: 60 * 1000, // 1 minute
+	max: rateLimitMinute,
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
 
 // console.log('ADMINS:', ADMINS);
 // console.log('KEY:', KEY);
