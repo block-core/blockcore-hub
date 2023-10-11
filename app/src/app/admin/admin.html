@@ -21,17 +21,21 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">manage_accounts</mat-icon>
-        <span *ngIf="(appState.displayLabels$ | async) === false">&nbsp;{{'Admin.Users' | translate }}</span>
+        <span *ngIf="(appState.displayLabels$ | async) === false"
+          >&nbsp;{{'Admin.Users' | translate }}</span
+        >
       </ng-template>
       <ng-template matTabContent>
         <div class="page">
+          <div *ngFor="let user of users">{{user | json}}</div>
+
           <!-- <mat-card>
             <mat-card-header>
               <mat-card-title>{{ 'Settings.OptionsTitle' | translate}}</mat-card-title>
               <mat-card-subtitle>{{ 'Settings.OptionsDescription' | translate}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content> -->
-              <!-- <br />
+          <!-- <br />
               <mat-form-field class="input-full-width">
                 <mat-label>{{ 'Settings.DisplayLanguage' | translate}}</mat-label>
                 <mat-select (selectionChange)="onLanguageChanged($event)" [(value)]="optionsService.values.language">
@@ -46,7 +50,7 @@
                   <mat-option [value]="false">{{ 'Settings.Light' | translate }}</mat-option>
                 </mat-select>
               </mat-form-field> -->
-            <!-- </mat-card-content>
+          <!-- </mat-card-content>
           </mat-card> -->
 
           <br />
@@ -59,8 +63,8 @@
             <mat-card-content>
               <mat-form-field class="input-full-width">
                 <mat-select [(value)]="optionsService.values.mediaService"> -->
-                  <!-- <mat-option [value]="'void.cat'">void.cat</mat-option> -->
-                  <!-- <mat-option [value]="'nostr.build'">nostr.build</mat-option>
+          <!-- <mat-option [value]="'void.cat'">void.cat</mat-option> -->
+          <!-- <mat-option [value]="'nostr.build'">nostr.build</mat-option>
                 </mat-select>
               </mat-form-field>
 
@@ -130,7 +134,9 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">settings_applications</mat-icon>
-        <span *ngIf="(appState.displayLabels$ | async) === false">&nbsp;{{ 'App.Settings' | translate }}</span>
+        <span *ngIf="(appState.displayLabels$ | async) === false"
+          >&nbsp;{{ 'App.Settings' | translate }}</span
+        >
       </ng-template>
       <ng-template matTabContent>
         <div class="page">

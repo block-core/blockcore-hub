@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -10,7 +10,7 @@ export class ApiService {
   }
 
   async categories() {
-    const response = await fetch(`${environment.apiUrl}/category/root`);
+    const response = await this.fetch(`${environment.apiUrl}/category/root`);
 
     if (response.status >= 400) {
       throw new Error(response.statusText);
@@ -21,7 +21,7 @@ export class ApiService {
   }
 
   async collections() {
-    const response = await fetch(`${environment.apiUrl}/collection`);
+    const response = await this.fetch(`${environment.apiUrl}/collection`);
 
     if (response.status >= 400) {
       throw new Error(response.statusText);
@@ -32,7 +32,9 @@ export class ApiService {
   }
 
   async projects() {
-    const response = await fetch(`${environment.apiUrl}/project`);
+    const response = await this.fetch(`${environment.apiUrl}/project`, {
+      credentials: 'include',
+    });
 
     if (response.status >= 400) {
       throw new Error(response.statusText);
@@ -43,7 +45,7 @@ export class ApiService {
   }
 
   async project(id: string) {
-    const response = await fetch(`${environment.apiUrl}/project/${id}`);
+    const response = await this.fetch(`${environment.apiUrl}/project/${id}`);
 
     if (response.status >= 400) {
       throw new Error(response.statusText);
@@ -54,7 +56,7 @@ export class ApiService {
   }
 
   async users() {
-    const response = await fetch(`${environment.apiUrl}/user`);
+    const response = await this.fetch(`${environment.apiUrl}/user`);
 
     if (response.status >= 400) {
       throw new Error(response.statusText);
@@ -76,7 +78,7 @@ export class ApiService {
   // }
 
   async insertCategory(item: any) {
-    const response = await fetch(`${environment.apiUrl}/category`, {
+    const response = await this.fetch(`${environment.apiUrl}/category`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -94,7 +96,7 @@ export class ApiService {
   }
 
   async updateCategory(id: string, item: any) {
-    const response = await fetch(`${environment.apiUrl}/category/${id}`, {
+    const response = await this.fetch(`${environment.apiUrl}/category/${id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -112,7 +114,7 @@ export class ApiService {
   }
 
   async deleteCategory(id: string) {
-    const response = await fetch(`${environment.apiUrl}/category/${id}`, {
+    const response = await this.fetch(`${environment.apiUrl}/category/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -129,7 +131,7 @@ export class ApiService {
   }
 
   async insertUser(item: any) {
-    const response = await fetch(`${environment.apiUrl}/user`, {
+    const response = await this.fetch(`${environment.apiUrl}/user`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -147,7 +149,7 @@ export class ApiService {
   }
 
   async updateUser(id: string, item: any) {
-    const response = await fetch(`${environment.apiUrl}/user/${id}`, {
+    const response = await this.fetch(`${environment.apiUrl}/user/${id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -165,7 +167,7 @@ export class ApiService {
   }
 
   async deleteUser(id: string) {
-    const response = await fetch(`${environment.apiUrl}/user/${id}`, {
+    const response = await this.fetch(`${environment.apiUrl}/user/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -179,5 +181,12 @@ export class ApiService {
 
     const result = await response.json();
     return result;
+  }
+
+  async fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+    init = init || {};
+    init.credentials = 'include';
+
+    return fetch(input, init);
   }
 }

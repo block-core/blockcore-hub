@@ -7,8 +7,13 @@ const mUUID = MUUID.mode("relaxed"); // use relaxed mode
 const router = express.Router();
 const collectionName = "project";
 import { verifyAdmin } from "../services/verifyAdmin.mjs";
+import { verifyUser } from "../services/verifyUser.mjs";
 
 router.get("/", async (req, res) => {
+  if (!verifyUser(req, res)) {
+    return;
+  }
+
   try {
     let collection = await db.collection(collectionName);
     let results = await collection.find({}).limit(50).toArray();

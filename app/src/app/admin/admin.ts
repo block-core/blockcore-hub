@@ -9,16 +9,23 @@ import { NostrRelay } from '../services/interfaces';
 import { ProfileService } from '../services/profile';
 import { RelayService } from '../services/relay';
 import { ThemeService } from '../services/theme';
-import { AddRelayDialog, AddRelayDialogData } from '../shared/add-relay-dialog/add-relay-dialog';
+import {
+  AddRelayDialog,
+  AddRelayDialogData,
+} from '../shared/add-relay-dialog/add-relay-dialog';
 import { OptionsService } from '../services/options';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from '../services/data';
 import { NostrService } from '../services/nostr';
 import { UploadService } from '../services/upload';
-import { PasswordDialog, PasswordDialogData } from '../shared/password-dialog/password-dialog';
+import {
+  PasswordDialog,
+  PasswordDialogData,
+} from '../shared/password-dialog/password-dialog';
 import { SecurityService } from '../services/security';
 import * as QRCode from 'qrcode';
 import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-admin',
@@ -32,6 +39,7 @@ export class AdminComponent {
   wipedNonFollow = false;
   wipedNotes = false;
   open = false;
+  users = [];
 
   constructor(
     public uploadService: UploadService,
@@ -46,7 +54,8 @@ export class AdminComponent {
     private snackBar: MatSnackBar,
     public dataService: DataService,
     private security: SecurityService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private apiService: ApiService
   ) {}
 
   toggle() {
@@ -127,8 +136,8 @@ export class AdminComponent {
     await this.relayService.appendRelays(relays);
   }
 
-  ngOnInit() {
-    this.appState.updateTitle('Settings');
+  async ngOnInit() {
+    this.appState.updateTitle('Administration');
     this.appState.showBackButton = false;
     this.appState.actions = [
       {
@@ -140,7 +149,10 @@ export class AdminComponent {
       },
     ];
 
-    this.hasPrivateKey = localStorage.getItem('blockcore:notes:nostr:prvkey') != null;
+    this.hasPrivateKey =
+      localStorage.getItem('blockcore:notes:nostr:prvkey') != null;
+
+    this.users = await this.apiService.users();
   }
 
   registerHandler(protocol: string, parameter: string) {
@@ -165,7 +177,11 @@ export class AdminComponent {
         result.url = 'wss://' + result.url;
       }
 
-      await this.relayService.appendRelay(result.url, result.read, result.write);
+      await this.relayService.appendRelay(
+        result.url,
+        result.read,
+        result.write
+      );
     });
   }
 
@@ -212,18 +228,27 @@ export class AdminComponent {
         return;
       }
 
-      let prvkeyEncrypted = localStorage.getItem('blockcore:notes:nostr:prvkey');
+      let prvkeyEncrypted = localStorage.getItem(
+        'blockcore:notes:nostr:prvkey'
+      );
 
-      const prvkey = await this.security.decryptData(prvkeyEncrypted!, result.password);
+      const prvkey = await this.security.decryptData(
+        prvkeyEncrypted!,
+        result.password
+      );
 
       if (!prvkey) {
         this.verifiedWalletPassword = false;
 
-        this.snackBar.open(`Unable to decrypt data. Probably wrong password. Try again.`, 'Hide', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
+        this.snackBar.open(
+          `Unable to decrypt data. Probably wrong password. Try again.`,
+          'Hide',
+          {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          }
+        );
         return;
       }
 
@@ -232,11 +257,14 @@ export class AdminComponent {
       const privateKey = nip19.nsecEncode(prvkey);
       this.privateKey = privateKey;
 
-      this.qrCodePrivateKey = await QRCode.toDataURL('nostr:' + this.privateKey, {
-        errorCorrectionLevel: 'L',
-        margin: 2,
-        scale: 5,
-      });
+      this.qrCodePrivateKey = await QRCode.toDataURL(
+        'nostr:' + this.privateKey,
+        {
+          errorCorrectionLevel: 'L',
+          margin: 2,
+          scale: 5,
+        }
+      );
     });
 
     // this.verifiedWalletPassword = null;
