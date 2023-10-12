@@ -488,7 +488,7 @@ app-profile-actions {
 }
 
 .sidenav-left {
-  min-width: 200px;
+  min-width: 160px;
 }
 
 .sidenav-right {
@@ -991,7 +991,7 @@ mat-card-footer {
   color: rgb(219, 2, 2) !important;
 }
 
-@media only screen and (max-height: 200px) {
+@media only screen and (max-height: 160px) {
   .sidenav {
     display: none !important;
   }

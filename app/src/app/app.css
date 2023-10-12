@@ -14,7 +14,7 @@
   flex: 0 0 24px;
 }
 
-@media screen and (max-height: 200px) {
+@media screen and (max-height: 160px) {
   .logo-icon-title-bar {
     display: inline;
   }
@@ -39,7 +39,7 @@
 }
 
 .sidenav-labels {
-  width: 200px;
+  width: 160px;
 }
 
 .top-spacer {
@@ -204,7 +204,7 @@ header {
   height: 92px;
   position: fixed;
   bottom: 2em;
-  left: 2.9em;
+  left: 2em;
   cursor: pointer;
   transition: opacity 250ms ease;
 }
