@@ -1,8 +1,18 @@
 import jwt from "jsonwebtoken";
 const KEY = process.env["JWT_KEY"];
+const APIKEY = process.env["API_KEY"];
 
 export function verifyUser(req, res) {
   try {
+
+    if (APIKEY && req.query.apikey) {
+      if (APIKEY === req.query.apikey) {
+        return {
+          admin: true,
+        };
+      }
+    }
+
     const { cookies } = req;
     const token = cookies.token;
 

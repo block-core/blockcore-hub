@@ -169,6 +169,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
 import { RegistriesComponent } from './registries/registries.component';
 import { RegistryComponent } from './registries/registry/registry.component';
+import { LandRegistryComponent } from './registries/land/land.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -266,7 +267,8 @@ import { RegistryComponent } from './registries/registry/registry.component';
     ProjectComponent,
     AdminComponent,
     RegistriesComponent,
-    RegistryComponent
+    RegistryComponent,
+    LandRegistryComponent
   ],
   imports: [
     HttpClientModule,

@@ -40,6 +40,7 @@ import { ProjectComponent } from './projects/project/project.component';
 import { AdminComponent } from './admin/admin';
 import { RegistryComponent } from './registries/registry/registry.component';
 import { RegistriesComponent } from './registries/registries.component';
+import { LandRegistryComponent } from './registries/land/land.component';
 
 const routes: Routes = [
   {
@@ -133,6 +134,14 @@ const routes: Routes = [
   {
     path: 'registries/:id',
     component: RegistryComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      data: LoadingResolverService,
+    },
+  },
+  {
+    path: 'registries/land/:id',
+    component: LandRegistryComponent,
     canActivate: [AuthGuard],
     resolve: {
       data: LoadingResolverService,

@@ -3,7 +3,7 @@
 <div class="feed-page">
   <!-- <p>Circles is how you organize people you follow. Different circles can have different rules applied and circles is an important way to make the experience more enjoyable.</p> -->
 
-  <mat-card class="circle circle-container clickable" [routerLink]="['/registries', project._id]" *ngFor="let project of projects">
+  <mat-card class="circle circle-container clickable" [routerLink]="['/registries', project.type, project._id]" *ngFor="let project of projects">
     <div class="circle-item">
       <mat-icon matListItemIcon  class="project-logo">{{ project.icon }}</mat-icon>
     </div>
