@@ -45,8 +45,32 @@ export class ApiService {
     return result;
   }
 
+  async registries() {
+    const response = await this.fetch(`${environment.apiUrl}/registry`, {
+      credentials: 'include',
+    });
+
+    if (response.status >= 400) {
+      throw new Error(response.statusText);
+    }
+
+    const result = await response.json();
+    return result;
+  }
+
   async project(id: string) {
     const response = await this.fetch(`${environment.apiUrl}/project/${id}`);
+
+    if (response.status >= 400) {
+      throw new Error(response.statusText);
+    }
+
+    const result = await response.json();
+    return result;
+  }
+
+  async registry(id: string) {
+    const response = await this.fetch(`${environment.apiUrl}/registry/${id}`);
 
     if (response.status >= 400) {
       throw new Error(response.statusText);

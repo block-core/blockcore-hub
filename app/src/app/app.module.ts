@@ -167,6 +167,8 @@ import { ProjectComponent } from './projects/project/project.component';
 import { AdminComponent } from './admin/admin';
 import { MatSortModule } from '@angular/material/sort';
 import { DatePipe } from '@angular/common';
+import { RegistriesComponent } from './registries/registries.component';
+import { RegistryComponent } from './registries/registry/registry.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -263,6 +265,8 @@ import { DatePipe } from '@angular/common';
     FilesComponent,
     ProjectComponent,
     AdminComponent,
+    RegistriesComponent,
+    RegistryComponent
   ],
   imports: [
     HttpClientModule,

@@ -187,7 +187,7 @@
           <mat-icon>home</mat-icon>
           <span *ngIf="displayLabels">{{'App.Home' | translate }}</span>
         </a>
-        <a
+        <!-- <a
           [routerLink]="['/feed']"
           mat-menu-item
           (click)="toggleMenu()"
@@ -196,7 +196,7 @@
         >
           <mat-icon>notes</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Feed' | translate }}</span>
-        </a>
+        </a> -->
         <!-- <a
           [routerLink]="['/notifications']"
           mat-menu-item
@@ -261,6 +261,17 @@
           <mat-icon>location_city</mat-icon>
           <span *ngIf="displayLabels">{{ 'App.Projects' | translate }}</span>
         </a>
+
+        <a
+        [routerLink]="['/registries']"
+        mat-menu-item
+        (click)="toggleMenu()"
+        [routerLinkActiveOptions]="{ exact: false }"
+        routerLinkActive="active-nav-link"
+      >
+        <mat-icon>fact_check</mat-icon>
+        <span *ngIf="displayLabels">{{ 'App.Registries' | translate }}</span>
+      </a>
         <a
           [routerLink]="['/notes']"
           mat-menu-item

@@ -38,6 +38,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { FilesComponent } from './files/files';
 import { ProjectComponent } from './projects/project/project.component';
 import { AdminComponent } from './admin/admin';
+import { RegistryComponent } from './registries/registry/registry.component';
+import { RegistriesComponent } from './registries/registries.component';
 
 const routes: Routes = [
   {
@@ -115,6 +117,22 @@ const routes: Routes = [
   {
     path: 'projects/:id',
     component: ProjectComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      data: LoadingResolverService,
+    },
+  },
+  {
+    path: 'registries',
+    component: RegistriesComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      data: LoadingResolverService,
+    },
+  },
+  {
+    path: 'registries/:id',
+    component: RegistryComponent,
     canActivate: [AuthGuard],
     resolve: {
       data: LoadingResolverService,
