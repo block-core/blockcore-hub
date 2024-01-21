@@ -346,62 +346,44 @@ export class LandRegistryComponent {
     }
 
     const zoom = this.map.getZoom();
-
     const bounds = this.map.getBounds();
-    console.log('BOUNDS:', bounds);
-
     const northEast = bounds.getNorthEast();
     const southWest = bounds.getSouthWest();
 
-    console.log('northEast:', northEast);
-    console.log('southWest:', southWest);
+    // We must ensure that we find the nearest correct starting point from these values:
+    let lat1 = round(southWest.lat, 6);
+    let lat2 = round(northEast.lat, 6);
 
-    // northEast: LatLng {lat: 58.35883161682697, lng: 7.5489431619644165}
-    // southWest: LatLng {lat: 58.358268780007705, lng: 7.546730339527131}
+    let lng1 = round(southWest.lng, 6);
+    let lng2 = round(northEast.lng, 6);
 
-    // 358218
-    // 000009
+    let num = lat1;
+    let decimals = (num % 1) * 1000000;
+    let nearest = Math.floor(decimals / 9) * 9;
+    let before = nearest * 0.000001;
+    let after = (nearest + 9) * 0.000001;
 
-    // Remove some precision, only get 5 decimals:
-    // const northlat = Math.trunc(northEast.lat * 10000) / 10000;
-    // const northlng = Math.trunc(northEast.lng * 10000) / 10000;
+    let num2 = lng1;
+    let decimals2 = (num2 % 1) * 1000000;
+    let nearest2 = Math.floor(decimals2 / 18) * 18;
+    let before2 = nearest2 * 0.000001;
+    let after2 = (nearest2 + 18) * 0.000001;
 
-    // const southlat = Math.trunc(southWest.lat * 10000) / 10000;
-    // const southlng = Math.trunc(southWest.lng * 10000) / 10000;
+    let tileLat1 = round(Math.floor(num) + after, 6);
+    let tileLng1 = round(Math.floor(num2) + after2, 6);
 
-    console.log(round(southWest.lat, 4));
-    console.log(round(northEast.lat, 4));
+    console.log('BEFORE:', [lat1, lng1]);
+    console.log('AFTER:', [tileLat1, tileLng1]);
 
-    // console.log(this.roundton(southlat, 6));
-    // console.log(this.roundton(northlat, 6));
+    lat1 = tileLat1;
+    lng1 = tileLng1;
 
-    let base = chain(southWest.lat).round(4);
-    let base2 = round(northEast.lat, 4);
-
-    //     // chaining
-    // math.chain(3)
-    // .add(4)
-    // .multiply(2)
-    // .done() // 14
-
-    // console.log(northlat);
-    // console.log(northlng);
-    // console.log(northlat + 0.000009);
-
-    // let currentLat = southlat;
-
-    let lng1 = southWest.lng;
-    let lng2 = northEast.lng;
-
-    let lat1 = southWest.lat;
-    let lat2 = northEast.lat;
+    let base = chain(lat1);
 
     this.features[0].features[0].geometry.coordinates = [];
 
-    while (base < base2) {
+    while (base < lat2) {
       base = base.add(0.000009);
-      console.log(base.round(6));
-      console.log(base2);
 
       this.features[0].features[0].geometry.coordinates.push([
         [lng1, base.round(6)],
@@ -409,54 +391,16 @@ export class LandRegistryComponent {
       ]);
     }
 
-    let baseLng = chain(southWest.lng).round(4);
-    let baseLng2 = round(northEast.lng, 4);
+    let baseLng = chain(lng1);
 
-    while (baseLng < baseLng2) {
+    while (baseLng < lng2) {
       baseLng = baseLng.add(0.000018);
-      console.log(baseLng.round(6));
-      console.log(baseLng2);
 
       this.features[0].features[0].geometry.coordinates.push([
         [baseLng.round(6), lat1],
         [baseLng.round(6), lat2],
       ]);
     }
-
-    // while (base < base2) {
-    //   base = base.add(0.000009);
-    //   console.log(base.round(6));
-    //   console.log(base2);
-
-    //   this.features[0].features[0].geometry.coordinates.push([
-    //     [lng1, base.round(6)],
-    //     [lng2, base.round(6)],
-    //   ]);
-    // }
-
-    console.log(this.features[0].features[0].geometry.coordinates);
-
-    // for (let index = 0; index < 1000; index++) {
-
-    //   if (base > base2) {
-    //     console.log('YES!!!');
-    //     break;
-    //   }
-
-    //   // const element = array[index];
-    //   // currentLat = currentLat + 0.000009;
-
-    //   // let lat = Math.trunc(currentLat * 1000000) / 1000000;
-    //   // console.log(lat);
-    //   // console.log(northlat);
-    // }
-
-    // while (currentLat > southlat) {
-    //   currentLat = currentLat + 0.000009;
-    //   console.log(currentLat);
-    // }
-
-    // console.log(this.features[0].features[0].geometry.coordinates);
 
     const loadFeatures = zoom > 18;
 
