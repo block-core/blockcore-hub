@@ -1,4 +1,7 @@
 <div class="page">
+
+  <div id="map"></div>
+
   <mat-card class="example-card" *ngIf="project">
     <mat-card-header>
       <mat-icon  mat-card-avatar class="project-logo">{{ project.icon }}</mat-icon>
@@ -10,6 +13,7 @@
       <p>
         {{ project.about }}
       </p>
+      
     </mat-card-content>
     <mat-card-actions>
       <a

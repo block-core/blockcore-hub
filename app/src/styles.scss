@@ -3,6 +3,8 @@
 
 @include mat.core();
 
+@import "~leaflet/dist/leaflet.css";
+
 $primary-palette: (
   50: #fef7df,
   100: #fdeaae,
