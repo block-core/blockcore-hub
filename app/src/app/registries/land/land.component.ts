@@ -296,7 +296,7 @@ export class LandRegistryComponent {
       var rectangle: any = L.rectangle(bounds, {
         fillColor: color,
         color: borderColor,
-        weight: 1,
+        weight: 4,
       });
 
       rectangle.propertyId = 'anonymous';
@@ -411,9 +411,9 @@ export class LandRegistryComponent {
       this.grid = L.geoJSON(this.features[0], {
         style: function () {
           return {
-            color: '#777',
+            color: 'rgb(180, 180, 180)',
             stroke: true,
-            weight: 0.5,
+            weight: 1,
           };
         },
       }).addTo(this.map);
