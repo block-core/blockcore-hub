@@ -347,15 +347,19 @@ export class LandRegistryComponent {
 
     const zoom = this.map.getZoom();
     const bounds = this.map.getBounds();
-    const northEast = bounds.getNorthEast();
-    const southWest = bounds.getSouthWest();
+
+    const northWest = bounds.getNorthWest();
+    const southEast = bounds.getSouthEast();
 
     // We must ensure that we find the nearest correct starting point from these values:
-    let lat1 = round(southWest.lat, 6);
-    let lat2 = round(northEast.lat, 6);
 
-    let lng1 = round(southWest.lng, 6);
-    let lng2 = round(northEast.lng, 6);
+    // LAT = "height".
+    let lat1 = northWest.lat;
+    let lat2 = southEast.lat;
+
+    // LNG = "width".
+    let lng1 = northWest.lng;
+    let lng2 = southEast.lng;
 
     let num = lat1;
     let decimals = (num % 1) * 1000000;
@@ -372,34 +376,41 @@ export class LandRegistryComponent {
     let tileLat1 = round(Math.floor(num) + after, 6);
     let tileLng1 = round(Math.floor(num2) + after2, 6);
 
-    console.log('BEFORE:', [lat1, lng1]);
-    console.log('AFTER:', [tileLat1, tileLng1]);
-
-    lat1 = tileLat1;
-    lng1 = tileLng1;
-
-    let base = chain(lat1);
+    let base = chain(tileLat1);
 
     this.features[0].features[0].geometry.coordinates = [];
 
-    while (base < lat2) {
-      base = base.add(0.000009);
+    let j = 0;
+
+    // This will render horisontal (longitude) lines, starting on top and going down (north to south).
+    while (base > lat2) {
+      base = base.add(-0.000009);
+
+      const value = base.round(6).valueOf();
 
       this.features[0].features[0].geometry.coordinates.push([
-        [lng1, base.round(6)],
-        [lng2, base.round(6)],
+        [lng1, value],
+        [lng2, value],
       ]);
+
+      j++;
     }
 
-    let baseLng = chain(lng1);
+    let baseLng = chain(tileLng1);
+    let i = 0;
 
+    // This will render vertical (latitude) lines, starting on the left and going right (west to east).
     while (baseLng < lng2) {
       baseLng = baseLng.add(0.000018);
 
+      const value = baseLng.round(6).valueOf();
+
       this.features[0].features[0].geometry.coordinates.push([
-        [baseLng.round(6), lat1],
-        [baseLng.round(6), lat2],
+        [value, lat1],
+        [value, lat2],
       ]);
+
+      i++;
     }
 
     const loadFeatures = zoom > 18;
