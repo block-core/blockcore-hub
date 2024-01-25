@@ -197,6 +197,8 @@ export class LandRegistryComponent {
     // this.subscriptions.push(this.profileService.items$.subscribe((profiles) => (this.following = profiles)) as Subscription);
   }
 
+  selectedTiles: Map<string, any> = new Map<any, any>();
+
   initMap() {
     this.map = L.map('map', {
       attributionControl: true,
@@ -238,9 +240,6 @@ export class LandRegistryComponent {
       const lat = this.roundton(e.latlng.lat, 6);
       const lng = this.roundton(e.latlng.lng, 6);
 
-      console.log('LAT:', lat);
-      console.log('LNG:', lng);
-
       let num = lat;
       let decimals = (num % 1) * 1000000;
       console.log(decimals);
@@ -248,9 +247,6 @@ export class LandRegistryComponent {
       console.log(nearest);
       let before = nearest * 0.000001;
       let after = (nearest + 9) * 0.000001;
-
-      console.log(Math.floor(num) + before);
-      console.log(Math.floor(num) + after);
 
       let num2 = lng;
       let decimals2 = (num2 % 1) * 1000000;
@@ -260,13 +256,8 @@ export class LandRegistryComponent {
       let before2 = nearest2 * 0.000001;
       let after2 = (nearest2 + 18) * 0.000001;
 
-      console.log(Math.floor(num2) + before2);
-      console.log(Math.floor(num2) + after2);
-
       let tileLat1 = Math.floor(num) + after;
       let tileLng1 = Math.floor(num2) + after2;
-
-      console.log('PRE-BOUNDS:', [tileLat1, tileLng1]);
 
       let tileLat2 = tileLat1 - 0.000009;
       let tileLng2 = tileLng1 - 0.000018;
@@ -276,14 +267,10 @@ export class LandRegistryComponent {
       tileLat2 = Number(tileLat2.toFixed(6));
       tileLng2 = Number(tileLng2.toFixed(6));
 
-      console.log('PRE-BOUNDS 2:', [tileLat2, tileLng2]);
-
       var bounds: any = [
         [tileLat1, tileLng1],
         [tileLat2, tileLng2],
       ];
-
-      console.log('BOUNDS:', bounds);
 
       var color;
       var r = Math.floor(Math.random() * 255);
@@ -299,18 +286,35 @@ export class LandRegistryComponent {
         weight: 4,
       });
 
-      rectangle.propertyId = 'anonymous';
-      rectangle.property = {
-        owner: 'Anonymous',
-        id: 'liberstad/anarchypark/3',
-        location: tileLat1 + ':' + tileLng1 + ':' + tileLat2 + ':' + tileLng2,
-        bounds: bounds,
-        // topCenter: new L.LatLng(lat2, center),
-        // topLeft: new L.LatLng(lat2, lng2),
-        // bottomRight: new L.LatLng(lat1, lng1),
-      };
+      const tileId = tileLat1 + ':' + tileLng1 + ':' + tileLat2 + ':' + tileLng2;
 
-      this.map.addLayer(rectangle);
+      console.log('TILE ID: ' + tileId);
+
+      let existingTile = this.selectedTiles.get(tileId);
+
+      console.log(this.selectedTiles);
+
+      if (existingTile) {
+        console.log('EXISTS, REMOVE!!!');
+        this.map.removeLayer(existingTile);
+        this.selectedTiles.delete(tileId);
+      } else {
+        rectangle.propertyId = 'anonymous';
+        rectangle.property = {
+          owner: 'Anonymous',
+          id: 'liberstad/anarchypark/3',
+          location: tileId,
+          bounds: bounds,
+          // topCenter: new L.LatLng(lat2, center),
+          // topLeft: new L.LatLng(lat2, lng2),
+          // bottomRight: new L.LatLng(lat1, lng1),
+        };
+
+        this.selectedTiles.set(tileId, rectangle);
+        console.log(rectangle.property.location);
+
+        this.map.addLayer(rectangle);
+      }
 
       // let before = decimals * 0.0000001;
       // let after = (decimals + 9) * 0.0000001;
