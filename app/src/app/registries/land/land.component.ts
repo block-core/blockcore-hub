@@ -199,6 +199,13 @@ export class LandRegistryComponent {
 
   selectedTiles: Map<string, any> = new Map<any, any>();
 
+  copyGeoJson() {
+    this.selectedTiles.forEach((value, key) => {
+      // console.log(key, value);
+      console.log(value.toGeoJSON());
+    });
+  }
+
   initMap() {
     this.map = L.map('map', {
       attributionControl: true,
@@ -286,7 +293,8 @@ export class LandRegistryComponent {
         weight: 4,
       });
 
-      const tileId = tileLat1 + ':' + tileLng1 + ':' + tileLat2 + ':' + tileLng2;
+      const tileId =
+        tileLat1 + ':' + tileLng1 + ':' + tileLat2 + ':' + tileLng2;
 
       console.log('TILE ID: ' + tileId);
 
